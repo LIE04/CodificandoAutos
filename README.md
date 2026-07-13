@@ -1,4 +1,4 @@
-# Proyecto del curso de Análisis y Diseño - 26P
+# Proyecto del curso de Análisis y Diseño - 26P prueba de subida
 
 Este proyecto es una aplicación JavaFX con Spring Boot que implementa un sistema de gestión de usuarios y grupos. Es un proyecto para el curso de Analisis y Diseño.
 
