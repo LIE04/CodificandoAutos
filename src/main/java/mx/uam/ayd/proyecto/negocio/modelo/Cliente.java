@@ -36,7 +36,7 @@ public class Cliente {
 	}
 
 	/**
-	 * @return el nombre nombre del cliente
+	 * @return el nombre del cliente
 	 */
 	public String getNombre() {
 		return nombre;
@@ -62,24 +62,27 @@ public class Cliente {
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
-	
+	//uso de una logica diferente para equals
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		//Verifica que ambas variables sean del mismo tipo y tengan el mismo idCliente
+        if (this == obj)
 			return true;
+        //Verifica que el objeto no sea nulo
 		if (obj == null)
 			return false;
+        //Verifica que el objeto sea de la misma clase
 		if (getClass() != obj.getClass())
 			return false;
 		Cliente other = (Cliente) obj;
 		return idCliente == other.idCliente;
 	}
-	
+	//Genera un numero entero para la clase Cliente, basado en el idCliente, para ser usado en estructuras de datos como HashMap o HashSet
 	@Override
 	public int hashCode() {
 		return (int) (31 * idCliente);
 	}
-	
+	//Imprime los valores de cada variable de la clase cliente, para poder ser usado en la consola o en un log
 	@Override
 	public String toString() {
 		return "Cliente [idCliente=" + idCliente + ", nombre=" + nombre + ", numero=" + numero + "]";
