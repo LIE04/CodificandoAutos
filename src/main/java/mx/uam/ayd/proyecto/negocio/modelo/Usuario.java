@@ -17,14 +17,12 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // Le dice a Spring que genere el id
 	private long idUsuario;
 
-	private String nombre;
-	
-	private String apellido;
+	private String nombre, apellido;
 	
 	private int edad;
 	
 	/**
-	 * @return the idUsuario
+	 * @return el idUsuario
 	 */
 	public long getIdUsuario() {
 		return idUsuario;
@@ -38,7 +36,7 @@ public class Usuario {
 	}
 
 	/**
-	 * @return the nombre
+	 * @return el nombre nombre del usuario
 	 */
 	public String getNombre() {
 		return nombre;
@@ -52,7 +50,7 @@ public class Usuario {
 	}
 
 	/**
-	 * @return the apellido
+	 * @return el apellido
 	 */
 	public String getApellido() {
 		return apellido;
