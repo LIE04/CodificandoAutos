@@ -5,10 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  * Entidad de negocio Vehiculo
- * 
+ *
  * @author AngelYael
  *
  */
@@ -18,12 +20,17 @@ public class Vehiculo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // Le dice a Spring que genere el id
 	private long idVehiculo;
 
-	private String Marca, Modelo,Placas;
-	
-	private int Año;
+	private String marca, modelo, placas;
 
-    private double Kilometraje;
-	
+	private int anio;
+
+    private double kilometraje;
+
+    // Cliente dueño del vehículo (un vehículo pertenece a un solo cliente)
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+
 	/**
 	 * @return el idVehiculo
 	 */
@@ -39,73 +46,87 @@ public class Vehiculo {
 	}
 
     /**
-     * @return la Marca
+     * @return la marca
      */
     public String getMarca() {
-        return Marca;
+        return marca;
     }
 
     /**
-     * @param Marca the Marca to set
+     * @param marca the marca to set
      */
-    public void setMarca(String Marca) {
-        this.Marca = Marca;
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 
     /**
-     * @return el Modelo
+     * @return el modelo
      */
     public String getModelo() {
-        return Modelo;
+        return modelo;
     }
 
     /**
-     * @param Modelo the Modelo to set
+     * @param modelo the modelo to set
      */
-    public void setModelo(String Modelo) {
-        this.Modelo = Modelo;
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
     }
 
     /**
-     * @return las Placas
+     * @return las placas
      */
     public String getPlacas() {
-        return Placas;
+        return placas;
     }
 
     /**
-     * @param Placas the Placas to set
+     * @param placas the placas to set
      */
-    public void setPlacas(String Placas) {
-        this.Placas = Placas;
+    public void setPlacas(String placas) {
+        this.placas = placas;
     }
 
     /**
-     * @return el Año
+     * @return el año del vehículo
      */
-    public int getAño() {
-        return Año;
+    public int getAnio() {
+        return anio;
     }
 
     /**
-     * @param Año the Año to set
+     * @param anio the anio to set
      */
-    public void setAño(int Año) {
-        this.Año = Año;
+    public void setAnio(int anio) {
+        this.anio = anio;
     }
 
     /**
-     * @return el Kilometraje
+     * @return el kilometraje
      */
     public double getKilometraje() {
-        return Kilometraje;
+        return kilometraje;
     }
 
     /**
-     * @param Kilometraje the Kilometraje to set
+     * @param kilometraje the kilometraje to set
      */
-    public void setKilometraje(double Kilometraje) {
-        this.Kilometraje = Kilometraje;
+    public void setKilometraje(double kilometraje) {
+        this.kilometraje = kilometraje;
+    }
+
+    /**
+     * @return el cliente dueño del vehículo
+     */
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    /**
+     * @param cliente the cliente to set
+     */
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
 	@Override
@@ -119,15 +140,16 @@ public class Vehiculo {
         Vehiculo other = (Vehiculo) obj;
         return idVehiculo == other.idVehiculo;
     }
-    
+
     @Override
     public int hashCode() {
         return (int) (31 * idVehiculo);
     }
-    
+
     @Override
     public String toString() {
-        return "Vehiculo [idVehiculo=" + idVehiculo + ", Marca=" + Marca + ", Modelo=" + Modelo 
-                + ", Placas=" + Placas + ", Año=" + Año + ", Kilometraje=" + Kilometraje + "]";
+        return "Vehiculo [idVehiculo=" + idVehiculo + ", marca=" + marca + ", modelo=" + modelo
+                + ", placas=" + placas + ", anio=" + anio + ", kilometraje=" + kilometraje
+                + ", cliente=" + (cliente == null ? null : cliente.getNombre()) + "]";
     }
 }
