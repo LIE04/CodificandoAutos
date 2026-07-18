@@ -18,11 +18,11 @@ public class Vehiculo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // Le dice a Spring que genere el id
 	private long idVehiculo;
 
-	private String Marca, Modelo,Placas;
+	private String marca, modelo, placa;
 	
-	private int Año;
+	private int año;
 
-    private double Kilometraje;
+    private double kilometraje;
 	
 	/**
 	 * @return el idVehiculo
@@ -42,70 +42,70 @@ public class Vehiculo {
      * @return la Marca
      */
     public String getMarca() {
-        return Marca;
+        return marca;
     }
 
     /**
-     * @param Marca the Marca to set
+     * @param marca the marca to set
      */
-    public void setMarca(String Marca) {
-        this.Marca = Marca;
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 
     /**
      * @return el Modelo
      */
     public String getModelo() {
-        return Modelo;
+        return modelo;
     }
 
     /**
-     * @param Modelo the Modelo to set
+     * @param modelo the modelo to set
      */
-    public void setModelo(String Modelo) {
-        this.Modelo = Modelo;
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
     }
 
     /**
-     * @return las Placas
+     * @return la Placa
      */
-    public String getPlacas() {
-        return Placas;
+    public String getPlaca() {
+        return placa;
     }
 
     /**
-     * @param Placas the Placas to set
+     * @param placa the placa to set
      */
-    public void setPlacas(String Placas) {
-        this.Placas = Placas;
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 
     /**
      * @return el Año
      */
     public int getAño() {
-        return Año;
+        return año;
     }
 
     /**
-     * @param Año the Año to set
+     * @param año the año to set
      */
-    public void setAño(int Año) {
-        this.Año = Año;
+    public void setAño(int año) {
+        this.año = año;
     }
 
     /**
      * @return el Kilometraje
      */
     public double getKilometraje() {
-        return Kilometraje;
+        return kilometraje;
     }
 
     /**
-     * @param Kilometraje the Kilometraje to set
+     * @param kilometraje the kilometraje to set
      */
-    public void setKilometraje(double Kilometraje) {
-        this.Kilometraje = Kilometraje;
+    public void setKilometraje(double kilometraje) {
+        this.kilometraje = kilometraje;
     }
 
 	@Override
@@ -127,7 +127,7 @@ public class Vehiculo {
     
     @Override
     public String toString() {
-        return "Vehiculo [idVehiculo=" + idVehiculo + ", Marca=" + Marca + ", Modelo=" + Modelo 
-                + ", Placas=" + Placas + ", Año=" + Año + ", Kilometraje=" + Kilometraje + "]";
+        return "Vehiculo [idVehiculo=" + idVehiculo + ", Marca=" + marca + ", Modelo=" + modelo 
+                + ", Placa=" + placa + ", Año=" + año + ", Kilometraje=" + kilometraje + "]";
     }
 }
