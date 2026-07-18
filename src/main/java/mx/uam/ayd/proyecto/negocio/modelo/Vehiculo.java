@@ -5,10 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  * Entidad de negocio Vehiculo
- * 
+ *
  * @author AngelYael
  *
  */
@@ -18,12 +20,17 @@ public class Vehiculo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // Le dice a Spring que genere el id
 	private long idVehiculo;
 
-	private String marca, modelo, placa;
-	
-	private int año;
+	private String marca, modelo, placas;
+
+	private int anio;
 
     private double kilometraje;
-	
+
+    // Cliente dueño del vehículo (un vehículo pertenece a un solo cliente)
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+
 	/**
 	 * @return el idVehiculo
 	 */
@@ -39,7 +46,7 @@ public class Vehiculo {
 	}
 
     /**
-     * @return la Marca
+     * @return la marca
      */
     public String getMarca() {
         return marca;
@@ -53,7 +60,7 @@ public class Vehiculo {
     }
 
     /**
-     * @return el Modelo
+     * @return el modelo
      */
     public String getModelo() {
         return modelo;
@@ -67,35 +74,35 @@ public class Vehiculo {
     }
 
     /**
-     * @return la Placa
+     * @return las placas
      */
-    public String getPlaca() {
-        return placa;
+    public String getPlacas() {
+        return placas;
     }
 
     /**
-     * @param placa the placa to set
+     * @param placas the placas to set
      */
-    public void setPlaca(String placa) {
-        this.placa = placa;
+    public void setPlacas(String placas) {
+        this.placas = placas;
     }
 
     /**
-     * @return el Año
+     * @return el año del vehículo
      */
-    public int getAño() {
-        return año;
+    public int getAnio() {
+        return anio;
     }
 
     /**
-     * @param año the año to set
+     * @param anio the anio to set
      */
-    public void setAño(int año) {
-        this.año = año;
+    public void setAnio(int anio) {
+        this.anio = anio;
     }
 
     /**
-     * @return el Kilometraje
+     * @return el kilometraje
      */
     public double getKilometraje() {
         return kilometraje;
@@ -106,6 +113,20 @@ public class Vehiculo {
      */
     public void setKilometraje(double kilometraje) {
         this.kilometraje = kilometraje;
+    }
+
+    /**
+     * @return el cliente dueño del vehículo
+     */
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    /**
+     * @param cliente the cliente to set
+     */
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
 	@Override
@@ -119,15 +140,16 @@ public class Vehiculo {
         Vehiculo other = (Vehiculo) obj;
         return idVehiculo == other.idVehiculo;
     }
-    
+
     @Override
     public int hashCode() {
         return (int) (31 * idVehiculo);
     }
-    
+
     @Override
     public String toString() {
-        return "Vehiculo [idVehiculo=" + idVehiculo + ", Marca=" + marca + ", Modelo=" + modelo 
-                + ", Placa=" + placa + ", Año=" + año + ", Kilometraje=" + kilometraje + "]";
+        return "Vehiculo [idVehiculo=" + idVehiculo + ", marca=" + marca + ", modelo=" + modelo
+                + ", placas=" + placas + ", anio=" + anio + ", kilometraje=" + kilometraje
+                + ", cliente=" + (cliente == null ? null : cliente.getNombre()) + "]";
     }
 }
