@@ -21,4 +21,7 @@
     <Button text="Registrar pieza" onAction="#handleRegistrarPieza"
             style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
 
+    <Button text="Consultar distribuidores" onAction="#handleConsultarDistribuidores"
+            style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
+
 </VBox>

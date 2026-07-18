@@ -9,6 +9,7 @@ import mx.uam.ayd.proyecto.presentacion.agregarUsuario.ControlAgregarUsuario;
 import mx.uam.ayd.proyecto.presentacion.listarUsuarios.ControlListarUsuarios;
 import mx.uam.ayd.proyecto.presentacion.listarGrupos.ControlListarGrupos;
 import mx.uam.ayd.proyecto.presentacion.registrarPieza.ControlRegistrarPieza;
+import mx.uam.ayd.proyecto.presentacion.consultarDistribuidores.ControlConsultarDistribuidores;
 
 /**
  * Esta clase lleva el flujo de control de la ventana principal
@@ -23,6 +24,7 @@ public class ControlPrincipal {
 	private final ControlListarUsuarios controlListarUsuarios;
 	private final ControlListarGrupos controlListarGrupos;
 	private final ControlRegistrarPieza controlRegistrarPieza;
+	private final ControlConsultarDistribuidores controlConsultarDistribuidores;
 	private final VentanaPrincipal ventana;
 
 	@Autowired
@@ -31,11 +33,13 @@ public class ControlPrincipal {
 			ControlListarUsuarios controlListarUsuarios,
 			ControlListarGrupos controlListarGrupos,
 			ControlRegistrarPieza controlRegistrarPieza,
+			ControlConsultarDistribuidores controlConsultarDistribuidores,
 			VentanaPrincipal ventana) {
 		this.controlAgregarUsuario = controlAgregarUsuario;
 		this.controlListarUsuarios = controlListarUsuarios;
 		this.controlListarGrupos = controlListarGrupos;
 		this.controlRegistrarPieza = controlRegistrarPieza;
+		this.controlConsultarDistribuidores = controlConsultarDistribuidores;
 		this.ventana = ventana;
 	}
 	
@@ -86,5 +90,13 @@ public class ControlPrincipal {
 	 */
 	public void registrarPieza() {
 		controlRegistrarPieza.inicia();
+	}
+
+	/**
+	 * Método que arranca la historia de usuario "consultar distribuidores" (HU-25)
+	 *
+	 */
+	public void consultarDistribuidores() {
+		controlConsultarDistribuidores.inicia();
 	}
 }

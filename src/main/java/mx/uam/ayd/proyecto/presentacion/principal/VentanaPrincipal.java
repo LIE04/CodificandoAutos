@@ -107,4 +107,11 @@ public class VentanaPrincipal {
 			control.registrarPieza();
 		}
 	}
+
+	@FXML
+	private void handleConsultarDistribuidores() {
+		if (control != null) {
+			control.consultarDistribuidores();
+		}
+	}
 }
