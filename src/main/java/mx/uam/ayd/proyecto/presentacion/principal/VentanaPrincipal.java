@@ -114,4 +114,11 @@ public class VentanaPrincipal {
 			control.consultarDistribuidores();
 		}
 	}
+
+	@FXML
+	private void handleRegistrarServicio() {
+		if (control != null) {
+			control.registrarServicio();
+		}
+	}
 }

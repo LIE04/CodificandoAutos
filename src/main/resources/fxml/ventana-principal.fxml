@@ -24,4 +24,7 @@
     <Button text="Consultar distribuidores" onAction="#handleConsultarDistribuidores"
             style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
 
+    <Button text="Historial de servicio" onAction="#handleRegistrarServicio"
+            style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
+
 </VBox>
