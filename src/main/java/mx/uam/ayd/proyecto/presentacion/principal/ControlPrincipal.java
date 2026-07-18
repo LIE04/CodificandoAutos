@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import mx.uam.ayd.proyecto.presentacion.agregarUsuario.ControlAgregarUsuario;
 import mx.uam.ayd.proyecto.presentacion.listarUsuarios.ControlListarUsuarios;
 import mx.uam.ayd.proyecto.presentacion.listarGrupos.ControlListarGrupos;
+import mx.uam.ayd.proyecto.presentacion.registrarPieza.ControlRegistrarPieza;
 
 /**
  * Esta clase lleva el flujo de control de la ventana principal
@@ -21,17 +22,20 @@ public class ControlPrincipal {
 	private final ControlAgregarUsuario controlAgregarUsuario;
 	private final ControlListarUsuarios controlListarUsuarios;
 	private final ControlListarGrupos controlListarGrupos;
+	private final ControlRegistrarPieza controlRegistrarPieza;
 	private final VentanaPrincipal ventana;
-	
+
 	@Autowired
 	public ControlPrincipal(
 			ControlAgregarUsuario controlAgregarUsuario,
 			ControlListarUsuarios controlListarUsuarios,
 			ControlListarGrupos controlListarGrupos,
+			ControlRegistrarPieza controlRegistrarPieza,
 			VentanaPrincipal ventana) {
 		this.controlAgregarUsuario = controlAgregarUsuario;
 		this.controlListarUsuarios = controlListarUsuarios;
 		this.controlListarGrupos = controlListarGrupos;
+		this.controlRegistrarPieza = controlRegistrarPieza;
 		this.ventana = ventana;
 	}
 	
@@ -74,5 +78,13 @@ public class ControlPrincipal {
 	 */
 	public void listarGrupos() {
 		controlListarGrupos.inicia();
+	}
+
+	/**
+	 * Método que arranca la historia de usuario "registrar pieza" (HU-31)
+	 *
+	 */
+	public void registrarPieza() {
+		controlRegistrarPieza.inicia();
 	}
 }

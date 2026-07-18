@@ -100,4 +100,11 @@ public class VentanaPrincipal {
 			control.listarGrupos();
 		}
 	}
+
+	@FXML
+	private void handleRegistrarPieza() {
+		if (control != null) {
+			control.registrarPieza();
+		}
+	}
 }
