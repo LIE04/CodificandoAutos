@@ -110,7 +110,25 @@ Si necesitas más datos o distintos, edita ese archivo directamente.
 | HU-29 | Historial de servicio de un vehículo (buscar por placas, ver historial, registrar nueva reparación/mantenimiento) | ✅ |
 | HU-31 | Registro de piezas al inventario (crea o incrementa existencias) | ✅ |
 
-El resto de las historias de usuario documentadas en `Documento de arquitectura.pdf` (cotizaciones, pedidos a distribuidores, control de calidad, notificaciones, etc.) todavía no están implementadas.
+El resto de las historias de usuario documentadas en `Documento de arquitectura.pdf` (cotizaciones, pedidos a distribuidores, control de calidad, notificaciones, etc.) todavía no están implementadas — ver la sección **Pendientes / Roadmap** más abajo.
+
+## Pendientes / Roadmap
+
+Basado en `Documento de Visión y Alcance.pdf` (roadmap de 5 entregas) y `Documento de arquitectura.pdf` (53 historias de usuario, HU-03 a HU-53). Esta tabla es un resumen de alto nivel — el detalle línea por línea de cada HU vive en esos PDFs, no se duplica aquí.
+
+| Entrega | Tema | Épicas | Estado |
+|---|---|---|---|
+| 1.0 | Administración básica de clientes y vehículos | EP-01, EP-02, EP-03, EP-12 | 🟡 Parcial — historial de servicio (HU-29) y registro de piezas (HU-31) listos; **falta el alta/edición de Cliente y Vehículo** (hoy no existe ninguna pantalla para darlos de alta, solo se cargan de prueba vía `data.sql`) |
+| 2.0 | Gestión de inventario y cotizaciones | EP-04, EP-05, EP-06 | 🟡 Parcial — consulta de distribuidores (HU-25) lista; falta generar cotizaciones (HU-14), consultar manuales/diagramas técnicos (EP-06), seguimiento de pedidos a distribuidores (HU-30) |
+| 3.0 | Planeación y ejecución de reparaciones | EP-07, EP-08 | ⬜ Sin empezar — diagnóstico y detalles de falla (HU-07 a HU-11), asignación de tareas a mecánicos (HU-23), control de calidad (HU-40), entrega del vehículo (HU-42 a HU-45), garantía (HU-46 a HU-53), notificaciones de atraso (HU-32/34) |
+| 4.0 | Comunicación y seguimiento de clientes | EP-09, EP-11 | ⬜ Sin empezar — **ojo**: EP-09 pide acceso vía PWA desde tabletas/móviles, lo cual contradice el resto del documento de arquitectura (define el sistema como Rich Client de escritorio "stand-alone", sin portal web). Aclarar con el equipo/profesor antes de implementar. EP-11 no está descrito en el Documento de Visión y Alcance |
+| 5.0 | Inteligencia operativa y mejora continua | EP-10 | ⬜ Sin empezar — EP-10 tampoco está descrito en el Documento de Visión y Alcance, falta definir su alcance |
+
+### Otros pendientes puntuales
+
+- **Citas** (`Cita.java`): la entidad ya existe pero sin repositorio, servicio ni pantalla propia (HU-03: registrar cita; HU-04: validar fechas duplicadas; HU-05: notificar si la fecha está ocupada).
+- No hay pantalla para dar de alta **Clientes** ni **Vehículos** todavía — imprescindible antes de poder usar HU-25/HU-29 con datos reales en vez de los de `data.sql`.
+- El **inventario de piezas** (HU-31) solo cubre el alta/incremento; falta la consulta visual del inventario completo (HU-12/HU-13/HU-28) y el seguimiento de pedidos pendientes a distribuidores (HU-30).
 
 ## Modelo de Dominio
 
