@@ -1,0 +1,157 @@
+package mx.uam.ayd.proyecto.negocio.modelo;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import java.time.LocalDateTime;
+
+/**
+ * Entidad que representa la reparacion de un vehiculo en el taller
+ * Esta si cuadra con todos los datos de tu diagrama de dominio
+ * 
+ * @author Erik LIE04
+ */
+@Entity
+public class Reparacion {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idReparacion;
+
+    /** Cuando el mecanico le empieza a meter mano al carro */
+    private LocalDateTime fechaInicio;
+    
+    /** Cuando queda listo y reparado */
+    private LocalDateTime fechaFin;
+    
+    /** Para saber si esta en proceso pausado o terminado */
+    private String estatusServicio;
+    
+    /** Notas que deja el mecanico sobre lo que le hizo al auto */
+    private String observacionesTecnicas;
+    
+    /** Cuantos meses de garantia tiene el cliente por este trabajo */
+    private int garantiaMeses;
+    
+    /** Las letras chiquitas de lo que cubre la garantia */
+    private String condicionesGarantia;
+
+    /** CONSTRUCTORES
+     * Constructor vacio que nos pide Spring para armar el objeto
+     */
+    public Reparacion() {
+    }
+
+    /** GETTERS Y SETTERS
+     * Obtiene el ID de la reparacion
+     * @return idReparacion
+     */
+    public int getIdReparacion() {
+        return idReparacion;
+    }
+
+    /**
+     * Establece el ID de la reparacion
+     * @param idReparacion el nuevo identificador
+     */
+    public void setIdReparacion(int idReparacion) {
+        this.idReparacion = idReparacion;
+    }
+
+    /**
+     * Obtiene la fecha en la que inicio el trabajo
+     * @return fechaInicio
+     */
+    public LocalDateTime getFechaInicio() {
+        return fechaInicio;
+    }
+
+    /**
+     * Asigna la fecha de inicio
+     * @param fechaInicio momento en que arranco
+     */
+    public void setFechaInicio(LocalDateTime fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    /**
+     * Obtiene la fecha en la que se termino todo
+     * @return fechaFin
+     */
+    public LocalDateTime getFechaFin() {
+        return fechaFin;
+    }
+
+    /**
+     * Asigna la fecha de termino
+     * @param fechaFin momento en que quedo listo
+     */
+    public void setFechaFin(LocalDateTime fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    /**
+     * Obtiene en que estado va la reparacion
+     * @return estatusServicio
+     */
+    public String getEstatusServicio() {
+        return estatusServicio;
+    }
+
+    /**
+     * Actualiza el estado de la reparacion
+     * @param estatusServicio el nuevo estado
+     */
+    public void setEstatusServicio(String estatusServicio) {
+        this.estatusServicio = estatusServicio;
+    }
+
+    /**
+     * Obtiene las notas del mecanico
+     * @return observacionesTecnicas
+     */
+    public String getObservacionesTecnicas() {
+        return observacionesTecnicas;
+    }
+
+    /**
+     * Guarda las notas del mecanico
+     * @param observacionesTecnicas el texto con los detalles
+     */
+    public void setObservacionesTecnicas(String observacionesTecnicas) {
+        this.observacionesTecnicas = observacionesTecnicas;
+    }
+
+    /**
+     * Obtiene el tiempo de garantia
+     * @return garantiaMeses
+     */
+    public int getGarantiaMeses() {
+        return garantiaMeses;
+    }
+
+    /**
+     * Asigna los meses que dura la garantia
+     * @param garantiaMeses cantidad de meses
+     */
+    public void setGarantiaMeses(int garantiaMeses) {
+        this.garantiaMeses = garantiaMeses;
+    }
+
+    /**
+     * Obtiene las reglas de la garantia
+     * @return condicionesGarantia
+     */
+    public String getCondicionesGarantia() {
+        return condicionesGarantia;
+    }
+
+    /**
+     * Asigna las reglas para que aplique la garantia
+     * @param condicionesGarantia texto explicativo
+     */
+    public void setCondicionesGarantia(String condicionesGarantia) {
+        this.condicionesGarantia = condicionesGarantia;
+    }
+}
