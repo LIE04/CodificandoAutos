@@ -90,6 +90,10 @@ public class ControladorPedidos {
 
         // 5. Configurar el evento del botón Registrar
         btnRegistrar.setOnAction(event -> registrarPedido());
+
+        // Nuevos eventos para los botones de la tabla
+        btnCancelarPedido.setOnAction(event -> cambiarEstadoPedido("Cancelado"));
+        btnMarcarEntregado.setOnAction(event -> cambiarEstadoPedido("Entregado"));
     }
 
     // Métodos de Acción y Lógica Visual
@@ -186,5 +190,36 @@ public class ControladorPedidos {
                 return null;
             }
         });
+    }
+    /**
+     * Método genérico para actualizar el estado del pedido seleccionado en la tabla.
+     */
+    private void cambiarEstadoPedido(String nuevoEstado) {
+        // 1. Obtener el pedido que el usuario seleccionó con el clic
+        Pedido pedidoSeleccionado = tablaPedidos.getSelectionModel().getSelectedItem();
+
+        // 2. Validar que haya seleccionado algo
+        if (pedidoSeleccionado == null) {
+            mostrarMensaje("Atención", "Debe seleccionar un pedido de la tabla primero.", AlertType.WARNING);
+            return;
+        }
+
+        // 3. (Opcional pero recomendado) Validar que no estemos asignando el mismo estado
+        if (nuevoEstado.equals(pedidoSeleccionado.getEstadoPedido())) {
+            mostrarMensaje("Información", "El pedido ya se encuentra en estado: " + nuevoEstado, AlertType.INFORMATION);
+            return;
+        }
+
+        try {
+            // 4. Llamar al servicio de negocio
+            servicioPedido.actualizarEstadoPedido(pedidoSeleccionado, nuevoEstado);
+            
+            // 5. Refrescar la interfaz
+            mostrarMensaje("Éxito", "El pedido se marcó como " + nuevoEstado + ".", AlertType.INFORMATION);
+            actualizarTabla(); 
+            
+        } catch (Exception e) {
+            mostrarMensaje("Error", "No se pudo actualizar el estado: " + e.getMessage(), AlertType.ERROR);
+        }
     }
 }

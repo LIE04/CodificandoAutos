@@ -99,4 +99,22 @@ public class ServicioPedido {
         
         throw new IllegalArgumentException("No se encontro el pedido con ID: " + idPedido);
     }
+    /**
+     * Actualiza el estado de un pedido existente en la base de datos.
+     * 
+     * @param pedido El pedido seleccionado desde la vista.
+     * @param nuevoEstado El nuevo estado ("Cancelado" o "Entregado").
+     */
+    public void actualizarEstadoPedido(Pedido pedido, String nuevoEstado) {
+        // Validamos que el pedido no sea nulo por seguridad
+        if (pedido == null || nuevoEstado == null || nuevoEstado.trim().isEmpty()) {
+            throw new IllegalArgumentException("El pedido y el estado no pueden estar vacíos");
+        }
+        
+        pedido.setEstadoPedido(nuevoEstado);
+        
+        // Al usar save() con una entidad que ya tiene un ID asignado, 
+        // Spring Data JPA hace un UPDATE en lugar de un INSERT.
+        pedidoRepository.save(pedido);
+    }
 }
