@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 import java.time.LocalDate; // Para manejar solo la fecha (año-mes-día)
 import java.time.LocalTime; // Para manejar solo la hora (hora:minutos)
 
@@ -20,9 +23,12 @@ public class Cita {
     private LocalDate fecha;
     private LocalTime hora;
 
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+    
     public Cita() {
     }
-
 
     public long getIdCita() {
         return idCita;
@@ -48,6 +54,14 @@ public class Cita {
         this.hora = hora;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     //uso de una logica diferente para equals
     @Override
     public boolean equals(Object obj) {
@@ -60,7 +74,7 @@ public class Cita {
         Cita other = (Cita) obj;
         return idCita == other.idCita;
     }
-	//Genera un numero entero para la clase Cita, basado en el idCita, para ser usado en estructuras de datos como HashMap o HashSet
+    //Genera un numero entero para la clase Cita, basado en el idCita, para ser usado en estructuras de datos como HashMap o HashSet
     @Override
     public int hashCode() {
         return (int) (31 * idCita);
@@ -68,6 +82,6 @@ public class Cita {
 //Imprime los valores de cada variable de la clase Cita, para poder ser usado en la consola o en un log
     @Override
     public String toString() {
-        return "Cita [idCita=" + idCita + ", fecha=" + fecha + ", hora=" + hora + "]";
+        return "Cita [idCita=" + idCita + ", fecha=" + fecha + ", hora=" + hora + ", cliente=" + cliente + "]";
     }
 }

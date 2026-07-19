@@ -7,8 +7,8 @@
 -- con el contador interno de las columnas IDENTITY.
 
 -- Clientes de prueba
-INSERT INTO CLIENTE (nombre, telefono, email) VALUES ('Juan Pérez', '5512345678', 'juan.perez@example.com');
-INSERT INTO CLIENTE (nombre, telefono, email) VALUES ('María López', '5598765432', 'maria.lopez@example.com');
+INSERT INTO CLIENTE (nombre, telefono) VALUES ('Juan Pérez', '5512345678');
+INSERT INTO CLIENTE (nombre, telefono) VALUES ('María López', '5598765432');
 
 -- Vehículos de prueba, ligados a los clientes de arriba
 INSERT INTO VEHICULO (marca, modelo, placas, anio, kilometraje, id_cliente)
