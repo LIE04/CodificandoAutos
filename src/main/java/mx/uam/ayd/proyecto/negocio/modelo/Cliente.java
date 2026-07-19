@@ -9,116 +9,110 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+//@author AngelYael
 
-/**
- * Entidad de negocio Cliente
- *
- * @author AngelYael
- *
- */
-@Entity // Esto le dice a Spring que esta es una entidad persistente
+@Entity
 public class Cliente {
-	@Id // Esto le dice a Spring que este es el identificador
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // Le dice a Spring que genere el id
-	private long idCliente;
 
-	private String nombre;
+    /**
+	 * Generar un id único para cada cliente, el cual será autoincrementable
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long idCliente;
 
-	private String telefono;
+    private String nombre;
 
-	private String email;
-
-	// Un cliente puede tener varios vehículos; el dueño de la relación es Vehiculo (FK cliente)
-	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-	private final List<Vehiculo> vehiculos = new ArrayList<>();
-
+    private String telefono;
+	
 	/**
-	 * @return el idCliente
+	 * Un cliente puede tener varios vehículos; el dueño de la relación es Vehiculo (FK cliente)
+	 * la parte de FechtRype.LAZY indica que los vehiculos de un cliente no se cargaran hasta que se soliciten, 
+	 * para no saturar el sistema
 	 */
-	public long getIdCliente() {
-		return idCliente;
-	}
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    private final List<Vehiculo> vehiculos = new ArrayList<>();
 
-	/**
-	 * @param idCliente the idCliente to set
-	 */
-	public void setIdCliente(long idCliente) {
-		this.idCliente = idCliente;
-	}
+    /**
+     * @return El ID del cliente
+     */
+    public long getIdCliente() {
+        return idCliente;
+    }
 
-	/**
-	 * @return el nombre del cliente
-	 */
-	public String getNombre() {
-		return nombre;
-	}
+    /**
+     * Asignacion de un nuevo ID al cliente
+     * 
+     * @param idCliente El ID que tendrá este cliente
+     */
+    public void setIdCliente(long idCliente) {
+        this.idCliente = idCliente;
+    }
 
-	/**
-	 * @param nombre the nombre to set
-	 */
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    /**
+     * @return Texto con el nombre actual.
+     */
+    public String getNombre() {
+        return nombre;
+    }
 
-	/**
-	 * @return el telefono del cliente
-	 */
-	public String getTelefono() {
-		return telefono;
-	}
+    /**
+     * @param nombre El nombre que le queremos poner al cliente.
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	/**
-	 * @param telefono the telefono to set
-	 */
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
+    /**
+     * @return Texto con el número de teléfono.
+     */
+    public String getTelefono() {
+        return telefono;
+    }
 
-	/**
-	 * @return el email del cliente
-	 */
-	public String getEmail() {
-		return email;
-	}
+    /**
+     * @param telefono El nuevo número de teléfono.
+     */
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 
-	/**
-	 * @param email the email to set
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    /**
+     * @return Una lista (List) con objetos de tipo Vehiculo.
+     */
+    public List<Vehiculo> getVehiculos() {
+        return vehiculos;
+    }
 
-	/**
-	 * @return los vehículos que posee el cliente
-	 */
-	public List<Vehiculo> getVehiculos() {
-		return vehiculos;
-	}
-
-	//uso de una logica diferente para equals
-	@Override
-	public boolean equals(Object obj) {
-		//Verifica que ambas variables sean del mismo tipo y tengan el mismo idCliente
+    /**
+     * @param obj El otro objeto con el que queremos comparar a nuestro cliente.
+     * @return true si son el mismo cliente, false si son diferentes o si el otro es nulo.
+     */
+    @Override
+    public boolean equals(Object obj) {
         if (this == obj)
-			return true;
-        //Verifica que el objeto no sea nulo
-		if (obj == null)
-			return false;
-        //Verifica que el objeto sea de la misma clase
-		if (getClass() != obj.getClass())
-			return false;
-		Cliente other = (Cliente) obj;
-		return idCliente == other.idCliente;
-	}
-	//Genera un numero entero para la clase Cliente, basado en el idCliente, para ser usado en estructuras de datos como HashMap o HashSet
-	@Override
-	public int hashCode() {
-		return (int) (31 * idCliente);
-	}
-	//Imprime los valores de cada variable de la clase cliente, para poder ser usado en la consola o en un log
-	@Override
-	public String toString() {
-		return "Cliente [idCliente=" + idCliente + ", nombre=" + nombre + ", telefono=" + telefono + ", email="
-				+ email + "]";
-	}
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Cliente other = (Cliente) obj;
+        return idCliente == other.idCliente;
+    }
+
+    /**
+     * @return Un número entero único para identificar el objeto en memoria.
+     */
+    @Override
+    public int hashCode() {
+        return (int) (31 * idCliente);
+    }
+
+    /**
+     * @return Una cadena de texto con los datos legibles del cliente.
+     */
+    @Override
+    public String toString() {
+        return "Cliente [idCliente=" + idCliente + ", nombre=" + nombre + ", telefono=" + telefono + "]";
+    }
 }
