@@ -37,6 +37,9 @@ public class ControladorPedidos {
     @Autowired
     private ServicioPedido servicioPedido;
 
+    @Autowired
+    private VentanaPedidos ventana;
+
     // Controles de la Vista 
     @FXML private ComboBox<Distribuidor> cbDistribuidor;
     @FXML private TextField txtRefaccion;
@@ -57,7 +60,9 @@ public class ControladorPedidos {
     @FXML private Button btnMarcarEntregado;
 
     // Inicialización
-
+    public void inicia() {
+        ventana.muestra(this);
+    }
     /**
      * Este método se ejecuta automáticamente cuando JavaFX carga la ventana
      */

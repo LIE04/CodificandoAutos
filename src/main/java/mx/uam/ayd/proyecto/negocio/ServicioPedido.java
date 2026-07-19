@@ -9,6 +9,8 @@ import mx.uam.ayd.proyecto.negocio.modelo.Distribuidor;
 import mx.uam.ayd.proyecto.negocio.modelo.Pedido;
 import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
+import mx.uam.ayd.proyecto.datos.RefaccionRepository;
+import mx.uam.ayd.proyecto.datos.ReparacionRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,6 +27,12 @@ public class ServicioPedido {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private RefaccionRepository refaccionRepository;
+
+    @Autowired
+    private ReparacionRepository reparacionRepository;
 
     // Repositorio integrado del compañero para consultar la base
     @Autowired
@@ -116,5 +124,20 @@ public class ServicioPedido {
         // Al usar save() con una entidad que ya tiene un ID asignado, 
         // Spring Data JPA hace un UPDATE en lugar de un INSERT.
         pedidoRepository.save(pedido);
+    }
+    /**
+     * Busca una refacción en la base de datos por su nombre.
+     */
+    public Refaccion buscarRefaccionPorNombre(String nombre) {
+        // Asumiendo que refaccionRepository tiene el método findByNombre
+        return refaccionRepository.findByNombre(nombre);
+    }
+
+    /**
+     * Busca una reparación en la base de datos por su ID.
+     */
+    public Reparacion buscarReparacionPorId(int id) {
+        // En Spring Data JPA, findById devuelve un Optional
+        return reparacionRepository.findById(id).orElse(null);
     }
 }

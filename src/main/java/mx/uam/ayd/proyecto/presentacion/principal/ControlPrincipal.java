@@ -11,6 +11,7 @@ import mx.uam.ayd.proyecto.presentacion.listarGrupos.ControlListarGrupos;
 import mx.uam.ayd.proyecto.presentacion.registrarPieza.ControlRegistrarPieza;
 import mx.uam.ayd.proyecto.presentacion.consultarDistribuidores.ControlConsultarDistribuidores;
 import mx.uam.ayd.proyecto.presentacion.registrarServicio.ControlRegistrarServicio;
+import mx.uam.ayd.proyecto.presentacion.pedidos.ControladorPedidos;
 
 /**
  * Esta clase lleva el flujo de control de la ventana principal
@@ -28,6 +29,7 @@ public class ControlPrincipal {
 	private final ControlConsultarDistribuidores controlConsultarDistribuidores;
 	private final ControlRegistrarServicio controlRegistrarServicio;
 	private final VentanaPrincipal ventana;
+	private final ControladorPedidos controladorPedidos;
 
 	@Autowired
 	public ControlPrincipal(
@@ -37,6 +39,7 @@ public class ControlPrincipal {
 			ControlRegistrarPieza controlRegistrarPieza,
 			ControlConsultarDistribuidores controlConsultarDistribuidores,
 			ControlRegistrarServicio controlRegistrarServicio,
+			ControladorPedidos controladorPedidos,
 			VentanaPrincipal ventana) {
 		this.controlAgregarUsuario = controlAgregarUsuario;
 		this.controlListarUsuarios = controlListarUsuarios;
@@ -45,6 +48,7 @@ public class ControlPrincipal {
 		this.controlConsultarDistribuidores = controlConsultarDistribuidores;
 		this.controlRegistrarServicio = controlRegistrarServicio;
 		this.ventana = ventana;
+		this.controladorPedidos = controladorPedidos;
 	}
 	
 	/**
@@ -111,4 +115,7 @@ public class ControlPrincipal {
 	public void registrarServicio() {
 		controlRegistrarServicio.inicia();
 	}
+	public void iniciaVentanaPedidos() { 
+        controladorPedidos.inicia(); 
+    }
 }

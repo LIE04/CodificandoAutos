@@ -10,6 +10,6 @@ public interface ClienteRepository extends CrudRepository <Cliente, Long> {
     public Cliente findByNombre(String nombre);
     
     // Buscar por numero de telefono del cliente, el optional sirve para que si no encuentra el telefono no se rompa la aplicacion
-    public Optional<Cliente> findByNumero(int numero);
+    public Optional<Cliente> findByTelefono(String telefono);
 
 }

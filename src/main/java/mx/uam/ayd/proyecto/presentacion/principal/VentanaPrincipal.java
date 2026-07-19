@@ -121,4 +121,9 @@ public class VentanaPrincipal {
 			control.registrarServicio();
 		}
 	}
+	@FXML
+    private void abrirVentanaPedidos() {
+        // Le dice al control principal que es hora de abrir la HU-30
+        control.iniciaVentanaPedidos(); 
+    }
 }
