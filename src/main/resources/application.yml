@@ -8,6 +8,9 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     generate-ddl: true
     show-sql: false
+    # Permite que data.sql se ejecute DESPUÉS de que Hibernate cree las tablas (ddl-auto),
+    # en vez de antes (que fallaría porque las tablas todavía no existirían)
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
   h2:

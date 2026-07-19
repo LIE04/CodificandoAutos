@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10" style="-fx-padding: 10px;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+    <Label text="Consultar distribuidores" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+
+    <HBox spacing="10">
+        <TextField fx:id="textFieldBusqueda" promptText="Buscar por nombre o tipo de refacción" HBox.hgrow="ALWAYS" />
+        <Button onAction="#handleBuscar" style="-fx-min-width: 80px; -fx-min-height: 25px;" text="Buscar" />
+    </HBox>
+
+    <Label fx:id="labelMensaje" style="-fx-text-fill: #a33;" wrapText="true" />
+
+    <TableView fx:id="tableDistribuidores" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn text="Nombre" fx:id="nombreColumn" />
+            <TableColumn text="Teléfono" fx:id="telefonoColumn" />
+            <TableColumn text="Correo" fx:id="correoColumn" />
+            <TableColumn text="Dirección" fx:id="direccionColumn" />
+            <TableColumn text="Tipo de refacción" fx:id="tipoRefaccionColumn" />
+        </columns>
+    </TableView>
+
+    <HBox spacing="10" style="-fx-padding: 10px 0 0 0;">
+        <Button onAction="#handleCopiarTelefono" style="-fx-min-width: 130px; -fx-min-height: 25px;" text="Copiar teléfono" />
+        <Button onAction="#handleCerrar" style="-fx-min-width: 80px; -fx-min-height: 25px;" text="Cerrar" />
+    </HBox>
+
+</VBox>
