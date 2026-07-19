@@ -5,8 +5,9 @@ import org.springframework.data.repository.CrudRepository;
 import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 
 /**
- * Repositorio para acceder a los datos de las Refacciones en la base de datos.
- * Utilizado por el ServicioPedido (HU-30) para buscar las piezas solicitadas.
+ * Repositorio para acceder a los datos de las Refacciones en la base de datos
+ * Utilizado por el ServicioPedido (HU-30) para buscar las piezas solicitadas
+ * @author Erik LIE04
  */
 public interface RefaccionRepository extends CrudRepository<Refaccion, Integer> {
     
