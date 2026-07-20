@@ -94,10 +94,17 @@ public class VentanaPrincipal {
 		}
 	}
 	
-	@FXML
+    @FXML
 	private void handleListarGrupos() {
 		if (control != null) {
 			control.listarGrupos();
+		}
+	}
+
+	@FXML
+	private void handleConsultarInventario() {
+		if (control != null) {
+			control.consultarInventario();
 		}
 	}
 

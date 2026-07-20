@@ -1,6 +1,7 @@
 package mx.uam.ayd.proyecto.presentacion.principal;
 
 import jakarta.annotation.PostConstruct;
+import javafx.fxml.FXML;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import mx.uam.ayd.proyecto.presentacion.agregarUsuario.ControlAgregarUsuario;
 import mx.uam.ayd.proyecto.presentacion.listarUsuarios.ControlListarUsuarios;
 import mx.uam.ayd.proyecto.presentacion.listarGrupos.ControlListarGrupos;
+import mx.uam.ayd.proyecto.presentacion.listarInventario.ControlInventario;
 import mx.uam.ayd.proyecto.presentacion.registrarPieza.ControlRegistrarPieza;
 import mx.uam.ayd.proyecto.presentacion.consultarDistribuidores.ControlConsultarDistribuidores;
 import mx.uam.ayd.proyecto.presentacion.registrarServicio.ControlRegistrarServicio;
@@ -30,6 +32,8 @@ public class ControlPrincipal {
 	private final ControlRegistrarServicio controlRegistrarServicio;
 	private final VentanaPrincipal ventana;
 	private final ControladorPedidos controladorPedidos;
+	private final ControlInventario controlInventario;
+
 
 	@Autowired
 	public ControlPrincipal(
@@ -40,6 +44,7 @@ public class ControlPrincipal {
 			ControlConsultarDistribuidores controlConsultarDistribuidores,
 			ControlRegistrarServicio controlRegistrarServicio,
 			ControladorPedidos controladorPedidos,
+			ControlInventario controlInventario,
 			VentanaPrincipal ventana) {
 		this.controlAgregarUsuario = controlAgregarUsuario;
 		this.controlListarUsuarios = controlListarUsuarios;
@@ -49,6 +54,7 @@ public class ControlPrincipal {
 		this.controlRegistrarServicio = controlRegistrarServicio;
 		this.ventana = ventana;
 		this.controladorPedidos = controladorPedidos;
+		this.controlInventario = controlInventario;
 	}
 	
 	/**
@@ -106,6 +112,14 @@ public class ControlPrincipal {
 	 */
 	public void consultarDistribuidores() {
 		controlConsultarDistribuidores.inicia();
+	}
+
+		/**
+	 * Método que arranca la historia de usuario "inventario de piezas (HU-12)
+	 *
+	 */
+	public void consultarInventario() {
+		controlInventario.inicia();
 	}
 
 	/**

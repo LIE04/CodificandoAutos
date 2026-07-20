@@ -19,6 +19,10 @@
     <Button text="Listar grupos" onAction="#handleListarGrupos"
             style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
 
+    <!-- NUEVO BOTÓN PARA EL INVENTARIO (HU-12) -->
+    <Button text="Consultar Inventario" onAction="#handleConsultarInventario"
+            style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
+
     <Button text="Registrar pieza" onAction="#handleRegistrarPieza"
             style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
 

@@ -4,6 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 
+import java.util.List;
+
 /**
  * Repositorio para acceder a los datos de las Refacciones en la base de datos
  * Utilizado por el ServicioPedido (HU-30) para buscar las piezas solicitadas
@@ -19,5 +21,7 @@ public interface RefaccionRepository extends CrudRepository<Refaccion, Integer> 
      * @return La entidad Refaccion correspondiente, o null si no se encuentra
      */
     public Refaccion findByNombre(String nombre); 
-    
+
+    public List<Refaccion> findAll();
+
 }

@@ -16,6 +16,12 @@ INSERT INTO VEHICULO (marca, modelo, placas, anio, kilometraje, id_cliente)
 INSERT INTO VEHICULO (marca, modelo, placas, anio, kilometraje, id_cliente)
   VALUES ('Toyota', 'Hilux', 'XYZ-789', 2023, 12000.0, (SELECT id_cliente FROM CLIENTE WHERE nombre = 'María López'));
 
+-- Refacciones de prueba (HU-12)
+INSERT INTO REFACCION (nombre, precio, existencia)
+  VALUES ('Balatas delanteras', 180.0, 20);
+INSERT INTO REFACCION (nombre, precio, existencia)
+  VALUES ('Filtro Aceite', 95.0, 15);   
+
 -- Distribuidores de prueba (HU-25)
 INSERT INTO DISTRIBUIDOR (nombre, telefono, correo, direccion, tipo_refaccion)
   VALUES ('Refaccionaria Central', '5511112222', 'ventas@refaccentral.com', 'Av. Reforma 123, CDMX', 'frenos');
