@@ -8,6 +8,4 @@ import mx.uam.ayd.proyecto.negocio.modelo.Cita;
 public interface DetallesFallaRepository extends CrudRepository<DetallesFalla, Long> {
 
     public List<DetallesFalla> findByCita(Cita cita);
-
-    public List<DetallesFalla> findByEstatus(String estatus);
 }

@@ -10,7 +10,7 @@ import mx.uam.ayd.proyecto.negocio.modelo.Cita;
 public interface CitaRepository extends CrudRepository<Cita, Long> {
     
     // Devuelve una lista por si el cliente tiene historial de múltiples citas
-    public List<Cita> findByNombre(String nombre);
+    public List<Cita> findByClienteNombre(String nombre);
 
     public List<Cita> findByFecha(LocalDate fecha);
 
