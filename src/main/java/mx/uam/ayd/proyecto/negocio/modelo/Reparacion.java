@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 /**
  * Entidad que representa la reparacion de un vehiculo en el taller
- * Esta si cuadra con todos los datos de tu diagrama de dominio
  * 
  * @author Erik LIE04
  */

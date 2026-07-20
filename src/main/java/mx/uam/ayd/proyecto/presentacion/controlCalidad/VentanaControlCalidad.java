@@ -14,6 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
+import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
