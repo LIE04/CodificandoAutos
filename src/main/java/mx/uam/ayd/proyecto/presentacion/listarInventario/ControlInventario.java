@@ -35,7 +35,7 @@ public class ControlInventario {
         // 2. Ejecutamos el método que pide los datos, tal como dicta tu diagrama de secuencia
         SolicitarInventario();
     }
-    
+
     public void SolicitarInventario() {
         inventarioActual = servicioRefaccion.getRefaccion();
 
@@ -49,34 +49,27 @@ public class ControlInventario {
     }
 
     private List<Refaccion> filtrarCoincidencias(String parametro) {
-        // 1. La validación inicial se queda igual
+        
     if (parametro == null || parametro.trim().isEmpty()) {
         return inventarioActual;
     }
 
     String p = parametro.toLowerCase();
     
-    // 2. Creamos una nueva lista vacía para ir guardando las piezas que coincidan
     List<Refaccion> coincidencias = new ArrayList<>();
 
-    // 3. Recorremos el inventario pieza por pieza usando un ciclo for-each
     for (Refaccion r : inventarioActual) {
         
         String nombreRefaccion = r.getNombre().toLowerCase();
         
-        // Usamos String.valueOf() por si al final decidiste que tu ID sea un Integer. 
-        // Si es String, funciona igual de bien.
         String idRefaccion = String.valueOf(r.getIdRefaccion()).toLowerCase(); 
         
-        // 4. Comprobamos si el nombre o el ID contienen lo que escribió el usuario
         if (nombreRefaccion.contains(p) || idRefaccion.contains(p)) {
             
-            // 5. Si la pieza cumple la condición, la metemos a la lista de resultados
             coincidencias.add(r);
         }
     }
 
-    // 6. Al terminar de revisar todas las piezas, devolvemos la lista con los resultados
     return coincidencias;
     }
 

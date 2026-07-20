@@ -6,6 +6,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import java.time.LocalDateTime;
@@ -48,6 +50,13 @@ public class Reparacion {
      */
     @OneToMany(mappedBy = "reparacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetallesFalla> fallas = new ArrayList<>();
+
+    /** 
+     * Relación con el vehículo que se está reparando.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_vehiculo")
+    private Vehiculo vehiculo;
 
     /** CONSTRUCTORES
      * Constructor vacio que nos pide Spring para armar el objeto
@@ -191,5 +200,19 @@ public class Reparacion {
     public void addFalla(DetallesFalla falla) {
         this.fallas.add(falla);
         falla.setReparacion(this);
+    }
+
+    /**
+     * @return el vehiculo asociado a esta reparacion
+     */
+    public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    /**
+     * @param vehiculo el vehiculo a asociar
+     */
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
     }
 }

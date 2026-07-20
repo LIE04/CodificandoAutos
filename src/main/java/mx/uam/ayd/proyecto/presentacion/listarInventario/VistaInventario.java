@@ -51,7 +51,7 @@ public class VistaInventario {
     private boolean initialized = false;
 
     public VistaInventario() {
-        // No inicializar componentes de JavaFX en el constructor
+        
     }
 
     private void initializeUI() {
@@ -95,8 +95,8 @@ public class VistaInventario {
      */
     public void mostrarInventario(List<Refaccion> refacciones) {
         if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(() -> this.mostrarInventario(refacciones));
-            return;
+           Platform.runLater(() -> this.mostrarInventario(refacciones)); 
+           return;
         }
 
         initializeUI();
