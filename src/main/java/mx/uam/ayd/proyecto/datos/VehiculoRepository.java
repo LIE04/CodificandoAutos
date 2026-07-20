@@ -19,5 +19,5 @@ public interface VehiculoRepository extends CrudRepository<Vehiculo, Long> {
     /**
      * Busca un vehículo por sus id
      */
-    public Vehiculo findbyiVehiculo(long idVehiculo);
+    //public Vehiculo findbyidVehiculo(long idVehiculo);
 }
