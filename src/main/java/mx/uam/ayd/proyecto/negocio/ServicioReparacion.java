@@ -1,5 +1,7 @@
 package mx.uam.ayd.proyecto.negocio;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.uam.ayd.proyecto.datos.ReparacionRepository;
@@ -16,8 +18,17 @@ import java.util.Optional;
 @Service
 public class ServicioReparacion {
 
+    private static final Logger log = LoggerFactory.getLogger(ServicioReparacion.class);
+    
+    private final ReparacionRepository reparacionRepository;
+    private final ServicioVehiculo servicioVehiculo;
+    
+    // Inyección de dependencias por constructor (Combina ambas versiones)
     @Autowired
-    private ReparacionRepository reparacionRepository;
+    public ServicioReparacion(ReparacionRepository reparacionRepository, ServicioVehiculo servicioVehiculo) {
+        this.reparacionRepository = reparacionRepository;
+        this.servicioVehiculo = servicioVehiculo;
+    }
 
     /**
      * Recupera una reparación por su ID.
