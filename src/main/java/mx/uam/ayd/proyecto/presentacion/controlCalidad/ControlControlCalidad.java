@@ -1,16 +1,18 @@
 package mx.uam.ayd.proyecto.presentacion.controlCalidad;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import mx.uam.ayd.proyecto.negocio.ServicioReparacion;
+import mx.uam.ayd.proyecto.negocio.modelo.DetallesFalla;
+import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
 
 /**
  * Controlador para el flujo de Verificación de Escáner (HU-40)
- * NOTA: Contiene un mock de datos temporal para probar la interfaz visual.
+ * Conectado a la base de datos para recuperar el checklist de reparaciones.
  * 
  * @author Erik LIE04
  */
@@ -24,35 +26,32 @@ public class ControlControlCalidad {
     private VentanaControlCalidad ventana;
 
     /**
-     * Inicia el módulo de control de calidad para una reparación específica.
+     * Inicia el módulo de control de calidad para una reparación específica,
+     * obteniendo los datos reales de la base de datos.
      */
     public void inicia(int idReparacion) {
         try {
-            // =================================================================
-            // INICIO DEL MOCK DE DATOS (ELIMINAR CUANDO DetallesFalla ESTÉ LISTO)
-            // =================================================================
+            // 1. Recuperamos la reparación real a través del servicio
+            Reparacion reparacion = servicioReparacion.recuperarReparacion(idReparacion);
             
-            // Simulamos la lista de fallas que tu compañero traerá de la base de datos
-            List<String> fallasSimuladas = Arrays.asList(
-                "Cambio de balatas delanteras",
-                "Afinación mayor (Filtros y Bujías)",
-                "Corrección de fuga de aceite en cárter",
-                "Revisión de niveles de fluidos"
-            );
-
-            // Le pasamos el ID y la lista de prueba a la vista
-            ventana.muestraConMock(this, idReparacion, fallasSimuladas);
+            // 2. Obtenemos la lista real de entidades DetallesFalla asociadas a la reparación
+            // Nota: Asegúrate de que la entidad Reparacion ya tenga el método getFallas()
+            List<DetallesFalla> fallasReales = reparacion.getFallas(); 
             
-            // =================================================================
-            // FIN DEL MOCK DE DATOS
-            // =================================================================
+            // 3. Extraemos solo las descripciones (Strings) para mantener la compatibilidad con tu vista
+            List<String> descripcionesFallas = new ArrayList<>();
+            for (DetallesFalla falla : fallasReales) {
+                descripcionesFallas.add(falla.getDescripcionFalla());
+            }
 
-            // TODO: Cuando la base de datos esté lista, descomentar esta línea:
-            // Reparacion reparacion = servicioReparacion.recuperarReparacion(idReparacion);
-            // ventana.muestra(this, reparacion);
+            // 4. Mandamos los datos a la ventana 
+            // (El método de la ventana sigue llamándose muestraConMock, puedes renombrarlo a 'muestra' después si lo deseas)
+            ventana.muestraConMock(this, idReparacion, descripcionesFallas);
             
         } catch (Exception e) {
             System.err.println("Error al iniciar el módulo: " + e.getMessage());
+            // Mostramos el error en pantalla por si falla la conexión a BD o no existe el ID
+            ventana.muestraError("No se pudo cargar la reparación: " + e.getMessage());
         }
     }
 

@@ -1,14 +1,19 @@
 package mx.uam.ayd.proyecto.negocio.modelo;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entidad que representa la reparacion de un vehiculo en el taller
- * Esta si cuadra con todos los datos de tu diagrama de dominio
  * 
  * @author Erik LIE04
  */
@@ -36,6 +41,13 @@ public class Reparacion {
     
     /** Las letras chiquitas de lo que cubre la garantia */
     private String condicionesGarantia;
+
+    /** 
+     * Lista de fallas detectadas asociadas a esta reparacion.
+     * mappedBy indica que la entidad DetallesFalla es la dueña de la relación.
+     */
+    @OneToMany(mappedBy = "reparacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetallesFalla> fallas = new ArrayList<>();
 
     /** CONSTRUCTORES
      * Constructor vacio que nos pide Spring para armar el objeto
@@ -153,5 +165,31 @@ public class Reparacion {
      */
     public void setCondicionesGarantia(String condicionesGarantia) {
         this.condicionesGarantia = condicionesGarantia;
+    }
+
+    /**
+     * Obtiene la lista de fallas de la reparacion
+     * @return fallas
+     */
+    public List<DetallesFalla> getFallas() {
+        return fallas;
+    }
+
+    /**
+     * Asigna la lista de fallas a la reparacion
+     * @param fallas lista de DetallesFalla
+     */
+    public void setFallas(List<DetallesFalla> fallas) {
+        this.fallas = fallas;
+    }
+
+    /**
+     * Metodo de ayuda para agregar una falla individual y mantener
+     * la consistencia bidireccional de los objetos en memoria.
+     * @param falla el detalle de la falla a agregar
+     */
+    public void addFalla(DetallesFalla falla) {
+        this.fallas.add(falla);
+        falla.setReparacion(this);
     }
 }
