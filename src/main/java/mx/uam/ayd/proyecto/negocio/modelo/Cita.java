@@ -26,7 +26,6 @@ public class Cita {
 
     private LocalDate fecha;
     private LocalTime hora;
-    private String estatus;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
@@ -69,13 +68,6 @@ public class Cita {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    public String getEstatus() {
-        return estatus;
-    }
-    public void setEstatus(String estatus) {
-        this.estatus = estatus;
-    }
-
     public List<DetallesFalla> getDetallesFalla() {
         return detallesFalla;
     }

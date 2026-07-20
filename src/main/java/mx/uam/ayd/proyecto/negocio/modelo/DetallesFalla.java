@@ -14,6 +14,7 @@ public class DetallesFalla {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idDetalleFalla;
     private String descripcionFalla;
+    private String estatus;
 
     @ManyToOne
     @JoinColumn(name = "id_cita")
@@ -42,5 +43,11 @@ public class DetallesFalla {
     }
     public void setCita(Cita cita) {
         this.cita = cita;
+    }
+    public String getEstatus() {
+        return estatus;
+    }
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
     }
 }
