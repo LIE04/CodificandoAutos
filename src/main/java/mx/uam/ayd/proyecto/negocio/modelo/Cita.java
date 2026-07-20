@@ -30,9 +30,6 @@ public class Cita {
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
-
-    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DetallesFalla> detallesFalla = new ArrayList<>();
     
     public Cita() {
     }
@@ -67,9 +64,6 @@ public class Cita {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
-    }
-    public List<DetallesFalla> getDetallesFalla() {
-        return detallesFalla;
     }
 
     //uso de una logica diferente para equals

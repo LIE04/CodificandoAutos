@@ -17,8 +17,8 @@ public class DetallesFalla {
     private String estatus;
 
     @ManyToOne
-    @JoinColumn(name = "id_cita")
-    private Cita cita;
+    @JoinColumn(name = "id_reparacion")
+    private Reparacion reparacion;
 
     public DetallesFalla() {
     }
@@ -38,11 +38,11 @@ public class DetallesFalla {
     public void setDescripcionFalla(String descripcionFalla) {
         this.descripcionFalla = descripcionFalla;
     }
-    public Cita getCita() {
-        return cita;
+    public Reparacion getReparacion() {
+        return reparacion;
     }
-    public void setCita(Cita cita) {
-        this.cita = cita;
+    public void setReparacion(Reparacion reparacion) {
+        this.reparacion = reparacion;
     }
     public String getEstatus() {
         return estatus;
