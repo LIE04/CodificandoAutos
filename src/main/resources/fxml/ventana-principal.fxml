@@ -22,6 +22,9 @@
     <!-- NUEVO BOTÓN PARA EL INVENTARIO (HU-12) -->
     <Button text="Consultar Inventario" onAction="#handleConsultarInventario"
             style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
+    <!-- NUEVO BOTÓN PARA LISTA VEHICULOS ENTREGA (HU-42) -->
+    <Button text="Vehiculos por Entregar" onAction="#handleVehiculosEntrega"
+            style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
 
     <Button text="Registrar pieza" onAction="#handleRegistrarPieza"
             style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
@@ -35,5 +38,6 @@
     <!-- Nuevo botón para la ventana de pedidos (HU-30) -->
     <Button fx:id="btnPedidos" text="Gestión de Pedidos" onAction="#abrirVentanaPedidos"
             style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
+
 
 </VBox>

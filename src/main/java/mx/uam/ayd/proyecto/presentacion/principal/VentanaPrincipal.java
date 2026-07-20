@@ -49,7 +49,7 @@ public class VentanaPrincipal {
 			// Load FXML
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventana-principal.fxml"));
 			loader.setController(this);
-			Scene scene = new Scene(loader.load(), 450, 300);
+			Scene scene = new Scene(loader.load());
 			stage.setScene(scene);
 			
 			initialized = true;
@@ -133,4 +133,9 @@ public class VentanaPrincipal {
         // Le dice al control principal que es hora de abrir la HU-30
         control.iniciaVentanaPedidos(); 
     }
+
+	@FXML
+	private void handleVehiculosEntrega() {
+		control.consultarEntregas();
+	}
 }

@@ -12,8 +12,10 @@ import mx.uam.ayd.proyecto.presentacion.listarGrupos.ControlListarGrupos;
 import mx.uam.ayd.proyecto.presentacion.listarInventario.ControlInventario;
 import mx.uam.ayd.proyecto.presentacion.registrarPieza.ControlRegistrarPieza;
 import mx.uam.ayd.proyecto.presentacion.consultarDistribuidores.ControlConsultarDistribuidores;
+import mx.uam.ayd.proyecto.presentacion.consultarEntregas.ControlVehiculosEntrega;
 import mx.uam.ayd.proyecto.presentacion.registrarServicio.ControlRegistrarServicio;
 import mx.uam.ayd.proyecto.presentacion.pedidos.ControladorPedidos;
+import mx.uam.ayd.proyecto.presentacion.consultarEntregas.ControlVehiculosEntrega;
 
 /**
  * Esta clase lleva el flujo de control de la ventana principal
@@ -33,6 +35,7 @@ public class ControlPrincipal {
 	private final VentanaPrincipal ventana;
 	private final ControladorPedidos controladorPedidos;
 	private final ControlInventario controlInventario;
+	private final ControlVehiculosEntrega controlVehiculoEntrega;
 
 
 	@Autowired
@@ -45,6 +48,7 @@ public class ControlPrincipal {
 			ControlRegistrarServicio controlRegistrarServicio,
 			ControladorPedidos controladorPedidos,
 			ControlInventario controlInventario,
+			ControlVehiculosEntrega controlVehiculosEntrega,
 			VentanaPrincipal ventana) {
 		this.controlAgregarUsuario = controlAgregarUsuario;
 		this.controlListarUsuarios = controlListarUsuarios;
@@ -55,6 +59,7 @@ public class ControlPrincipal {
 		this.ventana = ventana;
 		this.controladorPedidos = controladorPedidos;
 		this.controlInventario = controlInventario;
+		this.controlVehiculoEntrega = controlVehiculosEntrega;
 	}
 	
 	/**
@@ -132,4 +137,14 @@ public class ControlPrincipal {
 	public void iniciaVentanaPedidos() { 
         controladorPedidos.inicia(); 
     }
+    
+	/**
+	 * Método que arranca la historia de usuario "lista de vehiculos por entregar" (HU-42)
+	 *
+	 */
+	public void consultarEntregas() {
+		controlVehiculoEntrega.inicia();
+	}
+
+
 }
