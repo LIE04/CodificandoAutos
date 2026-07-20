@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!-- VBox Principal: Contenedor raíz con el controlador asignado -->
+<VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="650.0" spacing="15.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="mx.uam.ayd.proyecto.presentacion.controlCalidad.VentanaControlCalidad">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
+   </padding>
+   <children>
+      
+      <!-- Títulos -->
+      <Label text="Control de Calidad - Checklist de Reparaciones" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label text="Marque las reparaciones que han sido verificadas y completadas por el mecánico:" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="System" size="14.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </Label>
+      
+      <!-- Contenedor dinámico para el Checklist de Reparaciones (Aquí entran los CheckBoxes desde Java) -->
+      <VBox fx:id="vboxChecklist" alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #f4f4f4; -fx-padding: 15; -fx-border-color: #cccccc; -fx-border-radius: 5;">
+         <VBox.margin>
+            <Insets bottom="15.0" left="50.0" right="50.0" top="15.0" />
+         </VBox.margin>
+      </VBox>
+      
+      <!-- Contenedor horizontal (HBox) para los botones de decisión -->
+      <HBox alignment="CENTER" spacing="40.0">
+         <children>
+            <Button fx:id="btnEscaneoLimpio" mnemonicParsing="false" onAction="#handleEscaneoLimpio" prefHeight="70.0" prefWidth="220.0" style="-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;" text="Control de Calidad Exitoso" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="btnPresentaFallas" mnemonicParsing="false" onAction="#handlePresentaFallas" prefHeight="70.0" prefWidth="220.0" style="-fx-background-color: #DC143C; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;" text="Aún presenta fallas" textAlignment="CENTER" wrapText="true" />
+         </children>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </HBox>
+      
+      <!-- Contenedor vertical (VBox) para el campo de texto (oculto por defecto) -->
+      <VBox alignment="CENTER" spacing="10.0">
+         <children>
+            <Label fx:id="lblInstruccionCodigos" text="Detalle de fallas adicionales detectadas:" visible="false">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <!-- Nota: visible="false" de inicio, la ventana en Java lo muestra si tocan el botón rojo -->
+            <TextField fx:id="txtCodigosPersistentes" maxWidth="500.0" promptText="Describa brevemente las fallas pendientes o nuevas que detectó en la revisión..." visible="false" />
+         </children>
+         <VBox.margin>
+            <Insets top="15.0" />
+         </VBox.margin>
+      </VBox>
+      
+      <!-- Botón de Confirmación -->
+      <Button fx:id="btnGuardarContinuar" mnemonicParsing="false" onAction="#handleGuardarContinuar" style="-fx-background-color: #333333; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10 20 10 20;" text="Guardar y Continuar">
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+      </Button>
+      
+   </children>
+</VBox>
