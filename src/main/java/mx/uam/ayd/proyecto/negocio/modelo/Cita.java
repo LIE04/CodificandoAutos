@@ -6,6 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.time.LocalDate; // Para manejar solo la fecha (año-mes-día)
 import java.time.LocalTime; // Para manejar solo la hora (hora:minutos)
@@ -26,6 +30,9 @@ public class Cita {
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
+
+    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetallesFalla> detallesFalla = new ArrayList<>();
     
     public Cita() {
     }
@@ -62,6 +69,10 @@ public class Cita {
         this.cliente = cliente;
     }
 
+    public List<DetallesFalla> getDetallesFalla() {
+        return detallesFalla;
+    }
+        
     //uso de una logica diferente para equals
     @Override
     public boolean equals(Object obj) {
