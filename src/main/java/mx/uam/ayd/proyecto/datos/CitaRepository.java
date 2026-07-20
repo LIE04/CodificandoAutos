@@ -16,7 +16,5 @@ public interface CitaRepository extends CrudRepository<Cita, Long> {
 
     public List<Cita> findByFechaBetween(LocalDate fechaInicio, LocalDate fechaFin);
 
-    public List<Cita> findByEstatus(String estatus);
-
     public boolean existsByFechaAndHora(LocalDate fecha, LocalTime hora);
 }
