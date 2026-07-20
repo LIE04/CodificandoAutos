@@ -11,7 +11,8 @@ public class DetallesFalla {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idDetalleFalla;
-    private String tipoFalla; 
+    private String tipoFalla;
+    private String estatus;
 
     public DetallesFalla() {
     }
@@ -30,5 +31,12 @@ public class DetallesFalla {
 
     public void setTipoFalla(String tipoFalla) {
         this.tipoFalla = tipoFalla;
+    }
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
     }
 }
