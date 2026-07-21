@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -57,6 +58,13 @@ public class Reparacion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vehiculo")
     private Vehiculo vehiculo;
+
+    /*
+    Relacion con la cotizacion que genero la reparacion
+     */
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cotizacion")
+    private Cotizacion cotizacion;
 
     /** CONSTRUCTORES
      * Constructor vacio que nos pide Spring para armar el objeto

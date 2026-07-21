@@ -1,9 +1,12 @@
 package mx.uam.ayd.proyecto.negocio.modelo;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 /**
  * Entidad de negocio que representa una Refaccion en la base de datos.
@@ -28,6 +31,12 @@ public class Refaccion {
     /** Cantidad de piezas disponibles en inventario. */
     private int existencia;
 
+    /*
+    Relacion con cotizacion
+    */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cotizacion")
+    private Cotizacion cotizacion;
 
     /** CONSTRUCTORES
      * Constructor vacío
