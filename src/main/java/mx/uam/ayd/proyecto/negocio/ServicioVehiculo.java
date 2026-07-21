@@ -27,5 +27,10 @@ public class ServicioVehiculo {
         this.vehiculoRepository =  vehiculoRepository;
     }
 
+    public List<Vehiculo> getVehiculosCliente(long idCliente) {
+        // Asumiendo que en Vehiculo tienes una relación @ManyToOne hacia Cliente
+        return vehiculoRepository.findByClienteIdCliente(idCliente);
+    }
+
 
 }

@@ -27,5 +27,9 @@ public class ServicioCliente {
         this.clienteRepository = clienteRepository;
     }
 
+    public List<Cliente> getClientes() {
+        return (List<Cliente>) clienteRepository.findAll();
+    }
+
 
 }

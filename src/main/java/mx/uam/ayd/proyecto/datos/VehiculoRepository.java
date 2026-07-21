@@ -15,9 +15,9 @@ public interface VehiculoRepository extends CrudRepository<Vehiculo, Long> {
      * Busca un vehículo por sus placas
      */
     public Vehiculo findByPlacas(String placas);
+
+    // Spring Boot traduce esto a: SELECT * FROM Vehiculo WHERE id_cliente = ?
+    List<Vehiculo> findByClienteIdCliente(long idCliente);
     
-    /**
-     * Busca un vehículo por sus id
-     */
-    //public Vehiculo findbyidVehiculo(long idVehiculo);
+
 }
