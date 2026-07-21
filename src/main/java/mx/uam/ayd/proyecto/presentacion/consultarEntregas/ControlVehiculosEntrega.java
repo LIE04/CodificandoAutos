@@ -45,11 +45,11 @@ public class ControlVehiculosEntrega {
 
     public void buscarRefaccion(String parametroBusqueda) {
 
-        List<VehiculosPendientesDTO> coincidencias = filtrarCoincidencias(parametroBusqueda);
+        List<VehiculosPendientesDTO> coincidencias = retornarCoincidencias(parametroBusqueda);
         vistaVehiculoEntrega.retornarCoincidencias(coincidencias);
     }
 
-    private List<VehiculosPendientesDTO> filtrarCoincidencias(String parametro) {
+    public List<VehiculosPendientesDTO> retornarCoincidencias(String parametro) {
         
     if (parametro == null || parametro.trim().isEmpty()) {
         return inventarioActual;

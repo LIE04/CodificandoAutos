@@ -136,6 +136,8 @@ public class VentanaPrincipal {
 
 	@FXML
 	private void handleVehiculosEntrega() {
-		control.consultarEntregas();
+	    if (control != null){
+		    control.consultarEntregas();
+		}
 	}
 }

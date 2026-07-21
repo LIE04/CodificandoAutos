@@ -39,3 +39,24 @@ INSERT INTO PIEZA_INVENTARIO (nombre, cantidad, proveedor, costo_unitario, fecha
   VALUES ('Balatas delanteras', 20, 'Refaccionaria Central', 180.0, '2026-05-01', '2026-05-01 09:00:00');
 INSERT INTO PIEZA_INVENTARIO (nombre, cantidad, proveedor, costo_unitario, fecha_recepcion, fecha_hora_registro)
   VALUES ('Filtro de aceite', 15, 'AutoPartes del Valle', 95.0, '2026-05-10', '2026-05-10 11:00:00');
+
+-- Reparaciones de prueba para que los vehículos aparezcan en la tabla de entregas
+
+-- 1. Reparación terminada para el Nissan Versa de Juan Pérez
+INSERT INTO REPARACION (
+    fecha_inicio, 
+    fecha_fin, 
+    estatus_servicio, 
+    observaciones_tecnicas, 
+    garantia_meses, 
+    condiciones_garantia, 
+    id_vehiculo
+) VALUES (
+    '2026-07-15 09:00:00',
+    '2026-07-20 14:30:00',
+    'En espera',
+    'Cambio de aceite, filtros, limpieza de inyectores y revisión de frenos.',
+    3,
+    'La garantía aplica solo para los componentes instalados en este servicio.',
+    (SELECT id_vehiculo FROM VEHICULO WHERE placas = 'ABC-123')
+);

@@ -15,7 +15,7 @@
 
     <HBox spacing="10">
         <!-- Textfield alineado con el id de tu controlador -->
-        <TextField fx:id="textFieldBusqueda" promptText="Buscar por cliente o placas..." HBox.hgrow="ALWAYS" />
+        <TextField fx:id="textFieldBusqueda" promptText="Buscar por cliente..." HBox.hgrow="ALWAYS" />
         <!-- El botón llama al método de filtrado que definiste en tu diagrama -->
         <Button onAction="#filtrarCoincidencias" style="-fx-min-width: 80px; -fx-min-height: 25px;" text="Buscar" />
     </HBox>
@@ -36,6 +36,8 @@
     </TableView>
 
     <HBox spacing="10" style="-fx-padding: 10px 0 0 0;">
+        <!-- Botón para ir a escaner y ser aprobado despues-->
+        <Button onAction="#solicitarEscaner" style="-fx-min-width: 130px; -fx-min-height: 25px;" text="Escaner" />
         <!-- Botón actualizado para coincidir con "Presiona Ver Resumen" del diagrama -->
         <Button onAction="#solicitarResumen" style="-fx-min-width: 130px; -fx-min-height: 25px;" text="Ver Resumen" />
         <Button onAction="#handleCerrar" style="-fx-min-width: 80px; -fx-min-height: 25px;" text="Cerrar" />

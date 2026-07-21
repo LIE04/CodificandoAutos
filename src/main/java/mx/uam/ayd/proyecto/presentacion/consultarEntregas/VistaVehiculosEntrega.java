@@ -18,8 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.List;
 
-import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
-import mx.uam.ayd.proyecto.presentacion.listarInventario.ControlInventario;
+
 import mx.uam.ayd.proyecto.datos.ReparacionRepository.VehiculosPendientesDTO;
 
 /**
@@ -88,11 +87,13 @@ public class VistaVehiculosEntrega {
             marcaColumn.setCellValueFactory(new PropertyValueFactory<>("marca"));
             modeloColumn.setCellValueFactory(new PropertyValueFactory<>("modelo"));
             placasColumn.setCellValueFactory(new PropertyValueFactory<>("placas"));
-            statusColumn.setCellValueFactory(new PropertyValueFactory<>("estado de servicio"));
+            statusColumn.setCellValueFactory(new PropertyValueFactory<>("estatusServicio"));
 
             initialized = true;
         } catch (IOException e) {
             e.printStackTrace();
+
+            throw new RuntimeException("Error al cargar el archivo FXML: " + e.getMessage(), e);
         }
     }
 
@@ -107,6 +108,15 @@ public class VistaVehiculosEntrega {
         if (!Platform.isFxApplicationThread()) {
            Platform.runLater(() -> this.mostrarListaVehiculos(vehiculos)); 
            return;
+        }
+
+        if (vehiculos == null || vehiculos.isEmpty()) {
+            Alert alerta = new Alert(AlertType.INFORMATION);
+            alerta.setTitle("Sin entregas pendientes");
+            alerta.setHeaderText(null);
+            alerta.setContentText("Por el momento no hay vehículos con estatus 'Listo para entrega'.");
+            alerta.showAndWait();
+            return;
         }
 
         initializeUI();
@@ -129,5 +139,46 @@ public class VistaVehiculosEntrega {
 
         ObservableList<VehiculosPendientesDTO> data = FXCollections.observableArrayList(coincidencias);
         tableVehiculos.setItems(data);
+    }
+
+    // =====================================================================
+    // MANEJADORES DE EVENTOS FXML (Llamados desde los botones de la interfaz)
+    // =====================================================================
+
+    /**
+     * Se ejecuta cuando el usuario presiona el botón "Buscar".
+     */
+    @FXML
+    public void filtrarCoincidencias() {
+        if (control != null) {
+            String texto = textFieldBusqueda.getText();
+            control.retornarCoincidencias(texto);
+        }
+    }
+
+    /**
+     * Se ejecuta cuando el usuario presiona el botón "Ver Resumen".
+     */
+    @FXML
+    public void solicitarResumen() {
+        if (control != null) {
+           // control.solicitarResumen();
+        }
+    }
+
+    @FXML void solicitarEscaner() {
+              if (control != null) {
+           // control.solicitarEscaner();
+        }
+    }
+
+    /**
+     * Se ejecuta cuando el usuario presiona el botón "Cerrar".
+     */
+    @FXML
+    public void handleCerrar() {
+        if (stage != null) {
+            stage.close();
+        }
     }
 }
