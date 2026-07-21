@@ -10,39 +10,41 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mx.uam.ayd.proyecto.datos.PiezaInventarioRepository;
-import mx.uam.ayd.proyecto.negocio.modelo.PiezaInventario;
+import mx.uam.ayd.proyecto.datos.RefaccionRepository;
+import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 
 /**
- * Servicio de negocio para el inventario de piezas (HU-31: Registro de piezas)
+ * Servicio de negocio para el inventario de piezas (HU-31: Registro de piezas).
+ * Usa la entidad Refaccion (la misma que HU-30/HU-12), en vez de tener una
+ * entidad aparte para lo mismo.
  */
 @Service
 public class ServicioInventario {
 
     private static final Logger log = LoggerFactory.getLogger(ServicioInventario.class);
 
-    private final PiezaInventarioRepository piezaInventarioRepository;
+    private final RefaccionRepository refaccionRepository;
 
     @Autowired
-    public ServicioInventario(PiezaInventarioRepository piezaInventarioRepository) {
-        this.piezaInventarioRepository = piezaInventarioRepository;
+    public ServicioInventario(RefaccionRepository refaccionRepository) {
+        this.refaccionRepository = refaccionRepository;
     }
 
     /**
      *
-     * Registra la llegada de piezas al taller. Si ya existe una pieza con el
-     * mismo nombre y proveedor, se incrementa su cantidad disponible; si no
-     * existe, se crea un nuevo registro de inventario.
+     * Registra la llegada de piezas al taller. Si ya existe una refacción con el
+     * mismo nombre y proveedor, se incrementa su existencia; si no
+     * existe, se da de alta un nuevo registro.
      *
      * @param nombre nombre de la pieza
      * @param cantidad cantidad recibida, debe ser mayor a cero
      * @param proveedor proveedor que suministró la pieza
      * @param fechaRecepcion fecha en la que se recibió la pieza
      * @param costoUnitario costo unitario de la pieza
-     * @return la pieza registrada o actualizada
+     * @return la refacción registrada o actualizada
      * @throws IllegalArgumentException si algún dato obligatorio falta o la cantidad no es mayor a cero
      */
-    public PiezaInventario registrarPieza(String nombre, int cantidad, String proveedor,
+    public Refaccion registrarPieza(String nombre, int cantidad, String proveedor,
             LocalDate fechaRecepcion, double costoUnitario) {
 
         if (nombre == null || nombre.trim().isEmpty()) {
@@ -64,41 +66,41 @@ public class ServicioInventario {
 
         LocalDateTime ahora = LocalDateTime.now();
 
-        // Regla de negocio: si la pieza ya existe (mismo nombre y proveedor),
-        // se incrementa la cantidad en vez de duplicar el registro
-        PiezaInventario pieza = piezaInventarioRepository.findByNombreAndProveedor(nombre, proveedor);
+        // Regla de negocio: si la refaccion ya existe (mismo nombre y proveedor),
+        // se incrementa la existencia en vez de duplicar el registro
+        Refaccion refaccion = refaccionRepository.findByNombreAndProveedor(nombre, proveedor);
 
-        if (pieza != null) {
-            log.info("Incrementando cantidad de pieza existente: " + nombre + " proveedor: " + proveedor);
-            pieza.setCantidad(pieza.getCantidad() + cantidad);
-            pieza.setCostoUnitario(costoUnitario);
-            pieza.setFechaRecepcion(fechaRecepcion);
-            pieza.setFechaHoraRegistro(ahora);
+        if (refaccion != null) {
+            log.info("Incrementando existencia de refaccion existente: " + nombre + " proveedor: " + proveedor);
+            refaccion.setExistencia(refaccion.getExistencia() + cantidad);
+            refaccion.setPrecio((float) costoUnitario);
+            refaccion.setFechaRecepcion(fechaRecepcion);
+            refaccion.setFechaHoraRegistro(ahora);
         } else {
-            log.info("Registrando nueva pieza: " + nombre + " proveedor: " + proveedor);
-            pieza = new PiezaInventario();
-            pieza.setNombre(nombre);
-            pieza.setCantidad(cantidad);
-            pieza.setProveedor(proveedor);
-            pieza.setCostoUnitario(costoUnitario);
-            pieza.setFechaRecepcion(fechaRecepcion);
-            pieza.setFechaHoraRegistro(ahora);
+            log.info("Registrando nueva refaccion: " + nombre + " proveedor: " + proveedor);
+            refaccion = new Refaccion();
+            refaccion.setNombre(nombre);
+            refaccion.setExistencia(cantidad);
+            refaccion.setProveedor(proveedor);
+            refaccion.setPrecio((float) costoUnitario);
+            refaccion.setFechaRecepcion(fechaRecepcion);
+            refaccion.setFechaHoraRegistro(ahora);
         }
 
-        return piezaInventarioRepository.save(pieza);
+        return refaccionRepository.save(refaccion);
     }
 
     /**
      * Recupera todas las piezas registradas en el inventario
      *
-     * @return una lista con las piezas (o lista vacía)
+     * @return una lista con las refacciones (o lista vacía)
      */
-    public List<PiezaInventario> recuperaPiezas() {
+    public List<Refaccion> recuperaPiezas() {
 
-        List<PiezaInventario> piezas = new ArrayList<>();
+        List<Refaccion> piezas = new ArrayList<>();
 
-        for (PiezaInventario pieza : piezaInventarioRepository.findAll()) {
-            piezas.add(pieza);
+        for (Refaccion refaccion : refaccionRepository.findAll()) {
+            piezas.add(refaccion);
         }
 
         return piezas;

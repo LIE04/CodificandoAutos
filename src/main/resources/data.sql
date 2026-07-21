@@ -16,11 +16,11 @@ INSERT INTO VEHICULO (marca, modelo, placas, anio, kilometraje, id_cliente)
 INSERT INTO VEHICULO (marca, modelo, placas, anio, kilometraje, id_cliente)
   VALUES ('Toyota', 'Hilux', 'XYZ-789', 2023, 12000.0, (SELECT id_cliente FROM CLIENTE WHERE nombre = 'María López'));
 
--- Refacciones de prueba (HU-12)
-INSERT INTO REFACCION (nombre, precio, existencia)
-  VALUES ('Balatas delanteras', 180.0, 20);
-INSERT INTO REFACCION (nombre, precio, existencia)
-  VALUES ('Filtro Aceite', 95.0, 15);   
+-- Refacciones de prueba (HU-12), con datos de la última remesa recibida (HU-31)
+INSERT INTO REFACCION (nombre, precio, existencia, proveedor, fecha_recepcion, fecha_hora_registro)
+  VALUES ('Balatas delanteras', 180.0, 20, 'Refaccionaria Central', '2026-05-01', '2026-05-01 09:00:00');
+INSERT INTO REFACCION (nombre, precio, existencia, proveedor, fecha_recepcion, fecha_hora_registro)
+  VALUES ('Filtro Aceite', 95.0, 15, 'AutoPartes del Valle', '2026-05-10', '2026-05-10 11:00:00');
 
 -- Distribuidores de prueba (HU-25)
 INSERT INTO DISTRIBUIDOR (nombre, telefono, correo, direccion, tipo_refaccion)
@@ -33,12 +33,6 @@ INSERT INTO DISTRIBUIDOR (nombre, telefono, correo, direccion, tipo_refaccion)
 -- Historial de servicio de ejemplo, ligado al vehículo con placas ABC-123 (HU-29)
 INSERT INTO SERVICIO (fecha, descripcion, piezas_utilizadas, costo_mano_obra, observaciones, fecha_hora_registro, vehiculo_id_vehiculo)
   VALUES ('2026-06-01', 'Cambio de balatas delanteras', 'Balatas delanteras', 350.0, 'Cliente reportó ruido al frenar', '2026-06-01 10:30:00', (SELECT id_vehiculo FROM VEHICULO WHERE placas = 'ABC-123'));
-
--- Inventario de piezas de ejemplo (HU-31)
-INSERT INTO PIEZA_INVENTARIO (nombre, cantidad, proveedor, costo_unitario, fecha_recepcion, fecha_hora_registro)
-  VALUES ('Balatas delanteras', 20, 'Refaccionaria Central', 180.0, '2026-05-01', '2026-05-01 09:00:00');
-INSERT INTO PIEZA_INVENTARIO (nombre, cantidad, proveedor, costo_unitario, fecha_recepcion, fecha_hora_registro)
-  VALUES ('Filtro de aceite', 15, 'AutoPartes del Valle', 95.0, '2026-05-10', '2026-05-10 11:00:00');
 
 -- Reparaciones de prueba para que los vehículos aparezcan en la tabla de entregas
 
