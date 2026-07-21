@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import mx.uam.ayd.proyecto.negocio.ServicioInventario;
-import mx.uam.ayd.proyecto.negocio.modelo.PiezaInventario;
+import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 
 /**
  *
@@ -40,7 +40,7 @@ public class ControlRegistrarPieza {
 	 * Inicia la historia de usuario
 	 */
 	public void inicia() {
-		List<PiezaInventario> piezas = servicioInventario.recuperaPiezas();
+		List<Refaccion> piezas = servicioInventario.recuperaPiezas();
 		ventana.muestra(piezas);
 	}
 
@@ -69,7 +69,7 @@ public class ControlRegistrarPieza {
 		}
 
 		// Se actualiza la tabla de últimos registros, sin cerrar la ventana
-		List<PiezaInventario> piezas = servicioInventario.recuperaPiezas();
+		List<Refaccion> piezas = servicioInventario.recuperaPiezas();
 		ventana.actualizaTabla(piezas);
 	}
 

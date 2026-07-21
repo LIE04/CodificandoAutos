@@ -7,12 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Entidad de negocio que representa una Refaccion en la base de datos.
  * Esta clase mapea los datos de las piezas que se almacenan en el sistema,
  * de acuerdo al modelo de dominio de la HU-30
- * 
+ *
  * @author Erik LIE04
  */
 @Entity // Esto le dice a Spring que esta es una entidad persistente
@@ -31,13 +33,22 @@ public class Refaccion {
     /** Cantidad de piezas disponibles en inventario. */
     private int existencia;
 
-    /*
+    /** Proveedor que surtió la última remesa de esta refacción (HU-31). */
+    private String proveedor;
+
+    /** Fecha en la que se recibió la última remesa (HU-31). */
+    private LocalDate fechaRecepcion;
+
+    /** Fecha y hora del último movimiento de entrada, para auditoría (HU-31). */
+    private LocalDateTime fechaHoraRegistro;
+
+   /*
     Relacion con cotizacion
     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cotizacion")
     private Cotizacion cotizacion;
-
+    
     /** CONSTRUCTORES
      * Constructor vacío
      * para que puedan crear objetos de esta clase al consultar la base de datos
@@ -107,5 +118,53 @@ public class Refaccion {
      */
     public void setExistencia(int existencia) {
         this.existencia = existencia;
+    }
+
+    /**
+     * Obtiene el proveedor de la última remesa recibida
+     * @return proveedor
+     */
+    public String getProveedor() {
+        return proveedor;
+    }
+
+    /**
+     * Asigna el proveedor de la última remesa recibida
+     * @param proveedor el nuevo proveedor
+     */
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
+    }
+
+    /**
+     * Obtiene la fecha en que se recibió la última remesa
+     * @return fechaRecepcion
+     */
+    public LocalDate getFechaRecepcion() {
+        return fechaRecepcion;
+    }
+
+    /**
+     * Asigna la fecha de recepción de la última remesa
+     * @param fechaRecepcion la nueva fecha
+     */
+    public void setFechaRecepcion(LocalDate fechaRecepcion) {
+        this.fechaRecepcion = fechaRecepcion;
+    }
+
+    /**
+     * Obtiene la fecha y hora del último movimiento de entrada
+     * @return fechaHoraRegistro
+     */
+    public LocalDateTime getFechaHoraRegistro() {
+        return fechaHoraRegistro;
+    }
+
+    /**
+     * Sella la fecha y hora del último movimiento de entrada
+     * @param fechaHoraRegistro la nueva fecha y hora
+     */
+    public void setFechaHoraRegistro(LocalDateTime fechaHoraRegistro) {
+        this.fechaHoraRegistro = fechaHoraRegistro;
     }
 }

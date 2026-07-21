@@ -20,7 +20,17 @@ public interface RefaccionRepository extends CrudRepository<Refaccion, Integer> 
      * @param nombre El nombre de la refacción a buscar
      * @return La entidad Refaccion correspondiente, o null si no se encuentra
      */
-    public Refaccion findByNombre(String nombre); 
+    public Refaccion findByNombre(String nombre);
+
+    /**
+     * Busca una refacción por nombre y proveedor, para saber si una remesa
+     * nueva debe incrementar la existencia o si hay que dar de alta la pieza (HU-31).
+     *
+     * @param nombre nombre de la refacción
+     * @param proveedor proveedor que la surtió
+     * @return la refacción encontrada, o null si no existe
+     */
+    public Refaccion findByNombreAndProveedor(String nombre, String proveedor);
 
     public List<Refaccion> findAll();
 

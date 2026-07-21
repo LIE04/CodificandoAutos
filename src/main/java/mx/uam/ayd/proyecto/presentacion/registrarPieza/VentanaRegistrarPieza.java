@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import mx.uam.ayd.proyecto.negocio.modelo.PiezaInventario;
+import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 
 /**
  * Ventana para el registro de piezas (HU-31) usando JavaFX con FXML.
@@ -52,22 +52,22 @@ public class VentanaRegistrarPieza {
 	private DatePicker datePickerFechaRecepcion;
 
 	@FXML
-	private TableView<PiezaInventario> tablePiezas;
+	private TableView<Refaccion> tablePiezas;
 
 	@FXML
-	private TableColumn<PiezaInventario, String> nombreColumn;
+	private TableColumn<Refaccion, String> nombreColumn;
 
 	@FXML
-	private TableColumn<PiezaInventario, Integer> cantidadColumn;
+	private TableColumn<Refaccion, Integer> cantidadColumn;
 
 	@FXML
-	private TableColumn<PiezaInventario, String> proveedorColumn;
+	private TableColumn<Refaccion, String> proveedorColumn;
 
 	@FXML
-	private TableColumn<PiezaInventario, Double> costoColumn;
+	private TableColumn<Refaccion, Float> costoColumn;
 
 	@FXML
-	private TableColumn<PiezaInventario, LocalDate> fechaColumn;
+	private TableColumn<Refaccion, LocalDate> fechaColumn;
 
 	private boolean initialized = false;
 
@@ -101,9 +101,9 @@ public class VentanaRegistrarPieza {
 			stage.setScene(scene);
 
 			nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-			cantidadColumn.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+			cantidadColumn.setCellValueFactory(new PropertyValueFactory<>("existencia"));
 			proveedorColumn.setCellValueFactory(new PropertyValueFactory<>("proveedor"));
-			costoColumn.setCellValueFactory(new PropertyValueFactory<>("costoUnitario"));
+			costoColumn.setCellValueFactory(new PropertyValueFactory<>("precio"));
 			fechaColumn.setCellValueFactory(new PropertyValueFactory<>("fechaRecepcion"));
 
 			initialized = true;
@@ -126,7 +126,7 @@ public class VentanaRegistrarPieza {
 	 *
 	 * @param piezas La lista de piezas registradas
 	 */
-	public void muestra(List<PiezaInventario> piezas) {
+	public void muestra(List<Refaccion> piezas) {
 		if (!Platform.isFxApplicationThread()) {
 			Platform.runLater(() -> this.muestra(piezas));
 			return;
@@ -145,13 +145,13 @@ public class VentanaRegistrarPieza {
 	 *
 	 * @param piezas La lista de piezas registradas
 	 */
-	public void actualizaTabla(List<PiezaInventario> piezas) {
+	public void actualizaTabla(List<Refaccion> piezas) {
 		if (!Platform.isFxApplicationThread()) {
 			Platform.runLater(() -> this.actualizaTabla(piezas));
 			return;
 		}
 
-		ObservableList<PiezaInventario> data = FXCollections.observableArrayList(piezas);
+		ObservableList<Refaccion> data = FXCollections.observableArrayList(piezas);
 		tablePiezas.setItems(data);
 	}
 
