@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import mx.uam.ayd.proyecto.datos.ClienteRepository;
 import mx.uam.ayd.proyecto.negocio.modelo.Cliente;
+import java.util.List;
 
 
 @Service
@@ -60,5 +61,9 @@ public class ServicioCliente {
 		clienteRepository.save(cliente); //Actualizacion del Cliente en la base de datos
 		return cliente;
 	}
+
+        public List<Cliente> getClientes() {
+        return (List<Cliente>) clienteRepository.findAll();
+    }
 
 }

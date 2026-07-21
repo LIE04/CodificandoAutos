@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.List;
 
 import mx.uam.ayd.proyecto.datos.VehiculoRepository;
 import mx.uam.ayd.proyecto.negocio.modelo.Cliente;
@@ -73,5 +74,10 @@ public class ServicioVehiculo {
 		vehiculoRepository.save(vehiculo); // Actualización del vehículo en la base de datos
 		return vehiculo;
 	}
+    public List<Vehiculo> getVehiculosCliente(long idCliente) {
+        // Asumiendo que en Vehiculo tienes una relación @ManyToOne hacia Cliente
+        return vehiculoRepository.findByClienteIdCliente(idCliente);
+    }
+
 
 }
