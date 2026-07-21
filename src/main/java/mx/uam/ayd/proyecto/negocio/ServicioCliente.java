@@ -22,16 +22,14 @@ public class ServicioCliente {
     }
     /**
 	 * 
-	 * Permite agregar un usuario
+	 * Permite agregar un cliente al sistema, siempre y cuando no exista un cliente con el mismo nombre y telefono
 	 * 
-	 * @param nombre nombre del usuario
-	 * @param apellido apellido del usuario
-	 * @param grupo nombre grupo al que debe pertencer
-	 * @return el usuario que se agregó
-	 * @throws IllegalArgumentException si el usuario ya existe, no existe el grupo,
-	 *         o si alguno de los parámetros es nulo o vacío
-	 * 
-	 */
+	 * @param nombre nombre del cliente
+	 * @param telefono teléfono del cliente
+	 * @return el cliente que se agregó
+	 * @throws IllegalArgumentException si el nombre o el teléfono son nulos o vacíos, o si ya existe un cliente con el mismo nombre y teléfono
+     */
+    
 	public Cliente agregaCliente(String nombre, String telefono) {
 		
 		// Validar que ningún parámetro sea nulo o vacío
