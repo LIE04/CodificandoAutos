@@ -28,7 +28,7 @@ src/
 │   ├── java/mx/uam/ayd/proyecto/
 │   │   ├── datos/           # Capa de datos (Repositorios de Spring Data JPA)
 │   │   ├── negocio/         # Capa de negocio (Servicios y entidades de negocio)
-│   │   │   └── modelo/      # Entidades JPA (Cliente, Vehiculo, Cita, Distribuidor, Servicio, PiezaInventario, ...)
+│   │   │   └── modelo/      # Entidades JPA (Cliente, Vehiculo, Cita, Distribuidor, Servicio, Refaccion, ...)
 │   │   ├── presentacion/    # Capa de presentación (JavaFX), un subpaquete por caso de uso
 │   │   │   ├── principal/           # Ventana principal / menú
 │   │   │   ├── agregarUsuario/
@@ -96,7 +96,7 @@ Para no tener que capturar todo a mano cada vez que se reinicia la app, `src/mai
 - 2 Clientes con sus Vehículos (placas de prueba: `ABC-123` y `XYZ-789`)
 - 3 Distribuidores
 - 1 registro de historial de servicio
-- 2 piezas de inventario
+- 2 refacciones en inventario (con datos de su última remesa recibida)
 
 Si necesitas más datos o distintos, edita ese archivo directamente.
 
@@ -104,11 +104,11 @@ Si necesitas más datos o distintos, edita ese archivo directamente.
 
 | Historia de usuario | Descripción | Estado |
 |---|---|---|
-| — | Agregar / Listar Usuarios | ✅ |
-| — | Listar Grupos | ✅ |
-| HU-25 | Consultar distribuidores (listar, buscar por nombre o tipo de refacción, copiar teléfono) | ✅ |
-| HU-29 | Historial de servicio de un vehículo (buscar por placas, ver historial, registrar nueva reparación/mantenimiento) | ✅ |
-| HU-31 | Registro de piezas al inventario (crea o incrementa existencias) | ✅ |
+| — | Agregar / Listar Usuarios | Listo |
+| — | Listar Grupos | Listo |
+| HU-25 | Consultar distribuidores (listar, buscar por nombre o tipo de refacción, copiar teléfono) | Listo |
+| HU-29 | Historial de servicio de un vehículo (buscar por placas, ver historial, registrar nueva reparación/mantenimiento) | Listo |
+| HU-31 | Registro de piezas al inventario (crea o incrementa existencias) | Listo |
 
 El resto de las historias de usuario documentadas en `Documento de arquitectura.pdf` (cotizaciones, pedidos a distribuidores, control de calidad, notificaciones, etc.) todavía no están implementadas — ver la sección **Pendientes / Roadmap** más abajo.
 
@@ -118,11 +118,11 @@ Basado en `Documento de Visión y Alcance.pdf` (roadmap de 5 entregas) y `Docume
 
 | Entrega | Tema | Épicas | Estado |
 |---|---|---|---|
-| 1.0 | Administración básica de clientes y vehículos | EP-01, EP-02, EP-03, EP-12 | 🟡 Parcial — historial de servicio (HU-29) y registro de piezas (HU-31) listos; **falta el alta/edición de Cliente y Vehículo** (hoy no existe ninguna pantalla para darlos de alta, solo se cargan de prueba vía `data.sql`) |
-| 2.0 | Gestión de inventario y cotizaciones | EP-04, EP-05, EP-06 | 🟡 Parcial — consulta de distribuidores (HU-25) lista; falta generar cotizaciones (HU-14), consultar manuales/diagramas técnicos (EP-06), seguimiento de pedidos a distribuidores (HU-30) |
-| 3.0 | Planeación y ejecución de reparaciones | EP-07, EP-08 | ⬜ Sin empezar — diagnóstico y detalles de falla (HU-07 a HU-11), asignación de tareas a mecánicos (HU-23), control de calidad (HU-40), entrega del vehículo (HU-42 a HU-45), garantía (HU-46 a HU-53), notificaciones de atraso (HU-32/34) |
-| 4.0 | Comunicación y seguimiento de clientes | EP-09, EP-11 | ⬜ Sin empezar — **ojo**: EP-09 pide acceso vía PWA desde tabletas/móviles, lo cual contradice el resto del documento de arquitectura (define el sistema como Rich Client de escritorio "stand-alone", sin portal web). Aclarar con el equipo/profesor antes de implementar. EP-11 no está descrito en el Documento de Visión y Alcance |
-| 5.0 | Inteligencia operativa y mejora continua | EP-10 | ⬜ Sin empezar — EP-10 tampoco está descrito en el Documento de Visión y Alcance, falta definir su alcance |
+| 1.0 | Administración básica de clientes y vehículos | EP-01, EP-02, EP-03, EP-12 | Parcial — historial de servicio (HU-29) y registro de piezas (HU-31) listos; **falta el alta/edición de Cliente y Vehículo** (hoy no existe ninguna pantalla para darlos de alta, solo se cargan de prueba vía `data.sql`) |
+| 2.0 | Gestión de inventario y cotizaciones | EP-04, EP-05, EP-06 | Parcial — consulta de distribuidores (HU-25) lista; falta generar cotizaciones (HU-14), consultar manuales/diagramas técnicos (EP-06), seguimiento de pedidos a distribuidores (HU-30) |
+| 3.0 | Planeación y ejecución de reparaciones | EP-07, EP-08 | Sin empezar — diagnóstico y detalles de falla (HU-07 a HU-11), asignación de tareas a mecánicos (HU-23), control de calidad (HU-40), entrega del vehículo (HU-42 a HU-45), garantía (HU-46 a HU-53), notificaciones de atraso (HU-32/34) |
+| 4.0 | Comunicación y seguimiento de clientes | EP-09, EP-11 | Sin empezar — **ojo**: EP-09 pide acceso vía PWA desde tabletas/móviles, lo cual contradice el resto del documento de arquitectura (define el sistema como Rich Client de escritorio "stand-alone", sin portal web). Aclarar con el equipo/profesor antes de implementar. EP-11 no está descrito en el Documento de Visión y Alcance |
+| 5.0 | Inteligencia operativa y mejora continua | EP-10 | Sin empezar — EP-10 tampoco está descrito en el Documento de Visión y Alcance, falta definir su alcance |
 
 ### Otros pendientes puntuales
 
@@ -140,9 +140,9 @@ Entidades JPA existentes hoy en `negocio/modelo/`:
 - **Cita** — fecha y hora (aún sin relación a Cliente/Vehiculo ni pantalla propia)
 - **Distribuidor** — nombre, teléfono, correo, dirección, tipo de refacción
 - **Servicio** — reparación o mantenimiento realizado a un vehículo (fecha, descripción, piezas utilizadas, costo de mano de obra, observaciones)
-- **PiezaInventario** — nombre, cantidad, proveedor, costo unitario, fecha de recepción
+- **Refaccion** — nombre, precio, existencia, proveedor y fecha de la última remesa recibida (HU-12/HU-30 y HU-31 comparten esta misma entidad)
 
-El modelo de dominio completo (incluye entidades futuras como Cotizacion, Reparacion, Pedido, Refaccion) está documentado en `Documento de arquitectura.pdf`, sección "Modelo de dominio".
+El modelo de dominio completo (incluye entidades futuras como Cotizacion) está documentado en `Documento de arquitectura.pdf`, sección "Modelo de dominio".
 
 ## Ejecutar Pruebas
 
