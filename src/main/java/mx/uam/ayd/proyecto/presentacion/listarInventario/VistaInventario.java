@@ -37,13 +37,13 @@ public class VistaInventario {
 
     // Columnas adaptadas al modelo Refaccion
     @FXML
-    private TableColumn<Refaccion, String> idColumn;
+    private TableColumn<Refaccion, Integer> idColumn;
 
     @FXML
     private TableColumn<Refaccion, String> nombreColumn;
 
     @FXML
-    private TableColumn<Refaccion, Double> precioColumn;
+    private TableColumn<Refaccion, Float> precioColumn;
 
     @FXML
     private TableColumn<Refaccion, Integer> existenciasColumn;

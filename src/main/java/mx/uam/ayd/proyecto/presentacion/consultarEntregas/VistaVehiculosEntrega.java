@@ -149,10 +149,10 @@ public class VistaVehiculosEntrega {
      * Se ejecuta cuando el usuario presiona el botón "Buscar".
      */
     @FXML
-    public void filtrarCoincidencias() {
+    public void handleBuscar() {
         if (control != null) {
             String texto = textFieldBusqueda.getText();
-            control.retornarCoincidencias(texto);
+            control.buscarRefaccion(texto);
         }
     }
 

@@ -50,8 +50,7 @@ INSERT INTO REPARACION (
     observaciones_tecnicas, 
     garantia_meses, 
     condiciones_garantia, 
-    id_vehiculo
-) VALUES (
+    id_vehiculo) VALUES (
     '2026-07-15 09:00:00',
     '2026-07-20 14:30:00',
     'En espera',
@@ -59,4 +58,22 @@ INSERT INTO REPARACION (
     3,
     'La garantía aplica solo para los componentes instalados en este servicio.',
     (SELECT id_vehiculo FROM VEHICULO WHERE placas = 'ABC-123')
-);
+  );
+
+  -- 2. Reparación terminada para la Toyota Hilux de María López
+INSERT INTO REPARACION (
+    fecha_inicio, 
+    fecha_fin, 
+    estatus_servicio, 
+    observaciones_tecnicas, 
+    garantia_meses, 
+    condiciones_garantia, 
+    id_vehiculo) VALUES (
+    '2026-07-18 11:00:00',
+    '2026-07-20 16:00:00',
+    'En espera',
+    'Alineación, balanceo, rotación de llantas y cambio de amortiguadores traseros.',
+    6,
+    'Garantía directa con proveedor en el caso de los amortiguadores.',
+    (SELECT id_vehiculo FROM VEHICULO WHERE placas = 'XYZ-789')
+  );
