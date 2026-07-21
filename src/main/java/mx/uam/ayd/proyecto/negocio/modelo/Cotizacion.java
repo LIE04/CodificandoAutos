@@ -32,7 +32,7 @@ public class Cotizacion {
     private float costoTotal;
     private String estadoAprobacion;
 
-   
+    // 1.Relacion con Cita
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cita")
     private Cita cita;
@@ -41,9 +41,15 @@ public class Cotizacion {
     @OneToOne(mappedBy = "cotizacion", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Reparacion reparacion;
 
-  
-    @OneToMany(mappedBy = "cotizacion", fetch = FetchType.LAZY)
-    private final List<Refaccion> refacciones = new ArrayList<>();
+   // 3. Relacion con entidad intermedia CotizacionConcepto
+   @OneToMany(mappedBy = "cotizacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CotizacionConcepto> conceptos = new ArrayList<>();
+
+    // Método de conveniencia para agregar conceptos fácilmente
+    public void agregarConcepto(Refaccion refaccion, int cantidad) {
+        CotizacionConcepto concepto = new CotizacionConcepto(refaccion, cantidad, this);
+        this.conceptos.add(concepto);
+    }
 
     public Cotizacion(){  
     }

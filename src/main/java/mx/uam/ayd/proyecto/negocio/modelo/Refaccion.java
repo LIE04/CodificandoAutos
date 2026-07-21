@@ -42,13 +42,7 @@ public class Refaccion {
     /** Fecha y hora del último movimiento de entrada, para auditoría (HU-31). */
     private LocalDateTime fechaHoraRegistro;
 
-   /*
-    Relacion con cotizacion
-    */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cotizacion")
-    private Cotizacion cotizacion;
-    
+
     /** CONSTRUCTORES
      * Constructor vacío
      * para que puedan crear objetos de esta clase al consultar la base de datos
