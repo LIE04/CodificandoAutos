@@ -3,8 +3,6 @@ package mx.uam.ayd.proyecto.datos;
 import org.springframework.data.repository.CrudRepository;
 
 import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
-import java.util.List;
-
 
 /**
  * Repositorio para vehículos
