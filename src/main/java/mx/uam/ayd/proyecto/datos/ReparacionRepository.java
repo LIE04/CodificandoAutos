@@ -18,6 +18,7 @@ public interface ReparacionRepository extends CrudRepository<Reparacion, Integer
     */
     public interface VehiculosPendientesDTO {
         Integer getId();
+        Long getIdCotizacion();
         String getNombre();
         String getMarca();
         String getModelo();
@@ -27,12 +28,18 @@ public interface ReparacionRepository extends CrudRepository<Reparacion, Integer
     /*
     Metodo para hacer JOIN de las tres entidades
     */
-    @Query("SELECT r.idReparacion AS id, c.nombre AS nombre, v.marca AS marca, " +
-           "v.modelo AS modelo, v.placas AS placas, r.estatusServicio AS estatusServicio " +
+@Query("SELECT r.idReparacion AS id, " +
+           "coti.idCotizacion AS idCotizacion, " + 
+           "cli.nombre AS nombre, " +
+           "v.marca AS marca, " +
+           "v.modelo AS modelo, " +
+           "v.placas AS placas, " +
+           "r.estatusServicio AS estatusServicio " +
            "FROM Reparacion r " +
-           "JOIN r.vehiculo v " +
-           "JOIN v.cliente c " +
-           "WHERE r.estatusServicio = 'En espera'")
+           "LEFT JOIN r.cotizacion coti " +  // <-- CAMBIO CLAVE: Usamos LEFT JOIN para que no desaparezcan las reparaciones sin cotización
+           "JOIN r.vehiculo v " +            // Estos sí pueden ser JOIN normales porque un vehículo siempre existe y tiene cliente
+           "JOIN v.cliente cli " +      
+           "WHERE r.estatusServicio = 'En espera'") // Asegúrate de que este texto sea exactamente el que usas en tu BD
 
     /*
     Metodo para devolver la lista

@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,7 +38,7 @@ public class Cotizacion {
     private Cita cita;
 
     // 2. Relación con Reparación 
-    @OneToOne(mappedBy = "cotizacion", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "cotizacion", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Reparacion reparacion;
 
   

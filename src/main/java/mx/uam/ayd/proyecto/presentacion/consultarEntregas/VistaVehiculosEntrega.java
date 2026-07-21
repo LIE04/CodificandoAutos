@@ -114,7 +114,7 @@ public class VistaVehiculosEntrega {
             Alert alerta = new Alert(AlertType.INFORMATION);
             alerta.setTitle("Sin entregas pendientes");
             alerta.setHeaderText(null);
-            alerta.setContentText("Por el momento no hay vehículos con estatus 'Listo para entrega'.");
+            alerta.setContentText("Por el momento no hay vehículos con estatus 'En espera'.");
             alerta.showAndWait();
             return;
         }
