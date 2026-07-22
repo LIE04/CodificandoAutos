@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
@@ -21,6 +23,8 @@ public class VistaEditarRefaccion {
     private Stage stage;
 
     public void inicia(ControlInventario control, Refaccion refaccion) {
+
+        this.control = control;
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(() -> inicia(control, refaccion));
             return;
@@ -60,15 +64,22 @@ public class VistaEditarRefaccion {
             // Enviar al control para que actualice la base de datos
             control.verificarEdicion(id, nombre, precio, existencia);
             
-            stage.close(); // Cerrar la ventana si todo salió bien
+            stage.close(); // Cerrar la ventana
         } catch (NumberFormatException e) {
-            // Aquí puedes mostrar un mensaje de error si el usuario escribe letras en el precio
-            System.out.println("Error: El precio y la existencia deben ser números válidos.");
+            muestraDialogoConMensaje("Error: El precio y la existencia deben ser números válidos.");
         }
     }
 
     @FXML
     private void handleCancelar() {
         stage.close();
+    }
+
+        private void muestraDialogoConMensaje(String mensaje) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Información");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }
