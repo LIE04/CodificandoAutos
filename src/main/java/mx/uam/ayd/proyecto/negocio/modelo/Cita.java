@@ -27,6 +27,7 @@ public class Cita {
 
     private LocalDate fecha;
     private LocalTime hora;
+    private String estado;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
@@ -37,6 +38,13 @@ public class Cita {
      */
     @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cotizacion> cotizaciones = new ArrayList<>();
+
+    /* 
+    Un vehiculo puede tener varias citas 
+    */
+    @ManyToOne(targetEntity = Vehiculo.class)
+    @JoinColumn(name = "vehiculo_id") // Esto creará la columna en la tabla de la base de datos
+    private Vehiculo vehiculo;
     
     public Cita() {
     }
@@ -63,6 +71,14 @@ public class Cita {
 
     public void setHora(LocalTime hora) {
         this.hora = hora;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Cliente getCliente() {
@@ -94,5 +110,13 @@ public class Cita {
     @Override
     public String toString() {
         return "Cita [idCita=" + idCita + ", fecha=" + fecha + ", hora=" + hora + ", cliente=" + cliente + "]";
+    }
+
+    public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
     }
 }

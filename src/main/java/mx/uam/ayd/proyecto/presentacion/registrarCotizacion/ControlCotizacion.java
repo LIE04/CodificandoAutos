@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//import mx.uam.ayd.proyecto.negocio.ServicioCita;
+import mx.uam.ayd.proyecto.negocio.ServicioCita;
 import mx.uam.ayd.proyecto.negocio.ServicioCotizacion;
 import mx.uam.ayd.proyecto.negocio.ServicioRefaccion;
 import mx.uam.ayd.proyecto.negocio.ServicioCliente;
@@ -37,8 +37,11 @@ public class ControlCotizacion{
    @Autowired
    private ServicioCotizacion servicioCotizacion;
 
-   //@Autowired
-   //private ServicioCita servicioCita;
+   @Autowired
+   private ServicioCita servicioCita;
+
+   @Autowired
+    private VistaCotizacion vistaCotizacion;
 
    private VistaCotizacion vista;
 
@@ -47,6 +50,13 @@ public class ControlCotizacion{
    // Este es tu "borrador" en memoria. Aún no se guarda en la BD.
    private Cotizacion cotizacionBorrador = new Cotizacion();
 
+   /**
+     * Este es el método que llama el ControlPrincipal
+     */
+    public void iniciar() {
+        // Le decimos a la vista que se abra y construya su ventana
+        vistaCotizacion.iniciar(); 
+    }
 
    // PASO 1: Esto se llama justo cuando abres la ventana de "Generar Cotización"
     public void iniciarVistaCotizacion(VistaCotizacion vista) {
@@ -63,11 +73,11 @@ public class ControlCotizacion{
     }
 
 // PASO 3 MODIFICADO: Ahora buscamos la Cita y delegamos la creación al Servicio
-   /* public void iniciarNuevaCotizacion(Vehiculo vehiculoSeleccionado) {
+    public void iniciarNuevaCotizacion(Vehiculo vehiculoSeleccionado) {
         
         // 1. Buscamos la cita activa/pendiente de este vehículo
         // (Asegúrate de tener un método así en tu ServicioCita)
-       // Cita citaDelVehiculo = servicioCita.obtenerCitaPendientePorVehiculo(vehiculoSeleccionado);
+        Cita citaDelVehiculo = servicioCita.obtenerCitaPendientePorVehiculo(vehiculoSeleccionado);
         
         if (citaDelVehiculo == null) {
             // Manejo de error: Si el vehículo no tiene cita, no se puede cotizar
@@ -81,7 +91,7 @@ public class ControlCotizacion{
     // PASO 4a: Buscar refacción por nombre
     public Refaccion buscarRefaccion(String nombrePieza) {
         return servicioRefaccion.buscarPorNombre(nombrePieza); 
-    }*/
+    }
 
 // PASO 4b: Ingresar la pieza a la cotización a través del servicio
     public void agregarRefaccionACotizacion(Refaccion refaccionSeleccionada, int cantidad) {

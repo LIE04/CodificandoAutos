@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import mx.uam.ayd.proyecto.datos.CitaRepository;
 import mx.uam.ayd.proyecto.negocio.modelo.Cita;
 import mx.uam.ayd.proyecto.negocio.modelo.Cliente;
+import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -61,6 +62,16 @@ public class ServicioCita {
             throw new IllegalArgumentException("El nombre del cliente no puede estar vacío");
         }
         return citaRepository.findByClienteNombre(nombreCliente.trim());
+    }
+
+    public Cita obtenerCitaPendientePorVehiculo(Vehiculo vehiculoSeleccionado) {
+        
+        // Buscamos la cita que le pertenece a ese vehículo y que su estado sea "PENDIENTE"
+        Cita citaActiva = citaRepository.findByVehiculoAndEstado(vehiculoSeleccionado, "PENDIENTE");
+        
+        // Retornará la Cita si la encuentra, o null si el vehículo no tiene citas pendientes.
+        // (La validación de si es null ya la tienes cubierta en tu ControlCotizacion)
+        return citaActiva;
     }
 
 }

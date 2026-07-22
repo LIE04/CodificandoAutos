@@ -140,4 +140,12 @@ public class VentanaPrincipal {
 		    control.consultarEntregas();
 		}
 	}
+
+	@FXML
+	private void handleRegistarCotizacion() {
+	    if (control != null){
+			// Le dice al control principal que es hora de abrir la HU-14
+		    control.registrarCotizacion();
+		}
+	}
 }

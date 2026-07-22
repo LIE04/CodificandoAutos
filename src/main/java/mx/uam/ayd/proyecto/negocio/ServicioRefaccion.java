@@ -43,4 +43,17 @@ public class ServicioRefaccion {
             return false;
         }
     }
+    
+    public Refaccion buscarPorNombre(String nombrePieza) {
+        // Llamamos al método mágico del repositorio
+        Refaccion refaccion = refaccionRepository.findByNombre(nombrePieza);
+        
+        // Regla de negocio: ¿Qué pasa si no existe?
+        if (refaccion == null) {
+            throw new IllegalArgumentException("La refacción '" + nombrePieza + "' no se encuentra en el sistema.");
+        }
+        
+        return refaccion;
+    }
+
 }

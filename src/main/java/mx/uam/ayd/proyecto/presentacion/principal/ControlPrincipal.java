@@ -15,7 +15,7 @@ import mx.uam.ayd.proyecto.presentacion.consultarDistribuidores.ControlConsultar
 import mx.uam.ayd.proyecto.presentacion.consultarEntregas.ControlVehiculosEntrega;
 import mx.uam.ayd.proyecto.presentacion.registrarServicio.ControlRegistrarServicio;
 import mx.uam.ayd.proyecto.presentacion.pedidos.ControladorPedidos;
-import mx.uam.ayd.proyecto.presentacion.consultarEntregas.ControlVehiculosEntrega;
+import mx.uam.ayd.proyecto.presentacion.registrarCotizacion.ControlCotizacion;
 
 /**
  * Esta clase lleva el flujo de control de la ventana principal
@@ -36,6 +36,7 @@ public class ControlPrincipal {
 	private final ControladorPedidos controladorPedidos;
 	private final ControlInventario controlInventario;
 	private final ControlVehiculosEntrega controlVehiculoEntrega;
+	private final ControlCotizacion controlCotizacion;
 
 
 	@Autowired
@@ -49,6 +50,7 @@ public class ControlPrincipal {
 			ControladorPedidos controladorPedidos,
 			ControlInventario controlInventario,
 			ControlVehiculosEntrega controlVehiculosEntrega,
+			ControlCotizacion controlCotizacion,
 			VentanaPrincipal ventana) {
 		this.controlAgregarUsuario = controlAgregarUsuario;
 		this.controlListarUsuarios = controlListarUsuarios;
@@ -60,6 +62,7 @@ public class ControlPrincipal {
 		this.controladorPedidos = controladorPedidos;
 		this.controlInventario = controlInventario;
 		this.controlVehiculoEntrega = controlVehiculosEntrega;
+		this.controlCotizacion = controlCotizacion;
 	}
 	
 	/**
@@ -125,6 +128,14 @@ public class ControlPrincipal {
 	 */
 	public void consultarInventario() {
 		controlInventario.inicia();
+	}
+
+	/**
+	 * Método que arranca la historia de usuario "regitrar cotizacion" (HU-14)
+	 *
+	 */
+	public void registrarCotizacion() {
+		controlCotizacion.iniciar();
 	}
 
 	/**

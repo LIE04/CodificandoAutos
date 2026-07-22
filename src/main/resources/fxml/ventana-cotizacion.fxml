@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="650.0" prefWidth="600.0" spacing="15.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <!-- Título de la ventana -->
+    <Label text="Generar Nueva Cotización">
+        <font>
+            <Font name="System Bold" size="20.0" />
+        </font>
+    </Label>
+    <Separator prefWidth="200.0" />
+
+    <!-- SECCIÓN 1: Cliente y Vehículo -->
+    <GridPane hgap="10.0" vgap="10.0">
+        <Label text="Cliente:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <!-- Conectado a onClienteSeleccionado -->
+        <ComboBox fx:id="comboClientes" onAction="#onClienteSeleccionado" prefWidth="250.0" promptText="Seleccione un cliente..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        
+        <Label text="Vehículo:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <!-- Conectado a onVehiculoSeleccionado -->
+        <ComboBox fx:id="comboVehiculos" onAction="#onVehiculoSeleccionado" prefWidth="250.0" promptText="Seleccione un vehículo..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    </GridPane>
+    <Separator prefWidth="200.0" />
+
+    <!-- SECCIÓN 2: Refacciones -->
+    <Label text="Refacciones">
+        <font>
+            <Font name="System Bold" size="14.0" />
+        </font>
+    </Label>
+    <HBox spacing="10.0">
+        <TextField fx:id="txtBuscarRefaccion" prefWidth="200.0" promptText="Nombre de la pieza" />
+        <TextField fx:id="txtCantidadRefaccion" prefWidth="70.0" promptText="Cant." />
+        <Button fx:id="btnAgregarRefaccion" mnemonicParsing="false" onAction="#onAgregarRefaccionClick" text="Agregar Pieza" />
+    </HBox>
+    <ListView fx:id="listaConceptosVista" prefHeight="100.0" prefWidth="200.0" />
+    <Separator prefWidth="200.0" />
+
+    <!-- SECCIÓN 3: Detalles del Servicio -->
+    <Label text="Detalles del Servicio">
+        <font>
+            <Font name="System Bold" size="14.0" />
+        </font>
+    </Label>
+    <VBox spacing="10.0">
+        <Label text="Fallas Reportadas:" />
+        <TextArea fx:id="txtFallas" prefHeight="60.0" wrapText="true" />
+        
+        <Label text="Descripción de Mano de Obra:" />
+        <TextArea fx:id="txtManoObra" prefHeight="60.0" wrapText="true" />
+        
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <Label text="Costo Mano de Obra: $" />
+            <!-- Usamos onKeyReleased para que recalcule automáticamente mientras escribes -->
+            <TextField fx:id="txtCostoManoObra" onKeyReleased="#onActualizarServicio" prefWidth="100.0" promptText="0.00" />
+            <Button mnemonicParsing="false" onAction="#onActualizarServicio" text="Actualizar Totales" />
+        </HBox>
+    </VBox>
+    <Separator prefWidth="200.0" />
+
+    <!-- SECCIÓN 4: Totales y Guardar -->
+    <HBox alignment="CENTER_RIGHT" spacing="20.0">
+        <VBox alignment="CENTER_RIGHT" spacing="5.0">
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                <Label text="Total Refacciones:" />
+                <Label fx:id="lblTotalRefacciones" text="0.0" textFill="#515151">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                <Label text="Costo Total:">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+                <Label fx:id="lblCostoTotal" text="0.0" textFill="#207929">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+            </HBox>
+        </VBox>
+    </HBox>
+    
+    <HBox alignment="CENTER">
+        <VBox.margin>
+            <Insets top="10.0" />
+        </VBox.margin>
+        <Button fx:id="btnGuardarCotizacion" mnemonicParsing="false" onAction="#onGuardarClick" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #2b8cbe; -fx-text-fill: white;" text="Guardar Cotización">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Button>
+    </HBox>
+
+</VBox>

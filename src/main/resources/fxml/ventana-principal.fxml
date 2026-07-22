@@ -20,8 +20,13 @@
             style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
 
     <!-- NUEVO BOTÓN PARA EL INVENTARIO (HU-12) -->
+    <Button text="Registrar Cotizacion" onAction="#handleRegistarCotizacion"
+            style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
+
+    <!-- NUEVO BOTÓN PARA EL INVENTARIO (HU-14) -->
     <Button text="Consultar Inventario" onAction="#handleConsultarInventario"
             style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
+
     <!-- NUEVO BOTÓN PARA LISTA VEHICULOS ENTREGA (HU-42) -->
     <Button text="Vehiculos por Entregar" onAction="#handleVehiculosEntrega"
             style="-fx-min-width: 200px; -fx-min-height: 30px;"/>
