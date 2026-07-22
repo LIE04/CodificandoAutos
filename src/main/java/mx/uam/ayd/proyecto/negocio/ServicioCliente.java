@@ -49,11 +49,10 @@ public class ServicioCliente {
 		if(cliente != null) {
 			throw new IllegalArgumentException("Ese cliente ya existe");
 		}
-		// Se validaron correctamente las reglas de negocio
 		
 		log.info("Agregando cliente "+nombre+" con telefono:"+telefono);
 
-		// Crea el usuario
+		// Crear el cliente y guardarlo en la base de datos
 		
 		cliente = new Cliente();
 		cliente.setNombre(nombre);
