@@ -39,7 +39,7 @@
         <!-- Botón para ir a escaner y ser aprobado despues-->
         <Button onAction="#solicitarEscaner" style="-fx-min-width: 130px; -fx-min-height: 25px;" text="Escaner" />
         <!-- Botón actualizado para coincidir con "Presiona Ver Resumen" del diagrama -->
-        <Button onAction="#solicitarResumen" style="-fx-min-width: 130px; -fx-min-height: 25px;" text="Finalizar Entrega" />
+        <Button onAction="#handlefinalizarEntrega" style="-fx-min-width: 130px; -fx-min-height: 25px;" text="Finalizar Entrega" />
         <Button onAction="#handleCerrar" style="-fx-min-width: 80px; -fx-min-height: 25px;" text="Cerrar" />
     </HBox>
 

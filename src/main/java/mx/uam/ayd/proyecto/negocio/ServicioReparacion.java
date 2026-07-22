@@ -84,4 +84,22 @@ public class ServicioReparacion {
 
         return reparacionRepository.findVehiculosListosParaEntrega();
     }
+
+    public boolean marcarEntregado(Integer idReparacion){
+
+        Optional<Reparacion> reparacionOpt = reparacionRepository.findById(idReparacion);
+
+        if(reparacionOpt.isPresent()) {
+            Reparacion reparacion = reparacionOpt.get();
+            
+            reparacion.setEstatusServicio("Entregado");
+
+            reparacionRepository.save(reparacion);
+            
+            return true;
+        }
+
+        return false;
+
+    }
 }

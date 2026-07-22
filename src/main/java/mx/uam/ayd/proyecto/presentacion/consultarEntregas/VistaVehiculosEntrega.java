@@ -160,9 +160,18 @@ public class VistaVehiculosEntrega {
      * Se ejecuta cuando el usuario presiona el botón "Ver Resumen".
      */
     @FXML
-    public void solicitarResumen() {
-        if (control != null) {
-           // control.solicitarResumen();
+    public void handlefinalizarEntrega() {
+    VehiculosPendientesDTO seleccionado = tableVehiculos.getSelectionModel().getSelectedItem();
+
+        if (seleccionado != null) {
+            // 2. Le pasamos el ID a tu método del controlador
+            boolean exito = control.finalizarEntrega(seleccionado.getId());
+            
+            if (exito) {
+                // Mostrar alerta de éxito
+            }
+        } else {
+            // Mostrar alerta pidiendo que seleccione un vehículo primero
         }
     }
 
