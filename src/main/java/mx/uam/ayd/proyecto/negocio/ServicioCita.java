@@ -69,8 +69,6 @@ public class ServicioCita {
         // Buscamos la cita que le pertenece a ese vehículo y que su estado sea "PENDIENTE"
         Cita citaActiva = citaRepository.findByVehiculoAndEstado(vehiculoSeleccionado, "PENDIENTE");
         
-        // Retornará la Cita si la encuentra, o null si el vehículo no tiene citas pendientes.
-        // (La validación de si es null ya la tienes cubierta en tu ControlCotizacion)
         return citaActiva;
     }
 

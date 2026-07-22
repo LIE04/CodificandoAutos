@@ -75,10 +75,10 @@ public class VistaInventario {
             stage.setScene(scene);
 
             // Vinculación de columnas con los atributos de la clase Refaccion
-            idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+            idColumn.setCellValueFactory(new PropertyValueFactory<>("idRefaccion"));
             nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
             precioColumn.setCellValueFactory(new PropertyValueFactory<>("precio"));
-            existenciasColumn.setCellValueFactory(new PropertyValueFactory<>("existencias"));
+            existenciasColumn.setCellValueFactory(new PropertyValueFactory<>("existencia"));
 
             initialized = true;
         } catch (IOException e) {
