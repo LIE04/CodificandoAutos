@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import mx.uam.ayd.proyecto.datos.ReparacionRepository.VehiculosPendientesDTO;
 import mx.uam.ayd.proyecto.negocio.ServicioReparacion;
+import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
 import mx.uam.ayd.proyecto.presentacion.consultarEntregas.VistaVehiculosEntrega;
 
 
@@ -72,5 +73,21 @@ public class ControlVehiculosEntrega {
 
     return coincidencias;
     }
+
+    public boolean finalizarEntrega(Integer idReparacion) {
+
+        boolean exito = servicioReparacion.marcarEntregado(idReparacion);
+
+        if(exito){
+            
+            SolicitarInventario();
+
+        }
+
+        return exito;
+
+    }
+
+
 
 }
