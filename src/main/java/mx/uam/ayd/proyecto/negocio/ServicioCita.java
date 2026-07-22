@@ -19,11 +19,11 @@ public class ServicioCita {
     private CitaRepository citaRepository;
 
     /**
-     * Agende una nueva cita para un cliente.
+     * Agendar cita para el cliente en la fecha y hora seleccionada
      */
     public Cita agendarCita(LocalDate fecha, LocalTime hora, Cliente cliente) {
 
-        // 1. Validaciones básicas de nulidad
+        // Verificar que los datos ingresados no sean nulos
         if (fecha == null) {
             throw new IllegalArgumentException("La fecha de la cita no puede ser nula");
         }
@@ -34,17 +34,17 @@ public class ServicioCita {
             throw new IllegalArgumentException("La cita debe estar asociada a un cliente");
         }
 
-        // 2. Validar que la cita no sea en el pasado
+        // Verificar que la cita no sea registrada en una fecha pasada
         if (fecha.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("No se pueden agendar citas en fechas pasadas");
         }
 
-        // 3. Validar disponibilidad de horario usando tu método 'existsByFechaAndHora'
+        // Verificar que no exista una cita agendada en el mismo dia y hora
         if (citaRepository.existsByFechaAndHora(fecha, hora)) {
             throw new IllegalArgumentException("Ya existe una cita agendada para la fecha y hora seleccionadas");
         }
 
-        // 4. Crear y guardar la entidad
+        // Creacion de la cita y guardarla en la base de datos
         Cita cita = new Cita();
         cita.setFecha(fecha);
         cita.setHora(hora);
@@ -55,7 +55,7 @@ public class ServicioCita {
         return citaGuardada;
     }
     /**
-     * Recupera las citas asociadas al nombre de un cliente.
+     * Recupera las citas asociadas al nombre de un cliente
      */
     public List<Cita> consultarCitasPorNombreCliente(String nombreCliente) {
         if (nombreCliente == null || nombreCliente.trim().isEmpty()) {
