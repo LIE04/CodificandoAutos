@@ -21,6 +21,9 @@ public class ControlInventario {
     @Autowired
     private VistaInventario vistaInventario;
 
+    @Autowired
+private VistaEditarRefaccion vistaEditarRefaccion;
+
     private List<Refaccion> inventarioActual;
 
     public ControlInventario(ServicioRefaccion servicioRefaccion, VistaInventario vistaInventario) {
@@ -73,8 +76,8 @@ public class ControlInventario {
     return coincidencias;
     }
 
-    public void solicitarEdicion() {
-        vistaInventario.mostrarEdicion();
+    public void solicitarEdicion(Refaccion seleccionada) {
+        vistaEditarRefaccion.inicia(this, seleccionada);
     }
 
     public void verificarEdicion(int id, String nombre, float precio, int existencias) {

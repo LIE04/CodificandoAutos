@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="15" style="-fx-padding: 20px;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+    <Label text="Editar Detalles de Pieza" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+    <GridPane hgap="10" vgap="15">
+        <Label text="ID de Registro:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <!-- El ID se deshabilita para que el usuario no pueda cambiar la llave primaria -->
+        <TextField fx:id="txtId" editable="false" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="txtNombre" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Label text="Precio Unitario:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="txtPrecio" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+        <Label text="En Existencia:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField fx:id="txtExistencia" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    </GridPane>
+
+    <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 10px 0 0 0;">
+        <Button text="Cancelar Operación" onAction="#handleCancelar" style="-fx-min-width: 120px;" />
+        <Button text="Guardar Cambios" onAction="#handleGuardar" style="-fx-min-width: 120px; -fx-background-color: #0056b3; -fx-text-fill: white;" />
+    </HBox>
+
+</VBox>

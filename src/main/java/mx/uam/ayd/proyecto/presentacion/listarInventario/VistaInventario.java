@@ -121,29 +121,6 @@ public class VistaInventario {
         tableRefacciones.setItems(data);
     }
 
-    /**
-     * Equivalente a mostrarEdicion() del diagrama.
-     */
-    public void mostrarEdicion() {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(this::mostrarEdicion);
-            return;
-        }
-
-        Refaccion seleccionada = tableRefacciones.getSelectionModel().getSelectedItem();
-
-        if (seleccionada == null) {
-            muestraDialogoConMensaje("Selecciona una refacción de la tabla para editar");
-            return;
-        }
-
-        // Aquí idealmente abrirías otra ventana pequeña (Dialog) con campos de texto para editar.
-        // A modo de ejemplo, mostramos el aviso.
-        muestraDialogoConMensaje("Abriendo ventana de edición para: " + seleccionada.getNombre());
-        
-        // Simulación de que el usuario editó y presionó "Guardar" en esa nueva ventana:
-        // control.verificarEdicion(seleccionada.getId(), "Nuevo Nombre", 150.0, 10);
-    }
 
     /**
      * Equivalente a actualizarLista() del diagrama.
@@ -169,10 +146,17 @@ public class VistaInventario {
         control.buscarRefaccion(textFieldBusqueda.getText());
     }
 
-    @FXML
+@FXML
     private void handlePresionaEditar() {
-        // Dispara la acción hacia el control según tu diagrama de secuencia
-        control.solicitarEdicion();
+        // 1. Obtener la refacción seleccionada de la tabla
+        Refaccion seleccionada = tableRefacciones.getSelectionModel().getSelectedItem();
+
+        if (seleccionada == null) {
+            muestraDialogoConMensaje("Por favor, selecciona una refacción de la tabla para editar.");
+            return;
+        }
+
+        control.solicitarEdicion(seleccionada);
     }
 
     @FXML
