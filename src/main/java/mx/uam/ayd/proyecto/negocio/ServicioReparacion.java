@@ -82,7 +82,7 @@ public class ServicioReparacion {
 
     public List<VehiculosPendientesDTO> obtenerVehiculosParaEntrega() {
 
-        return reparacionRepository.findVehiculosListosParaEntrega();
+        return reparacionRepository.findVehiculosActivos();
     }
 
     public boolean marcarEntregado(Integer idReparacion){
@@ -92,11 +92,11 @@ public class ServicioReparacion {
         if(reparacionOpt.isPresent()) {
             Reparacion reparacion = reparacionOpt.get();
             
-            reparacion.setEstatusServicio("Entregado");
-
-            reparacionRepository.save(reparacion);
-            
-            return true;
+            if(reparacion.getEstatusServicio().equalsIgnoreCase("Listo para entregar")){
+               reparacion.setEstatusServicio("Entregado");
+               reparacionRepository.save(reparacion);
+               return true;
+            }
         }
 
         return false;

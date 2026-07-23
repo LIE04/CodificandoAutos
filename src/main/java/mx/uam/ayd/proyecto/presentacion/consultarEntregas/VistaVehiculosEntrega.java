@@ -75,13 +75,12 @@ public class VistaVehiculosEntrega {
             stage = new Stage();
             stage.setTitle("Vehiculos por entregar");
 
-            // Asegúrate de crear este archivo en tu carpeta de resources/fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventana-vehiculos-entregas.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load(), 600, 450);
             stage.setScene(scene);
 
-            // Vinculación de columnas con los atributos de la clase Refaccion
+  
             idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
             nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
             marcaColumn.setCellValueFactory(new PropertyValueFactory<>("marca"));
@@ -101,36 +100,39 @@ public class VistaVehiculosEntrega {
         this.control = control;
     }
 
-    /**
-     * Equivalente a mostrarInventario(refaccion) del diagrama.
-     */
-    public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
+
+public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
         if (!Platform.isFxApplicationThread()) {
            Platform.runLater(() -> this.mostrarListaVehiculos(vehiculos)); 
            return;
         }
 
-        if (vehiculos == null || vehiculos.isEmpty()) {
-            Alert alerta = new Alert(AlertType.INFORMATION);
-            alerta.setTitle("Sin entregas pendientes");
-            alerta.setHeaderText(null);
-            alerta.setContentText("Por el momento no hay vehículos con estatus 'En espera'.");
-            alerta.showAndWait();
-            return;
-        }
-
+        // Inicializamos la interfaz y limpiamos el buscador
         initializeUI();
         textFieldBusqueda.setText("");
         
-        ObservableList<VehiculosPendientesDTO> data = FXCollections.observableArrayList(vehiculos);
+        // 2. Preparamos los datos. Si la lista es nula, creamos una vacía.
+        ObservableList<VehiculosPendientesDTO> data =  (vehiculos != null) ? FXCollections.observableArrayList(vehiculos) : FXCollections.observableArrayList();
+        
+
         tableVehiculos.setItems(data);
 
+
         stage.show();
+
+
+        if (data.isEmpty()) {
+            Alert alerta = new Alert(AlertType.INFORMATION);
+            alerta.setTitle("Sin entregas pendientes");
+            alerta.setHeaderText(null);
+            alerta.setContentText("Por el momento no hay vehículos con estatus 'Listo para entrega'.");
+            alerta.showAndWait();
+            
+
+        }
     }
 
-    /**
-     * Equivalente a retornarCoincidencias(coincidencias) del diagrama.
-     */
+
     public void retornarCoincidencias(List<VehiculosPendientesDTO> coincidencias) {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(() -> this.retornarCoincidencias(coincidencias));
@@ -141,13 +143,9 @@ public class VistaVehiculosEntrega {
         tableVehiculos.setItems(data);
     }
 
-    // =====================================================================
-    // MANEJADORES DE EVENTOS FXML (Llamados desde los botones de la interfaz)
-    // =====================================================================
 
-    /**
-     * Se ejecuta cuando el usuario presiona el botón "Buscar".
-     */
+
+
     @FXML
     public void handleBuscar() {
         if (control != null) {
@@ -156,22 +154,23 @@ public class VistaVehiculosEntrega {
         }
     }
 
-    /**
-     * Se ejecuta cuando el usuario presiona el botón "Ver Resumen".
-     */
+
     @FXML
     public void handlefinalizarEntrega() {
     VehiculosPendientesDTO seleccionado = tableVehiculos.getSelectionModel().getSelectedItem();
 
         if (seleccionado != null) {
-            // 2. Le pasamos el ID a tu método del controlador
+  
             boolean exito = control.finalizarEntrega(seleccionado.getId());
             
             if (exito) {
-                // Mostrar alerta de éxito
+
+                muestraDialogoConMensaje("Vehiculo entregado con exito");
+
             }
         } else {
-            // Mostrar alerta pidiendo que seleccione un vehículo primero
+            
+            muestraDialogoConMensaje("Seleccione un vehiculo primero");
         }
     }
 
@@ -181,13 +180,18 @@ public class VistaVehiculosEntrega {
         }
     }
 
-    /**
-     * Se ejecuta cuando el usuario presiona el botón "Cerrar".
-     */
     @FXML
     public void handleCerrar() {
         if (stage != null) {
             stage.close();
         }
+    }
+
+        public void muestraDialogoConMensaje(String mensaje) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Información");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }

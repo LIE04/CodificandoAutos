@@ -36,14 +36,16 @@ public interface ReparacionRepository extends CrudRepository<Reparacion, Integer
            "v.placas AS placas, " +
            "r.estatusServicio AS estatusServicio " +
            "FROM Reparacion r " +
-           "LEFT JOIN r.cotizacion coti " +  // <-- CAMBIO CLAVE: Usamos LEFT JOIN para que no desaparezcan las reparaciones sin cotización
-           "JOIN r.vehiculo v " +            // Estos sí pueden ser JOIN normales porque un vehículo siempre existe y tiene cliente
+           "LEFT JOIN r.cotizacion coti " +  
+           "JOIN r.vehiculo v " +            
            "JOIN v.cliente cli " +      
-           "WHERE r.estatusServicio = 'En espera'") // Asegúrate de que este texto sea exactamente el que usas en tu BD
+           "WHERE r.estatusServicio IN ('En espera', 'Listo para entregar')") 
 
     /*
     Metodo para devolver la lista
     */
-    List<VehiculosPendientesDTO> findVehiculosListosParaEntrega();
+    List<VehiculosPendientesDTO> findVehiculosActivos();
     
+
+
 }

@@ -82,6 +82,9 @@ public class ControlVehiculosEntrega {
             
             SolicitarInventario();
 
+        } else {
+            
+            vistaVehiculoEntrega.muestraDialogoConMensaje("Error: No puedes entregar este vehículo porque sigue 'En espera'");
         }
 
         return exito;
