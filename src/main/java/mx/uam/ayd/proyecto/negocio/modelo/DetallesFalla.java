@@ -19,7 +19,7 @@ public class DetallesFalla {
     @ManyToOne
     @JoinColumn(name = "id_reparacion")
     private Reparacion reparacion;
-
+    //En espera, Listo para entregar, Entregado
     public DetallesFalla() {
     }
 
