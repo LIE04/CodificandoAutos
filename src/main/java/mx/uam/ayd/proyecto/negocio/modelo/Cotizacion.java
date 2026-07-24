@@ -45,7 +45,8 @@ public class Cotizacion {
    @OneToMany(mappedBy = "cotizacion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CotizacionConcepto> conceptos = new ArrayList<>();
 
-    public Cotizacion(){  
+    public Cotizacion(){ 
+		this.estadoAprobacion = "Pendiente"; 
     }
     
  

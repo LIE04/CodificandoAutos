@@ -107,11 +107,11 @@ public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
            return;
         }
 
-        // Inicializamos la interfaz y limpiamos el buscador
+
         initializeUI();
         textFieldBusqueda.setText("");
         
-        // 2. Preparamos los datos. Si la lista es nula, creamos una vacía.
+ 
         ObservableList<VehiculosPendientesDTO> data =  (vehiculos != null) ? FXCollections.observableArrayList(vehiculos) : FXCollections.observableArrayList();
         
 

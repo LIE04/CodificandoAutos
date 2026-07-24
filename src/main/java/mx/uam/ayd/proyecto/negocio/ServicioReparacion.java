@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.uam.ayd.proyecto.datos.ReparacionRepository;
 import mx.uam.ayd.proyecto.datos.ReparacionRepository.VehiculosPendientesDTO;
+import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
 //import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 
@@ -80,11 +81,12 @@ public class ServicioReparacion {
         return reparacionRepository.save(reparacion);
     }
 
+    //Obtener vehiculos pendientes para la lista HU-42
     public List<VehiculosPendientesDTO> obtenerVehiculosParaEntrega() {
 
         return reparacionRepository.findVehiculosActivos();
     }
-
+    //Cambiar Estatus sevicio de los vehiculos con 'Listo para entrega' a 'Entregado' HU-42
     public boolean marcarEntregado(Integer idReparacion){
 
         Optional<Reparacion> reparacionOpt = reparacionRepository.findById(idReparacion);
@@ -92,14 +94,16 @@ public class ServicioReparacion {
         if(reparacionOpt.isPresent()) {
             Reparacion reparacion = reparacionOpt.get();
             
-            if(reparacion.getEstatusServicio().equalsIgnoreCase("Listo para entregar")){
+            if(reparacion.getEstatusServicio().equalsIgnoreCase("Listo para entrega")){
                reparacion.setEstatusServicio("Entregado");
                reparacionRepository.save(reparacion);
                return true;
             }
+
         }
 
         return false;
 
     }
+
 }

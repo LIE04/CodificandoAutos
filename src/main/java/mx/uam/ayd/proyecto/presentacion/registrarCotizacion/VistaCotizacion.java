@@ -1,270 +1,199 @@
 package mx.uam.ayd.proyecto.presentacion.registrarCotizacion;
 
-import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
+import mx.uam.ayd.proyecto.negocio.modelo.Cliente;
+import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
+import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
-import org.springframework.context.annotation.Lazy;
-
-import mx.uam.ayd.proyecto.negocio.modelo.Cliente;
-import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
-import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 
 @Component
 public class VistaCotizacion {
 
-    @Autowired
-    @Lazy
-    private ControlCotizacion control;
-
-    // --- VARIABLES DE VENTANA (Estilo VistaVehiculosEntrega) ---
-    private Stage stage;
-    private boolean initialized = false;
-
-    // --- ELEMENTOS DE LA INTERFAZ (Inyectados desde el FXML) ---
+    // --- Elementos de JavaFX (Vinculados a tu FXML) ---
     @FXML private ComboBox<Cliente> comboClientes;
     @FXML private ComboBox<Vehiculo> comboVehiculos;
     
-    @FXML private TextField txtBuscarRefaccion;
+    // Panel de Refacciones
+    @FXML private TextField txtBuscarPieza;
+    @FXML private Button btnBuscarPieza;
+    @FXML private ListView<Refaccion> listRefaccionesEncontradas; 
     @FXML private TextField txtCantidadRefaccion;
     @FXML private Button btnAgregarRefaccion;
     
-    @FXML private ListView<String> listaConceptosVista; 
-    
+    // Panel de Servicios
     @FXML private TextArea txtFallas;
     @FXML private TextArea txtManoObra;
     @FXML private TextField txtCostoManoObra;
+    @FXML private Button btnActualizarServicio;
     
-    @FXML private Label lblTotalRefacciones;
-    @FXML private Label lblCostoTotal;
-    
+    // Totales y Guardar
+    @FXML private Label lblSubtotal;
+    @FXML private Label lblIva;
+    @FXML private Label lblTotal;
     @FXML private Button btnGuardarCotizacion;
 
-    public VistaCotizacion() {
-        // Constructor vacío
-    }
+    private ControlCotizacion control;
 
-    // =====================================================================
-    // INICIALIZADOR FXML 
-    // =====================================================================
-    @FXML
-    public void initialize() {
-        // Se ejecuta automáticamente al cargar el FXML
-        txtCantidadRefaccion.setText("1"); // Valor por defecto
-    }
-
-    // =====================================================================
-    // CONFIGURACIÓN DE LA VENTANA
-    // =====================================================================
-    private void initializeUI() {
-        if (initialized) {
-            return;
-        }
-
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(this::initializeUI);
-            return;
-        }
+    // --- Métodos de configuración inicial ---
+    public void iniciar(ControlCotizacion control) {
+        this.control = control;
 
         try {
-            stage = new Stage();
-            stage.setTitle("Generar Nueva Cotización");
-
-            // Asegúrate de que el nombre del archivo coincida con el que guardaste
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventana-cotizacion.fxml"));
+            // 1. Cargar el archivo FXML (Asegúrate de que la ruta sea correcta según tu proyecto)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventana-cotizacion.fxml")); 
+            
+            // 2. ¡EL PASO CLAVE! Le decimos a JavaFX: "Usa ESTA instancia de Spring como controlador"
             loader.setController(this);
             
-            Scene scene = new Scene(loader.load(), 600, 650);
-            stage.setScene(scene);
-
-            initialized = true;
+            // 3. Crear la ventana
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Registrar Cotización");
+            
+            // 4. Mostrar la ventana
+            stage.show();
+            
+            // 5. AHORA SÍ, los elementos ya no son null, podemos bloquear y configurar
+            bloquearEdicion();
+            configurarEventos();
+            
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Error al cargar el archivo FXML: " + e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Equivalente al mostrarInventario() de tu otro ejemplo. 
-     * Muestra la ventana y arranca el caso de uso.
-     */
-    public void iniciar() {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(this::iniciar);
-            return;
+            mostrarMensajeError("Error al cargar la ventana de cotización.");
         }
 
-        initializeUI();
         
-        // Limpiamos los campos en caso de que se vuelva a abrir la ventana
-        listaConceptosVista.getItems().clear();
-        txtFallas.clear();
-        txtManoObra.clear();
-        txtCostoManoObra.clear();
-        lblTotalRefacciones.setText("$0.0");
-        lblCostoTotal.setText("$0.0");
+    }
 
-        stage.show();
+    private void configurarEventos() {
+        // Evento cuando el usuario elige un cliente en el ComboBox
+        comboClientes.setOnAction(event -> {
+            Cliente seleccionado = comboClientes.getSelectionModel().getSelectedItem();
+            control.onClienteSeleccionado(seleccionado);
+        });
+
+        // Evento cuando el usuario elige un vehículo en el ComboBox
+        comboVehiculos.setOnAction(event -> {
+            Vehiculo seleccionado = comboVehiculos.getSelectionModel().getSelectedItem();
+            control.onVehiculoSeleccionado(seleccionado);
+        });
+    }
+
+    // --- Métodos llamados por el Controlador (Flujo hacia la UI) ---
+    public void mostrarClientes(List<Cliente> clientesDisponibles) {
+        comboClientes.setItems(FXCollections.observableArrayList(clientesDisponibles));
+    }
+
+    public void mostrarVehiculos(List<Vehiculo> vehiculosDelCliente) {
+        comboVehiculos.setItems(FXCollections.observableArrayList(vehiculosDelCliente));
+        comboVehiculos.setDisable(false);
+    }
+
+    public void permitirEdicion() {
+        // Habilita los campos tras validar la cita del vehículo
+        txtBuscarPieza.setDisable(false);
+        btnBuscarPieza.setDisable(false);
+        listRefaccionesEncontradas.setDisable(false);
+        txtCantidadRefaccion.setDisable(false);
+        btnAgregarRefaccion.setDisable(false);
         
-        // Le decimos al control que arranque su proceso (para que llame a mostrarClientes)
-        if (control != null) {
-            control.iniciarVistaCotizacion(this); 
-        }
+        txtFallas.setDisable(false);
+        txtManoObra.setDisable(false);
+        txtCostoManoObra.setDisable(false);
+        btnActualizarServicio.setDisable(false);
+        btnGuardarCotizacion.setDisable(false);
     }
 
-    // =====================================================================
-    // MÉTODOS LLAMADOS POR EL CONTROL (Actualizan la vista)
-    // =====================================================================
-
-    public void mostrarClientes(List<Cliente> clientes) {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(() -> this.mostrarClientes(clientes));
-            return;
-        }
-        comboClientes.getItems().clear();
-        comboClientes.getItems().addAll(clientes);
+    private void bloquearEdicion() {
+        comboVehiculos.setDisable(true);
+        txtBuscarPieza.setDisable(true);
+        btnBuscarPieza.setDisable(true);
+        listRefaccionesEncontradas.setDisable(true);
+        txtCantidadRefaccion.setDisable(true);
+        btnAgregarRefaccion.setDisable(true);
+        txtFallas.setDisable(true);
+        txtManoObra.setDisable(true);
+        txtCostoManoObra.setDisable(true);
+        btnActualizarServicio.setDisable(true);
+        btnGuardarCotizacion.setDisable(true);
     }
 
-    public void mostrarVehiculos(List<Vehiculo> vehiculos) {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(() -> this.mostrarVehiculos(vehiculos));
-            return;
-        }
-        comboVehiculos.getItems().clear();
-        comboVehiculos.getItems().addAll(vehiculos);
+    public void mostrarRefaccion(List<Refaccion> encontrada) {
+        listRefaccionesEncontradas.setItems(FXCollections.observableArrayList(encontrada));
     }
 
-    public void actualizarEtiquetasTotales(float costoRefacciones, float costoTotal) {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(() -> this.actualizarEtiquetasTotales(costoRefacciones, costoTotal));
-            return;
-        }
-        lblTotalRefacciones.setText("$" + costoRefacciones);
-        lblCostoTotal.setText("$" + costoTotal);
+    public void recalcularTotales() {
+        // Aquí puedes realizar el cálculo visual sumando los elementos en pantalla
+        // o si prefieres, el controlador podría devolverte los totales ya calculados.
+        actualizarEtiquetasTotales(0.0f, 0.0f, 0.0f); // Valores de ejemplo
     }
 
-    // =====================================================================
-    // MANEJADORES DE EVENTOS FXML (Acciones del usuario)
-    // =====================================================================
+    private void actualizarEtiquetasTotales(float subtotal, float iva, float total) {
+        lblSubtotal.setText("$ " + String.format("%.2f", subtotal));
+        lblIva.setText("$ " + String.format("%.2f", iva));
+        lblTotal.setText("$ " + String.format("%.2f", total));
+    }
+
+    public void mostrarMensajeExito() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Éxito");
+        alert.setHeaderText(null);
+        alert.setContentText("Cotización guardada exitosamente.");
+        alert.showAndWait();
+        // Aquí podrías limpiar la ventana o cerrarla
+    }
+
+    public void mostrarMensajeError(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+    // --- Métodos FXML (Disparados desde botones en la UI) ---
 
     @FXML
-    public void onClienteSeleccionado() {
-        Cliente seleccionado = comboClientes.getSelectionModel().getSelectedItem();
-        if (seleccionado != null && control != null) {
-            control.clienteSeleccionado(seleccionado);
-        }
+    public void accionBuscarRefaccion() {
+        String nombrePieza = txtBuscarPieza.getText();
+        control.onBuscarRefaccionClick(nombrePieza);
     }
 
     @FXML
-    public void onVehiculoSeleccionado() {
-        Cliente cliente = comboClientes.getSelectionModel().getSelectedItem();
-        Vehiculo vehiculo = comboVehiculos.getSelectionModel().getSelectedItem();
-        
-        // Aquí arranca el borrador cuando el control esté listo
-        /* if (cliente != null && vehiculo != null && control != null) {
-            control.iniciarNuevaCotizacion(cliente, vehiculo);
-        } */
-    }
-
-    @FXML
-    public void onAgregarRefaccionClick() {
-        String nombrePieza = txtBuscarRefaccion.getText();
-        String cantTexto = txtCantidadRefaccion.getText();
-        
-        if (nombrePieza.isEmpty() || cantTexto.isEmpty()) {
-            mostrarMensajeError("Ingrese nombre y cantidad de la refacción.");
-            return;
-        }
-
+    public void accionAgregarRefaccion() {
+        Refaccion seleccionada = listRefaccionesEncontradas.getSelectionModel().getSelectedItem();
         try {
-            int cantidad = Integer.parseInt(cantTexto);
-            
-            if (control != null) {
-                Refaccion encontrada = control.buscarRefaccion(nombrePieza);
-                
-                if (encontrada != null) {
-                    control.agregarRefaccionACotizacion(encontrada, cantidad);
-                    
-                    listaConceptosVista.getItems().add(cantidad + "x " + encontrada.getNombre() + " - $" + encontrada.getPrecio());
-                    
-                    txtBuscarRefaccion.clear();
-                    txtCantidadRefaccion.setText("1"); // Restaurar a 1
-                } else {
-                    mostrarMensajeError("Refacción no encontrada en el inventario.");
-                }
-            }
+            int cantidad = Integer.parseInt(txtCantidadRefaccion.getText());
+            control.onAgregarRefaccion(seleccionada, cantidad);
         } catch (NumberFormatException e) {
-            mostrarMensajeError("La cantidad debe ser un número entero.");
-        } catch (IllegalArgumentException e) {
-            mostrarMensajeError(e.getMessage());
+            mostrarMensajeError("Ingrese una cantidad válida.");
         }
-    } 
+    }
 
     @FXML
-    public void onActualizarServicio() {
+    public void accionActualizarServicio() {
         String fallas = txtFallas.getText();
         String manoObra = txtManoObra.getText();
-        
-        float costoManoObra = 0;
-        if (!txtCostoManoObra.getText().isEmpty()) {
-            try {
-                costoManoObra = Float.parseFloat(txtCostoManoObra.getText());
-            } catch (NumberFormatException e) {
-                // Ignorar si el usuario teclea algo que no sea un número mientras escribe
-            }
-        }
-        
-        if (control != null) {
-            control.capturarDatosServicio(fallas, manoObra, costoManoObra);
+        try {
+            float costo = Float.parseFloat(txtCostoManoObra.getText());
+            control.onActualizarServicio(fallas, manoObra, costo);
+        } catch (NumberFormatException e) {
+            mostrarMensajeError("Ingrese un costo válido para la mano de obra.");
         }
     }
 
     @FXML
-    public void onGuardarClick() {
-        onActualizarServicio(); 
-        
-        if (control != null) {
-            control.finalizarCotizacion();
-            mostrarMensajeExito("¡Cotización generada y guardada con éxito!");
-            
-            if (stage != null) {
-                stage.close(); // Cierra la ventana tras guardar
-            }
-        }
-    }
-
-    // =====================================================================
-    // UTILIDADES
-    // =====================================================================
-
-    private void mostrarMensajeError(String mensaje) {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(() -> this.mostrarMensajeError(mensaje));
-            return;
-        }
-        Alert alerta = new Alert(Alert.AlertType.ERROR);
-        alerta.setTitle("Error");
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensaje);
-        alerta.showAndWait();
-    }
-
-    private void mostrarMensajeExito(String mensaje) {
-        if (!Platform.isFxApplicationThread()) {
-            Platform.runLater(() -> this.mostrarMensajeExito(mensaje));
-            return;
-        }
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-        alerta.setTitle("Éxito");
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensaje);
-        alerta.showAndWait();
+    public void accionGuardarCotizacion() {
+        control.onGuardarClick();
     }
 }
