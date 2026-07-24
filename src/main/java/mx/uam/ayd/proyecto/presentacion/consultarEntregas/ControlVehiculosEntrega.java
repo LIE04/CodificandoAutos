@@ -11,6 +11,9 @@ import mx.uam.ayd.proyecto.datos.ReparacionRepository.VehiculosPendientesDTO;
 import mx.uam.ayd.proyecto.negocio.ServicioReparacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
 import mx.uam.ayd.proyecto.presentacion.consultarEntregas.VistaVehiculosEntrega;
+import mx.uam.ayd.proyecto.presentacion.controlCalidad.ControlControlCalidad;
+import mx.uam.ayd.proyecto.presentacion.controlCalidad.ControlControlCalidad;
+import mx.uam.ayd.proyecto.presentacion.controlCalidad.ControlControlCalidad;
 
 
 
@@ -23,11 +26,15 @@ public class ControlVehiculosEntrega {
     @Autowired
     private VistaVehiculosEntrega vistaVehiculoEntrega;
 
+    @Autowired
+    private ControlControlCalidad controlControlCalidad;
+
     private List<VehiculosPendientesDTO> inventarioActual;
 
-    public ControlVehiculosEntrega(ServicioReparacion servicioReparacion, VistaVehiculosEntrega vistaVehiculoEntrega) {
+    public ControlVehiculosEntrega(ServicioReparacion servicioReparacion, VistaVehiculosEntrega vistaVehiculoEntrega, ControlControlCalidad controlControlCalidad) {
 		this.servicioReparacion = servicioReparacion;
 		this.vistaVehiculoEntrega = vistaVehiculoEntrega;
+        this.controlControlCalidad = controlControlCalidad;
 	}
 
     public void inicia() {
@@ -72,6 +79,15 @@ public class ControlVehiculosEntrega {
     }
 
     return coincidencias;
+    }
+
+    //Inicia HU-40
+    public void solicitarEscaner(int idReparacion) {
+
+        controlControlCalidad.inicia(idReparacion);
+
+        SolicitarInventario();
+
     }
 
     public boolean finalizarEntrega(Integer idReparacion) {

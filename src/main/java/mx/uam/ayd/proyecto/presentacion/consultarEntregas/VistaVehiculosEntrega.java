@@ -174,9 +174,22 @@ public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
         }
     }
 
-    @FXML void solicitarEscaner() {
-              if (control != null) {
-           // control.solicitarEscaner();
+    @FXML 
+    public void solicitarEscaner() {
+        VehiculosPendientesDTO seleccionado = tableVehiculos.getSelectionModel().getSelectedItem();
+              if (seleccionado != null) {
+
+                String estatus = seleccionado.getEstatusServicio();
+                if (estatus != null && estatus.equalsIgnoreCase("En espera")){
+
+                    control.solicitarEscaner(seleccionado.getId());
+
+                } else {
+                    muestraDialogoConMensaje("Solo se puede seleccionar el escaner para vehiculos con estatus 'En espera'");
+                }
+                  
+        } else {
+            muestraDialogoConMensaje("Seleccione un vehiculo primero");
         }
     }
 
