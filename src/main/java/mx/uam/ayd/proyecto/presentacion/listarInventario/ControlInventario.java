@@ -88,8 +88,8 @@ public class ControlInventario {
                return;
             }
 
-            if (precio < 0) {
-                vistaEditarRefaccion.muestraDialogoConMensaje("El precio no puede ser menor a 0.");
+            if (precio <= 0) {
+                vistaEditarRefaccion.muestraDialogoConMensaje("El precio no puede ser igual o menor a 0.");
                 return; 
             }
 

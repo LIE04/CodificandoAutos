@@ -112,7 +112,7 @@ public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
         textFieldBusqueda.setText("");
         
  
-        ObservableList<VehiculosPendientesDTO> data =  (vehiculos != null) ? FXCollections.observableArrayList(vehiculos) : FXCollections.observableArrayList();
+        ObservableList<VehiculosPendientesDTO> data = (vehiculos != null) ? FXCollections.observableArrayList(vehiculos) : FXCollections.observableArrayList();
         
 
         tableVehiculos.setItems(data);
@@ -161,11 +161,9 @@ public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
 
         if (seleccionado != null) {
   
-            boolean exito = control.finalizarEntrega(seleccionado.getId());
+            boolean exito = control.terminarEntrega(seleccionado.getId());
             
             if (exito) {
-
-                muestraDialogoConMensaje("Vehiculo entregado con exito");
 
             }
         } else {

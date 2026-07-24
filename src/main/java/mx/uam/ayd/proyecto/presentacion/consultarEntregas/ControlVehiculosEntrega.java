@@ -52,11 +52,11 @@ public class ControlVehiculosEntrega {
 
     public void buscarRefaccion(String parametroBusqueda) {
 
-        List<VehiculosPendientesDTO> coincidencias = retornarCoincidencias(parametroBusqueda);
+        List<VehiculosPendientesDTO> coincidencias = filtarCoincidencias(parametroBusqueda);
         vistaVehiculoEntrega.retornarCoincidencias(coincidencias);
     }
 
-    public List<VehiculosPendientesDTO> retornarCoincidencias(String parametro) {
+    public List<VehiculosPendientesDTO> filtarCoincidencias(String parametro) {
         
     if (parametro == null || parametro.trim().isEmpty()) {
         return inventarioActual;
@@ -81,7 +81,7 @@ public class ControlVehiculosEntrega {
     return coincidencias;
     }
 
-    //Inicia HU-40
+    
     public void solicitarEscaner(int idReparacion) {
 
         controlControlCalidad.inicia(idReparacion);
@@ -90,13 +90,14 @@ public class ControlVehiculosEntrega {
 
     }
 
-    public boolean finalizarEntrega(Integer idReparacion) {
+    public boolean terminarEntrega(Integer idReparacion) {
 
         boolean exito = servicioReparacion.marcarEntregado(idReparacion);
 
         if(exito){
             
             SolicitarInventario();
+            vistaVehiculoEntrega.muestraDialogoConMensaje("Vehiculo entregado con exito");
 
         } else {
             
