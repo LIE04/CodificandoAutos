@@ -1,5 +1,7 @@
 package mx.uam.ayd.proyecto.presentacion.registrarCotizacion;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import mx.uam.ayd.proyecto.negocio.modelo.Cliente;
+import mx.uam.ayd.proyecto.negocio.modelo.CotizacionConcepto;
 import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 import org.springframework.stereotype.Component;
@@ -30,8 +33,11 @@ public class VistaCotizacion {
     @FXML private TableColumn<Refaccion, Integer> colId;
     @FXML private TableColumn<Refaccion, String> colNombre;
     @FXML private TableColumn<Refaccion, Float> colPrecio; 
-    @FXML private TextField txtCantidadRefaccion;
+    @FXML private TableColumn<Refaccion, Integer> colExistencia;
+    //@FXML private TextField txtCantidadRefaccion;
+    @FXML private Label lblContador;
     @FXML private Button btnAgregarRefaccion;
+
     
     // Panel de Servicios
     @FXML private TextArea txtFallas;
@@ -45,14 +51,18 @@ public class VistaCotizacion {
     @FXML private Label lblTotal;
     @FXML private Button btnGuardarCotizacion;
 
+    private int cantidadEscogida = 0;
+    private Refaccion refaccionActual;
     private ControlCotizacion control;
-    @FXML
 
+    @FXML
     public void initialize() {
         
         colId.setCellValueFactory(new PropertyValueFactory<>("idRefaccion"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+        colExistencia.setCellValueFactory(new PropertyValueFactory<>("existencia"));
+
     }
 
     // --- Métodos de configuración inicial ---
@@ -119,9 +129,7 @@ public class VistaCotizacion {
         txtBuscarPieza.setDisable(false);
         btnBuscarPieza.setDisable(false);
         tablaRefacciones.setDisable(false);
-        txtCantidadRefaccion.setDisable(false);
         btnAgregarRefaccion.setDisable(false);
-        
         txtFallas.setDisable(false);
         txtManoObra.setDisable(false);
         txtCostoManoObra.setDisable(false);
@@ -134,7 +142,6 @@ public class VistaCotizacion {
         txtBuscarPieza.setDisable(true);
         btnBuscarPieza.setDisable(true);
         tablaRefacciones.setDisable(true);
-        txtCantidadRefaccion.setDisable(true);
         btnAgregarRefaccion.setDisable(true);
         txtFallas.setDisable(true);
         txtManoObra.setDisable(true);
@@ -146,6 +153,7 @@ public class VistaCotizacion {
     public void mostrarRefaccion(List<Refaccion> encontrada) {
         tablaRefacciones.setItems(FXCollections.observableArrayList(encontrada));
     }
+
 
     public void recalcularTotales() {
         float subtotal = control.calcularSubtotal();
@@ -185,18 +193,34 @@ public class VistaCotizacion {
     
     // Validar que no esté vacío
         if (textoIngresado == null || textoIngresado.trim().isEmpty()) {
-            return; // O puedes mostrar una alerta pidiendo que ingrese un ID
+            return; 
         }
 
         try {
-        // Convertir el texto a Long
+        // Convertir el texto a Int
             Integer idPieza = Integer.parseInt(textoIngresado.trim());
             control.onBuscarRefaccionClick(idPieza);
         
         } catch (NumberFormatException e) {
         // Si el usuario escribe letras, evitamos que la app explote
             mostrarMensajeError("Error: El ID debe ser un número válido.");
-        // Si tienes un método para mostrar alertas en tu vista, úsalo aquí.
+        }
+    }
+
+    @FXML
+    public void accionBotonMas() {
+        Refaccion seleccionada = tablaRefacciones.getSelectionModel().getSelectedItem();
+        if (seleccionada != null && cantidadEscogida < seleccionada.getExistencia()) {
+            cantidadEscogida++;
+            lblContador.setText(String.valueOf(cantidadEscogida));
+         }
+    }
+
+    @FXML
+    public void accionBotonMenos() {
+        if (cantidadEscogida > 0) {
+            cantidadEscogida--;
+            lblContador.setText(String.valueOf(cantidadEscogida));
         }
     }
 
@@ -208,18 +232,16 @@ public class VistaCotizacion {
             mostrarMensajeError("Seleccione una refaccion de la tabla primero");
             return;
         }
-
-        try {
-            int cantidad = Integer.parseInt(txtCantidadRefaccion.getText());
-            control.onAgregarRefaccion(seleccionada, cantidad);
-
-            if(cantidad > seleccionada.getExistencia()) {
-                mostrarMensajeError("Stock insuficiente! Solo hay" + seleccionada.getExistencia() + "piezas disponibles");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            mostrarMensajeError("Ingrese una cantidad válida.");
+        if (cantidadEscogida == 0) {
+            mostrarMensajeError("Escoge al menos 1 pieza");
+            return;
         }
+
+        control.onAgregarRefaccion(seleccionada,cantidadEscogida);
+
+        cantidadEscogida = 0;
+        lblContador.setText("0");
+
     }
 
     @FXML
@@ -236,6 +258,18 @@ public class VistaCotizacion {
 
     @FXML
     public void accionGuardarCotizacion() {
+        String fallas = txtFallas.getText();
+        String manoObra = txtManoObra.getText();
+        String costoTxt = txtCostoManoObra.getText();
+
+        if (fallas == null || fallas.trim().isEmpty() ||
+        manoObra == null || manoObra.trim().isEmpty() ||
+        costoTxt == null || costoTxt.trim().isEmpty()) {
+        
+        mostrarMensajeError("¡Atención! Debes llenar las fallas, la mano de obra y el costo antes de guardar.");
+        return; 
+        }
+
         control.onGuardarClick();
     }
 }

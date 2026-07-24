@@ -26,6 +26,8 @@ public class ServicioCotizacion {
 
     private final CotizacionRepository cotizacionRepository;
 
+    
+
     private Cotizacion cotizacion;
 
     @Autowired
@@ -70,12 +72,12 @@ public class ServicioCotizacion {
     return true;
     }
 
-
+    
     public boolean capturarDatosServicio(String fallas, String manoObra, float costoManoObra) {
-    // 1. Verificamos que el borrador exista
-    if (this.cotizacion == null) {
-        return false;
-    }
+        // 1. Verificamos que el borrador exista
+        if (this.cotizacion == null) {
+            return false;
+        }
 
     // Usamos setters
     this.cotizacion.setDescripcionFallas(fallas);

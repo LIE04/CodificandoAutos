@@ -59,12 +59,21 @@
             <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
             <TableColumn fx:id="colNombre" prefWidth="200.0" text="Nombre" />
             <TableColumn fx:id="colPrecio" prefWidth="100.0" text="Precio" />
+            <TableColumn fx:id="colExistencia" prefWidth="100.0" text="Existencia" />
           </columns>
         </TableView>
 
-        <HBox spacing="10.0" alignment="CENTER_LEFT">
-            <Label text="Cantidad:" />
-            <TextField fx:id="txtCantidadRefaccion" prefWidth="70.0" text="1" />
+        <HBox spacing="15.0" alignment="CENTER_LEFT">
+             <!-- Botón para restar -->
+            <Button text=" - " onAction="#accionBotonMenos" />
+    
+             <!-- Etiqueta que muestra el número (empieza en 0) -->
+            <Label fx:id="lblContador" text="0" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+    
+            <!-- Botón para sumar -->
+             <Button text=" + " onAction="#accionBotonMas" />
+    
+            <!-- Botón para confirmar y mandar a la tabla -->
             <Button fx:id="btnAgregarRefaccion" onAction="#accionAgregarRefaccion" text="Agregar a Cotización" />
         </HBox>
     </VBox>

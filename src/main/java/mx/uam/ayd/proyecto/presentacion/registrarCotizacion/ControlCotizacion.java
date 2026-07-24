@@ -1,6 +1,7 @@
 package mx.uam.ayd.proyecto.presentacion.registrarCotizacion;
 
 import mx.uam.ayd.proyecto.negocio.modelo.Cliente;
+import mx.uam.ayd.proyecto.negocio.modelo.CotizacionConcepto;
 import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 import mx.uam.ayd.proyecto.negocio.modelo.Cita;
 import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
@@ -75,16 +76,17 @@ public class ControlCotizacion {
     }
 
     public void onAgregarRefaccion(Refaccion seleccionada, int cantidad) {
-        if (seleccionada != null && cantidad > 0) {
+        if (seleccionada != null) {
             boolean exito = servicioCotizacion.agregarRefaccionACotizacionBorrador(seleccionada, cantidad);
             if (exito) {
                 float costoDeEstaPieza = seleccionada.getPrecio() * cantidad;
                 this.totalRefacciones = this.totalRefacciones + costoDeEstaPieza;
 
                 vista.recalcularTotales();
+
             } 
         }else {
-            vista.mostrarMensajeError("Seleccione una refaccion y asegurese de la cantidad sea mayor a 0");
+            vista.mostrarMensajeError("Seleccione una refaccion");
         }
     }
 
