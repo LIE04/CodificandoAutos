@@ -212,6 +212,11 @@ public class VistaCotizacion {
         try {
             int cantidad = Integer.parseInt(txtCantidadRefaccion.getText());
             control.onAgregarRefaccion(seleccionada, cantidad);
+
+            if(cantidad > seleccionada.getExistencia()) {
+                mostrarMensajeError("Stock insuficiente! Solo hay" + seleccionada.getExistencia() + "piezas disponibles");
+                return;
+            }
         } catch (NumberFormatException e) {
             mostrarMensajeError("Ingrese una cantidad válida.");
         }

@@ -82,9 +82,9 @@ public class ControlCotizacion {
                 this.totalRefacciones = this.totalRefacciones + costoDeEstaPieza;
 
                 vista.recalcularTotales();
-            } else {
-                vista.mostrarMensajeError("Seleccione una refaccion y asegurese de la cantidad sea mayor a 0");
-            }
+            } 
+        }else {
+            vista.mostrarMensajeError("Seleccione una refaccion y asegurese de la cantidad sea mayor a 0");
         }
     }
 
