@@ -35,7 +35,8 @@ public interface RefaccionRepository extends CrudRepository<Refaccion, Integer> 
 
     public List<Refaccion> findAll();
 
-    //HU-14
+    
     public List<Refaccion> findByNombreContainingIgnoreCase(String nombre);
+
 
 }

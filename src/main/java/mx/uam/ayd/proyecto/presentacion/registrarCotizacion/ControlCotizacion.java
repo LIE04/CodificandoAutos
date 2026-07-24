@@ -22,6 +22,8 @@ public class ControlCotizacion {
     @Autowired private ServicioCita servicioCita;
     @Autowired private ServicioRefaccion servicioRefaccion;
     @Autowired private ServicioCotizacion servicioCotizacion;
+    private float totalRefacciones = 0.0f;
+    private float costoManoObra = 0.0f;
     
     @Autowired private VistaCotizacion vista;
 
@@ -49,20 +51,39 @@ public class ControlCotizacion {
                 }
             } else {
                 vista.mostrarMensajeError("El vehículo no tiene una cita pendiente.");
+                vista.bloquearEdicion();
+                
             }
         }
     }
 
-    public void onBuscarRefaccionClick(String nombrePieza) {
-        List<Refaccion> encontrada = servicioRefaccion.buscarRefaccion(nombrePieza);
+    public void onBuscarRefaccionClick(Integer idPieza) {
+        List<Refaccion> encontrada = servicioRefaccion.buscarRefaccion(idPieza);
         vista.mostrarRefaccion(encontrada);
+    }
+
+    public float calcularSubtotal() {
+        return totalRefacciones + costoManoObra;
+    }
+
+    public float calcularIva() {
+        return calcularSubtotal() * 0.16f; 
+    }
+
+    public float calcularTotal() {
+        return calcularSubtotal() + calcularIva();
     }
 
     public void onAgregarRefaccion(Refaccion seleccionada, int cantidad) {
         if (seleccionada != null && cantidad > 0) {
             boolean exito = servicioCotizacion.agregarRefaccionACotizacionBorrador(seleccionada, cantidad);
             if (exito) {
+                float costoDeEstaPieza = seleccionada.getPrecio() * cantidad;
+                this.totalRefacciones = this.totalRefacciones + costoDeEstaPieza;
+
                 vista.recalcularTotales();
+            } else {
+                vista.mostrarMensajeError("Seleccione una refaccion y asegurese de la cantidad sea mayor a 0");
             }
         }
     }
@@ -70,6 +91,8 @@ public class ControlCotizacion {
     public void onActualizarServicio(String fallas, String manoObra, float costoManoObra) {
         boolean exito = servicioCotizacion.capturarDatosServicio(fallas, manoObra, costoManoObra);
         if (exito) {
+
+            this.costoManoObra = costoManoObra;
             vista.recalcularTotales();
         }
     }

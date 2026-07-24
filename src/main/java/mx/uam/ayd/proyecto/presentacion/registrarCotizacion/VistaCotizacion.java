@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import mx.uam.ayd.proyecto.negocio.modelo.Cliente;
 import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
@@ -25,7 +26,10 @@ public class VistaCotizacion {
     // Panel de Refacciones
     @FXML private TextField txtBuscarPieza;
     @FXML private Button btnBuscarPieza;
-    @FXML private ListView<Refaccion> listRefaccionesEncontradas; 
+    @FXML private TableView<Refaccion> tablaRefacciones;
+    @FXML private TableColumn<Refaccion, Integer> colId;
+    @FXML private TableColumn<Refaccion, String> colNombre;
+    @FXML private TableColumn<Refaccion, Float> colPrecio; 
     @FXML private TextField txtCantidadRefaccion;
     @FXML private Button btnAgregarRefaccion;
     
@@ -42,6 +46,14 @@ public class VistaCotizacion {
     @FXML private Button btnGuardarCotizacion;
 
     private ControlCotizacion control;
+    @FXML
+
+    public void initialize() {
+        
+        colId.setCellValueFactory(new PropertyValueFactory<>("idRefaccion"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+    }
 
     // --- Métodos de configuración inicial ---
     public void iniciar(ControlCotizacion control) {
@@ -85,7 +97,10 @@ public class VistaCotizacion {
         // Evento cuando el usuario elige un vehículo en el ComboBox
         comboVehiculos.setOnAction(event -> {
             Vehiculo seleccionado = comboVehiculos.getSelectionModel().getSelectedItem();
+
+            if (seleccionado != null) {
             control.onVehiculoSeleccionado(seleccionado);
+            }
         });
     }
 
@@ -103,7 +118,7 @@ public class VistaCotizacion {
         // Habilita los campos tras validar la cita del vehículo
         txtBuscarPieza.setDisable(false);
         btnBuscarPieza.setDisable(false);
-        listRefaccionesEncontradas.setDisable(false);
+        tablaRefacciones.setDisable(false);
         txtCantidadRefaccion.setDisable(false);
         btnAgregarRefaccion.setDisable(false);
         
@@ -114,11 +129,11 @@ public class VistaCotizacion {
         btnGuardarCotizacion.setDisable(false);
     }
 
-    private void bloquearEdicion() {
+    public void bloquearEdicion() {
         comboVehiculos.setDisable(true);
         txtBuscarPieza.setDisable(true);
         btnBuscarPieza.setDisable(true);
-        listRefaccionesEncontradas.setDisable(true);
+        tablaRefacciones.setDisable(true);
         txtCantidadRefaccion.setDisable(true);
         btnAgregarRefaccion.setDisable(true);
         txtFallas.setDisable(true);
@@ -129,13 +144,14 @@ public class VistaCotizacion {
     }
 
     public void mostrarRefaccion(List<Refaccion> encontrada) {
-        listRefaccionesEncontradas.setItems(FXCollections.observableArrayList(encontrada));
+        tablaRefacciones.setItems(FXCollections.observableArrayList(encontrada));
     }
 
     public void recalcularTotales() {
-        // Aquí puedes realizar el cálculo visual sumando los elementos en pantalla
-        // o si prefieres, el controlador podría devolverte los totales ya calculados.
-        actualizarEtiquetasTotales(0.0f, 0.0f, 0.0f); // Valores de ejemplo
+        float subtotal = control.calcularSubtotal();
+        float iva = control.calcularIva();
+        float total = control.calcularTotal();
+        actualizarEtiquetasTotales(subtotal, iva, total); // Valores de ejemplo
     }
 
     private void actualizarEtiquetasTotales(float subtotal, float iva, float total) {
@@ -165,13 +181,34 @@ public class VistaCotizacion {
 
     @FXML
     public void accionBuscarRefaccion() {
-        String nombrePieza = txtBuscarPieza.getText();
-        control.onBuscarRefaccionClick(nombrePieza);
+        String textoIngresado = txtBuscarPieza.getText();
+    
+    // Validar que no esté vacío
+        if (textoIngresado == null || textoIngresado.trim().isEmpty()) {
+            return; // O puedes mostrar una alerta pidiendo que ingrese un ID
+        }
+
+        try {
+        // Convertir el texto a Long
+            Integer idPieza = Integer.parseInt(textoIngresado.trim());
+            control.onBuscarRefaccionClick(idPieza);
+        
+        } catch (NumberFormatException e) {
+        // Si el usuario escribe letras, evitamos que la app explote
+            mostrarMensajeError("Error: El ID debe ser un número válido.");
+        // Si tienes un método para mostrar alertas en tu vista, úsalo aquí.
+        }
     }
 
     @FXML
     public void accionAgregarRefaccion() {
-        Refaccion seleccionada = listRefaccionesEncontradas.getSelectionModel().getSelectedItem();
+        Refaccion seleccionada = tablaRefacciones.getSelectionModel().getSelectedItem();
+
+        if(seleccionada == null){
+            mostrarMensajeError("Seleccione una refaccion de la tabla primero");
+            return;
+        }
+
         try {
             int cantidad = Integer.parseInt(txtCantidadRefaccion.getText());
             control.onAgregarRefaccion(seleccionada, cantidad);

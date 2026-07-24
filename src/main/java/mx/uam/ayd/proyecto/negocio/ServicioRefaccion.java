@@ -46,14 +46,20 @@ public class ServicioRefaccion {
     }
 
     //HU-14 Buscar refaccion para agregar a Cotizacion
-    public List<Refaccion> buscarRefaccion(String nombrePieza) {
-    // Valida que no vengan cadenas vacías
-    if (nombrePieza == null || nombrePieza.trim().isEmpty()) {
-        return new ArrayList<>(); 
-    }
+    public List<Refaccion> buscarRefaccion(Integer idPieza) {
+        List<Refaccion> resultado = new ArrayList<>();
     
-    return refaccionRepository.findByNombreContainingIgnoreCase(nombrePieza.trim());
-}
+        if (idPieza == null) {
+            return resultado; 
+        }
+    
+        // findById devuelve un Optional. Lo evaluamos para ver si existe.
+        refaccionRepository.findById(idPieza).ifPresent(refaccion -> {
+            resultado.add(refaccion); // Si se encontró, la metemos a la lista
+        });
+    
+        return resultado;
+    }
     
 
 
