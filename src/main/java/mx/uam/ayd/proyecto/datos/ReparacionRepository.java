@@ -39,7 +39,7 @@ public interface ReparacionRepository extends CrudRepository<Reparacion, Integer
            "LEFT JOIN r.cotizacion coti " +  
            "JOIN r.vehiculo v " +            
            "JOIN v.cliente cli " +      
-           "WHERE r.estatusServicio IN ('En espera', 'Listo para entregar')") 
+           "WHERE r.estatusServicio IN ('En espera', 'Listo para entrega')") 
 
     /*
     Metodo para devolver la lista

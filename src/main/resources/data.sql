@@ -65,7 +65,7 @@ INSERT INTO REPARACION (
     id_vehiculo) VALUES (
     '2026-07-18 11:00:00',
     '2026-07-20 16:00:00',
-    'Listo para entregar',
+    'Listo para entrega',
     'Alineación, balanceo, rotación de llantas y cambio de amortiguadores traseros.',
     6,
     'Garantía directa con proveedor en el caso de los amortiguadores.',
