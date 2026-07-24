@@ -75,7 +75,7 @@ public class VistaEditarRefaccion {
         stage.close();
     }
 
-        private void muestraDialogoConMensaje(String mensaje) {
+        public void muestraDialogoConMensaje(String mensaje) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Información");
         alert.setHeaderText(null);

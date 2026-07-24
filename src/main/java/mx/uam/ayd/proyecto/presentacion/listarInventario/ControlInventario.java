@@ -22,13 +22,14 @@ public class ControlInventario {
     private VistaInventario vistaInventario;
 
     @Autowired
-private VistaEditarRefaccion vistaEditarRefaccion;
+    private VistaEditarRefaccion vistaEditarRefaccion;
 
     private List<Refaccion> inventarioActual;
 
-    public ControlInventario(ServicioRefaccion servicioRefaccion, VistaInventario vistaInventario) {
+    public ControlInventario(ServicioRefaccion servicioRefaccion, VistaInventario vistaInventario, VistaEditarRefaccion vistaEditarRefaccion) {
 		this.servicioRefaccion = servicioRefaccion;
 		this.vistaInventario = vistaInventario;
+        this.vistaEditarRefaccion = vistaEditarRefaccion;
 	}
 
     public void inicia() {
@@ -81,6 +82,22 @@ private VistaEditarRefaccion vistaEditarRefaccion;
     }
 
     public void verificarEdicion(int id, String nombre, float precio, int existencias) {
+
+            if(nombre == null || nombre.trim().isEmpty()) {
+               vistaEditarRefaccion.muestraDialogoConMensaje("El nombre no puede estar vacio");
+               return;
+            }
+
+            if (precio < 0) {
+                vistaEditarRefaccion.muestraDialogoConMensaje("El precio no puede ser menor a 0.");
+                return; 
+            }
+
+            if (existencias < 0) {
+                vistaEditarRefaccion.muestraDialogoConMensaje("La existencia no puede ser menor a 0.");
+                return; 
+            }
+       
         // Se envían los datos al servicio
         boolean exito = servicioRefaccion.enviarDatos(id, nombre, precio, existencias);
         
