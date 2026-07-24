@@ -41,4 +41,12 @@ public class CotizacionConcepto {
         this.cantidad = cantidad;
         this.subtotal = this.refaccion.getPrecio() * cantidad;
     }
+
+    // Este método sirve como puente para que JavaFX lea el nombre directamente
+    public String getNombreRefaccion() {
+        if (this.refaccion != null) {
+            return this.refaccion.getNombre();
+        }
+        return "";
+    }
 }

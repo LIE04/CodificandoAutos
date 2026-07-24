@@ -20,6 +20,7 @@ public interface RefaccionRepository extends CrudRepository<Refaccion, Integer> 
      * @param nombre El nombre de la refacción a buscar
      * @return La entidad Refaccion correspondiente, o null si no se encuentra
      */
+
     public Refaccion findByNombre(String nombre);
 
     /**
@@ -33,5 +34,9 @@ public interface RefaccionRepository extends CrudRepository<Refaccion, Integer> 
     public Refaccion findByNombreAndProveedor(String nombre, String proveedor);
 
     public List<Refaccion> findAll();
+
+    
+    public List<Refaccion> findByNombreContainingIgnoreCase(String nombre);
+
 
 }

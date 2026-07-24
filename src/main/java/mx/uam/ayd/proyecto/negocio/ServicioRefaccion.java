@@ -25,11 +25,12 @@ public class ServicioRefaccion {
     public ServicioRefaccion(RefaccionRepository refaccionRepository) {
         this.refaccionRepository = refaccionRepository;
     }
-
+    //HU-12 Recupera refaccion para mostrar en innventario
     public List<Refaccion> getRefaccion(){
         return refaccionRepository.findAll();
     }
 
+    //HU-12 Envia refaccion editada
     public boolean enviarDatos(Integer id, String nombre, float precio, int existencias){
         Refaccion refaccion = refaccionRepository.findById(id).orElse(null);
 
@@ -43,17 +44,23 @@ public class ServicioRefaccion {
             return false;
         }
     }
+
+    //HU-14 Buscar refaccion para agregar a Cotizacion
+    public List<Refaccion> buscarRefaccion(Integer idPieza) {
+        List<Refaccion> resultado = new ArrayList<>();
     
-    public Refaccion buscarPorNombre(String nombrePieza) {
-        // Llamamos al método mágico del repositorio
-        Refaccion refaccion = refaccionRepository.findByNombre(nombrePieza);
-        
-        // Regla de negocio: ¿Qué pasa si no existe?
-        if (refaccion == null) {
-            throw new IllegalArgumentException("La refacción '" + nombrePieza + "' no se encuentra en el sistema.");
+        if (idPieza == null) {
+            return resultado; 
         }
-        
-        return refaccion;
+    
+        // findById devuelve un Optional. Lo evaluamos para ver si existe.
+        refaccionRepository.findById(idPieza).ifPresent(refaccion -> {
+            resultado.add(refaccion); // Si se encontró, la metemos a la lista
+        });
+    
+        return resultado;
     }
+    
+
 
 }

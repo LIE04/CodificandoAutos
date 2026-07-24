@@ -161,4 +161,12 @@ public class Refaccion {
     public void setFechaHoraRegistro(LocalDateTime fechaHoraRegistro) {
         this.fechaHoraRegistro = fechaHoraRegistro;
     }
+
+    @Override
+    public String toString() {
+       
+        return idRefaccion + " - " + nombre + " ($" + precio + ")"; 
+    }
+
+
 }
