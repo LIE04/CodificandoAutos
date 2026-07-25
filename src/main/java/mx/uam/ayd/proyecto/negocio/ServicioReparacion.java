@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.uam.ayd.proyecto.datos.ReparacionRepository;
 import mx.uam.ayd.proyecto.datos.ReparacionRepository.VehiculosPendientesDTO;
+import mx.uam.ayd.proyecto.negocio.modelo.DetallesFalla;
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
 
 import java.util.Optional;
@@ -69,13 +70,36 @@ public class ServicioReparacion {
         }
 
         // Modificación realizada por Erik para la HU-40 (Control de Calidad)
-        // Regla de Negocio: Bloqueo de entrega, regresa a revisión para que el mecánico lo atienda
-        reparacion.setEstatusServicio("En revisión / Diagnóstico");
+        // Regla de Negocio: Procesar múltiples fallas separadas por coma y agregarlas a la base de datos.
+        // Explicación: Usamos split(",") para dividir el String de entrada (ej. "falta aceite, sin frenos") 
+        // en un arreglo de palabras. Luego iteramos con un for-each, creamos un nuevo objeto DetallesFalla 
+        // por cada pedazo de texto, y lo agregamos a la reparación.
+        String[] nuevasFallas = codigosFalla.split(",");
+        for (String descripcion : nuevasFallas) {
+            String fallaLimpia = descripcion.trim(); // .trim() quita los espacios extra al inicio y al final
+            
+            if (!fallaLimpia.isEmpty()) {
+                DetallesFalla nuevaFalla = new DetallesFalla();
+                nuevaFalla.setDescripcionFalla(fallaLimpia);
+                nuevaFalla.setEstatus("En espera"); // Estatus inicial para que el mecánico sepa que está pendiente
+                
+                // Usamos el método addFalla que hicimos en Reparacion.java para vincular ambos objetos
+                reparacion.addFalla(nuevaFalla);
+            }
+        }
+
+        // Modificación realizada por Erik para la HU-40 (Control de Calidad)
+        // Regla de Negocio: Bloqueo de entrega, regresa a revisión para que el mecánico lo atienda.
+        // Explicación: Lo ponemos "En espera" de nuevo para que vuelva a salir en tu lista principal 
+        // y el botón del escáner se vuelva a habilitar.
+        reparacion.setEstatusServicio("En espera"); 
         
-        // Guardamos los códigos en las observaciones técnicas para tener evidencia
+        // Guardamos un pequeño registro en las observaciones técnicas (solo como historial en texto)
         String notasActuales = reparacion.getObservacionesTecnicas() != null ? reparacion.getObservacionesTecnicas() : "";
-        reparacion.setObservacionesTecnicas(notasActuales + " | [Control de Calidad Fallido - Códigos persistentes: " + codigosFalla + "]");
+        reparacion.setObservacionesTecnicas(notasActuales + " | [Control de Calidad Fallido - Nuevas fallas registradas]");
         
+        // Explicación: Al guardar la reparación, gracias a que configuramos CascadeType.ALL en Reparacion.java, 
+        // Spring Boot/Hibernate guarda automáticamente todas las 'DetallesFalla' nuevas en la base de datos.
         return reparacionRepository.save(reparacion);
     }
 
