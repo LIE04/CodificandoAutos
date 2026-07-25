@@ -115,6 +115,20 @@ public class ControladorPedidos {
         // Nuevos eventos para los botones de la tabla
         btnCancelarPedido.setOnAction(event -> cambiarEstadoPedido("Cancelado"));
         btnMarcarEntregado.setOnAction(event -> cambiarEstadoPedido("Entregado"));
+
+        /*
+         * 6. Lógica de activación de botones de la tabla.
+         * Se añade un listener al modelo de selección de la tabla.
+         * Justificación: Mejora la UX asegurando que las acciones de cancelar o marcar entregado
+         * solo estén disponibles cuando efectivamente hay un registro seleccionado.
+         */
+        tablaPedidos.getSelectionModel().selectedItemProperty().addListener(
+            (observable, pedidoAnterior, pedidoNuevo) -> {
+                boolean deshabilitar = (pedidoNuevo == null);
+                btnCancelarPedido.setDisable(deshabilitar);
+                btnMarcarEntregado.setDisable(deshabilitar);
+            }
+        );
     }
 
     // Métodos de Acción y Lógica Visual
