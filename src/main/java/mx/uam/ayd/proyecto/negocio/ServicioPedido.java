@@ -2,6 +2,7 @@ package mx.uam.ayd.proyecto.negocio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // <--- Nueva importación obligatoria
 
 import mx.uam.ayd.proyecto.datos.DistribuidorRepository;
 import mx.uam.ayd.proyecto.datos.PedidoRepository;
@@ -44,6 +45,14 @@ public class ServicioPedido {
      */
     public List<Distribuidor> obtenerDistribuidores() {
         return (List<Distribuidor>) distribuidorRepository.findAll();
+    }
+
+    /**
+     * Recupera todas las refacciones del catálogo para el autocompletado de la vista
+     * @return Lista de todas las refacciones disponibles
+     */
+    public List<Refaccion> obtenerRefacciones() {
+        return (List<Refaccion>) refaccionRepository.findAll();
     }
 
     /**
@@ -107,24 +116,46 @@ public class ServicioPedido {
         
         throw new IllegalArgumentException("No se encontro el pedido con ID: " + idPedido);
     }
-    /**
-     * Actualiza el estado de un pedido existente en la base de datos.
+    
+/**
+     * Actualiza el estado de un pedido y gestiona automáticamente la existencia de la refacción en la base de datos.
      * 
      * @param pedido El pedido seleccionado desde la vista.
      * @param nuevoEstado El nuevo estado ("Cancelado" o "Entregado").
      */
+    @Transactional 
     public void actualizarEstadoPedido(Pedido pedido, String nuevoEstado) {
         // Validamos que el pedido no sea nulo por seguridad
         if (pedido == null || nuevoEstado == null || nuevoEstado.trim().isEmpty()) {
             throw new IllegalArgumentException("El pedido y el estado no pueden estar vacíos");
         }
+
+        // Guardamos el estado que tenía antes del cambio para comparar
+        String estadoAnterior = pedido.getEstadoPedido();
+        Refaccion refaccion = pedido.getRefaccion();
+        int cantidadPedida = pedido.getCantidad();
+
+        // LÓGICA DE INVENTARIO
+        // CASO A: El pedido cambia a "Entregado" -> SUMAMOS EXISTENCIA
+        if (!"Entregado".equals(estadoAnterior) && "Entregado".equals(nuevoEstado)) {
+            refaccion.setExistencia(refaccion.getExistencia() + cantidadPedida);
+            refaccionRepository.save(refaccion);
+        } 
+        // CASO B: Reversión (estaba "Entregado" y lo cambian a "En espera" o "Cancelado") -> RESTAMOS EXISTENCIA
+        else if ("Entregado".equals(estadoAnterior) && !"Entregado".equals(nuevoEstado)) {
+            int nuevaExistencia = refaccion.getExistencia() - cantidadPedida;
+            refaccion.setExistencia(Math.max(0, nuevaExistencia)); // Evita que la existencia quede en negativo
+            refaccionRepository.save(refaccion);
+        }
         
+        // Actualizamos el estado del pedido
         pedido.setEstadoPedido(nuevoEstado);
         
         // Al usar save() con una entidad que ya tiene un ID asignado, 
         // Spring Data JPA hace un UPDATE en lugar de un INSERT.
         pedidoRepository.save(pedido);
     }
+    
     /**
      * Busca una refacción en la base de datos por su nombre.
      */

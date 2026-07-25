@@ -80,3 +80,39 @@ INSERT INTO REPARACION (
     'Garantía directa con proveedor en el caso de los amortiguadores.',
     (SELECT id_vehiculo FROM VEHICULO WHERE placas = 'XYZ-789')
   );
+-- ==========================================
+-- Pedidos de prueba (HU-30)
+-- ==========================================
+
+-- 1. Pedido asociado a una reparación específica (Para el Nissan Versa)
+INSERT INTO PEDIDO (fecha_pedido, estado_pedido, cantidad, id_distribuidor, id_refaccion, id_reparacion)
+VALUES (
+    '2026-07-25', 
+    'En espera', 
+    2, 
+    (SELECT id_distribuidor FROM DISTRIBUIDOR WHERE nombre = 'Refaccionaria Central'), 
+    (SELECT id_refaccion FROM REFACCION WHERE nombre = 'Balatas delanteras'),
+    (SELECT id_reparacion FROM REPARACION WHERE id_vehiculo = (SELECT id_vehiculo FROM VEHICULO WHERE placas = 'ABC-123'))
+);
+
+-- 2. Pedido para inventario local (Sin reparación asignada, valor NULL)
+INSERT INTO PEDIDO (fecha_pedido, estado_pedido, cantidad, id_distribuidor, id_refaccion, id_reparacion)
+VALUES (
+    '2026-07-24', 
+    'Entregado', 
+    5, 
+    (SELECT id_distribuidor FROM DISTRIBUIDOR WHERE nombre = 'AutoPartes del Valle'), 
+    (SELECT id_refaccion FROM REFACCION WHERE nombre = 'Filtro Aceite'),
+    NULL
+);
+
+-- 3. Pedido cancelado asociado a la Toyota Hilux
+INSERT INTO PEDIDO (fecha_pedido, estado_pedido, cantidad, id_distribuidor, id_refaccion, id_reparacion)
+VALUES (
+    '2026-07-20', 
+    'Cancelado', 
+    1, 
+    (SELECT id_distribuidor FROM DISTRIBUIDOR WHERE nombre = 'Distribuidora Norte'), 
+    (SELECT id_refaccion FROM REFACCION WHERE nombre = 'Balatas delanteras'),
+    (SELECT id_reparacion FROM REPARACION WHERE id_vehiculo = (SELECT id_vehiculo FROM VEHICULO WHERE placas = 'XYZ-789'))
+);

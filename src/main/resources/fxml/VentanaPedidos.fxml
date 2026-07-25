@@ -70,11 +70,11 @@
     <!-- Sección 3: Tabla de Seguimiento -->
     <TableView fx:id="tablaPedidos" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="colIdPedido" prefWidth="60.0" text="ID" />
+            <TableColumn fx:id="colIdPedido" prefWidth="60.0" text="ID orden" />
             <TableColumn fx:id="colDistribuidor" prefWidth="160.0" text="Distribuidor" />
             <TableColumn fx:id="colRefaccion" prefWidth="160.0" text="Refacción" />
             <TableColumn fx:id="colCantidad" prefWidth="70.0" text="Cantidad" />
-            <TableColumn fx:id="colIdReparacion" prefWidth="90.0" text="Reparación" />
+            <TableColumn fx:id="colIdReparacion" prefWidth="90.0" text="Id Reparación" />
             <TableColumn fx:id="colEstado" prefWidth="100.0" text="Estado" />
         </columns>
         <placeholder>
