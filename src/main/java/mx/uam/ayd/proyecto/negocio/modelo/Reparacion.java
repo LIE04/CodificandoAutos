@@ -49,7 +49,9 @@ public class Reparacion {
      * Lista de fallas detectadas asociadas a esta reparacion.
      * mappedBy indica que la entidad DetallesFalla es la dueña de la relación.
      */
-    @OneToMany(mappedBy = "reparacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // Modificación realizada por Erik para la HU-40 (Control de Calidad)
+    // Cambiamos el fetch a EAGER para evitar el LazyInitializationException al abrir la vista de JavaFX
+    @OneToMany(mappedBy = "reparacion", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<DetallesFalla> fallas = new ArrayList<>();
 
     /** 
