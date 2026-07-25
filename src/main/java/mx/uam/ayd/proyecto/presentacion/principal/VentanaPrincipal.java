@@ -148,4 +148,10 @@ public class VentanaPrincipal {
 		    control.registrarCotizacion();
 		}
 	}
+	@FXML
+    private void handleRegistrarCita() {
+        if (control != null) {
+            control.registrarCita();
+        }
+    }
 }

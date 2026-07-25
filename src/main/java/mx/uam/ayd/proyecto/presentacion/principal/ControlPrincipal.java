@@ -16,6 +16,7 @@ import mx.uam.ayd.proyecto.presentacion.consultarEntregas.ControlVehiculosEntreg
 import mx.uam.ayd.proyecto.presentacion.registrarServicio.ControlRegistrarServicio;
 import mx.uam.ayd.proyecto.presentacion.pedidos.ControladorPedidos;
 import mx.uam.ayd.proyecto.presentacion.registrarCotizacion.ControlCotizacion;
+import mx.uam.ayd.proyecto.presentacion.registrarCita.ControlRegistrarCita;
 
 /**
  * Esta clase lleva el flujo de control de la ventana principal
@@ -37,6 +38,7 @@ public class ControlPrincipal {
 	private final ControlInventario controlInventario;
 	private final ControlVehiculosEntrega controlVehiculoEntrega;
 	private final ControlCotizacion controlCotizacion;
+	private final ControlRegistrarCita controlRegistrarCita;
 
 
 	@Autowired
@@ -51,7 +53,8 @@ public class ControlPrincipal {
 			ControlInventario controlInventario,
 			ControlVehiculosEntrega controlVehiculosEntrega,
 			ControlCotizacion controlCotizacion,
-			VentanaPrincipal ventana) {
+			ControlRegistrarCita controlRegistrarCita,
+            VentanaPrincipal ventana) {
 		this.controlAgregarUsuario = controlAgregarUsuario;
 		this.controlListarUsuarios = controlListarUsuarios;
 		this.controlListarGrupos = controlListarGrupos;
@@ -63,6 +66,7 @@ public class ControlPrincipal {
 		this.controlInventario = controlInventario;
 		this.controlVehiculoEntrega = controlVehiculosEntrega;
 		this.controlCotizacion = controlCotizacion;
+		this.controlRegistrarCita = controlRegistrarCita;
 	}
 	
 	/**
@@ -156,6 +160,9 @@ public class ControlPrincipal {
 	public void consultarEntregas() {
 		controlVehiculoEntrega.inicia();
 	}
-
+	
+	public void registrarCita() {
+        controlRegistrarCita.inicia();
+    }
 
 }

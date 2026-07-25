@@ -32,7 +32,7 @@
 
     <!-- Nuevo botón para la ventana de pedidos (HU-30) -->
     <Button fx:id="btnPedidos" onAction="#abrirVentanaPedidos" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Gestión de Pedidos" />
-   <Button fx:id="RnCita" mnemonicParsing="false" prefHeight="30.0" prefWidth="198.0" text="Registrar nueva cita" />
 
+    <Button fx:id="RnCita" mnemonicParsing="false" onAction="#handleRegistrarCita" prefHeight="30.0" prefWidth="198.0" text="Registrar nueva cita" />
 
 </VBox>

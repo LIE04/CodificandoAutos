@@ -58,7 +58,7 @@ class ServicioCitaTest {
 
         when(citaRepository.save((Cita) any())).thenReturn(citaSimulada);
 
-        Cita resultado = servicioCita.agendarCita(fechaValida, horaValida, clientePrueba);
+        Cita resultado = servicioCita.agendarCita(fechaValida, horaValida, clientePrueba, vehiculoPrueba);
 
         assertNotNull(resultado, "La cita no debe ser nula");
         assertEquals(fechaValida, resultado.getFecha());
@@ -75,21 +75,21 @@ class ServicioCitaTest {
     @Test
     void agendarCita_LanzaExcepcion_SiFechaEsNula() {
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioCita.agendarCita(null, horaValida, clientePrueba);
+            servicioCita.agendarCita(null, horaValida, clientePrueba, vehiculoPrueba);
         }, "Debe lanzar excepción si la fecha es nula");
     }
 
     @Test
     void agendarCita_LanzaExcepcion_SiHoraEsNula() {
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioCita.agendarCita(fechaValida, null, clientePrueba);
+            servicioCita.agendarCita(fechaValida, null, clientePrueba, vehiculoPrueba);
         }, "Debe lanzar excepción si la hora es nula");
     }
 
     @Test
     void agendarCita_LanzaExcepcion_SiClienteEsNulo() {
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioCita.agendarCita(fechaValida, horaValida, null);
+            servicioCita.agendarCita(fechaValida, horaValida, null, vehiculoPrueba);
         }, "Debe lanzar excepción si el cliente es nulo");
     }
 
@@ -98,7 +98,7 @@ class ServicioCitaTest {
         LocalDate fechaPasada = LocalDate.now().minusDays(1); // Ayer
 
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioCita.agendarCita(fechaPasada, horaValida, clientePrueba);
+            servicioCita.agendarCita(fechaPasada, horaValida, clientePrueba, vehiculoPrueba);
         }, "Debe lanzar excepción si la fecha es en el pasado");
 
         verifyNoInteractions(citaRepository);
@@ -109,7 +109,7 @@ class ServicioCitaTest {
         when(citaRepository.existsByFechaAndHora(fechaValida, horaValida)).thenReturn(true);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioCita.agendarCita(fechaValida, horaValida, clientePrueba);
+            servicioCita.agendarCita(fechaValida, horaValida, clientePrueba, vehiculoPrueba);
         }, "Debe lanzar excepción si ya hay una cita en ese horario");
 
         // Verificamos que se llamó a la comprobación, y que NO se llamó a nada más (como el save)

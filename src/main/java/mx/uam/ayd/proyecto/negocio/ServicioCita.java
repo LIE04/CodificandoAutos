@@ -21,7 +21,7 @@ public class ServicioCita {
     /**
      * Agendar cita para el cliente en la fecha y hora seleccionada
      */
-    public Cita agendarCita(LocalDate fecha, LocalTime hora, Cliente cliente) {
+    public Cita agendarCita(LocalDate fecha, LocalTime hora, Cliente cliente, Vehiculo vehiculo) {
 
         // Verificar que los datos ingresados no sean nulos
         if (fecha == null) {
@@ -49,6 +49,7 @@ public class ServicioCita {
         cita.setFecha(fecha);
         cita.setHora(hora);
         cita.setCliente(cliente);
+        cita.setVehiculo(vehiculo);
 
         Cita citaGuardada = citaRepository.save(cita);
 
