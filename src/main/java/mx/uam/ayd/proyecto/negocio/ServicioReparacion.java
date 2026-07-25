@@ -6,11 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.uam.ayd.proyecto.datos.ReparacionRepository;
 import mx.uam.ayd.proyecto.datos.ReparacionRepository.VehiculosPendientesDTO;
-import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
-//import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.List;
 
@@ -31,7 +28,6 @@ public class ServicioReparacion {
     @Autowired
     public ServicioReparacion(ReparacionRepository reparacionRepository) {
         this.reparacionRepository = reparacionRepository;
-        //this.servicioVehiculo = servicioVehiculo;
     }
 
     /**
@@ -51,10 +47,11 @@ public class ServicioReparacion {
     public Reparacion procesarEscaneoLimpio(int idReparacion) {
         Reparacion reparacion = recuperarReparacion(idReparacion);
         
-        // Regla de Negocio: Pasa a estado de entrega al verificar escaneo limpio
+        // Modificación realizada por Erik para la HU-40 (Control de Calidad)
+        // Regla de Negocio: Pasa a estado "Listo para entrega" al verificar escaneo limpio, conectando con la HU-42
         reparacion.setEstatusServicio("Listo para entrega");
         
-        // Se añade nota a las observaciones para mantener un historial
+        // Se añade nota a las observaciones para mantener un historial en la BD
         String notasActuales = reparacion.getObservacionesTecnicas() != null ? reparacion.getObservacionesTecnicas() : "";
         reparacion.setObservacionesTecnicas(notasActuales + " | [Control de Calidad: Escaneo Limpio Exitoso]");
         
@@ -71,39 +68,36 @@ public class ServicioReparacion {
             throw new IllegalArgumentException("Debe ingresar los códigos de falla detectados.");
         }
 
-        // Regla de Negocio: Bloqueo de entrega, regresa a revisión
+        // Modificación realizada por Erik para la HU-40 (Control de Calidad)
+        // Regla de Negocio: Bloqueo de entrega, regresa a revisión para que el mecánico lo atienda
         reparacion.setEstatusServicio("En revisión / Diagnóstico");
         
-        // Guardamos los códigos en las observaciones técnicas
+        // Guardamos los códigos en las observaciones técnicas para tener evidencia
         String notasActuales = reparacion.getObservacionesTecnicas() != null ? reparacion.getObservacionesTecnicas() : "";
         reparacion.setObservacionesTecnicas(notasActuales + " | [Control de Calidad Fallido - Códigos persistentes: " + codigosFalla + "]");
         
         return reparacionRepository.save(reparacion);
     }
 
-    //Obtener vehiculos pendientes para la lista HU-42
+    // Obtener vehiculos pendientes para la lista (HU-42)
     public List<VehiculosPendientesDTO> obtenerVehiculosParaEntrega() {
-
         return reparacionRepository.findVehiculosActivos();
     }
-    //Cambiar Estatus sevicio de los vehiculos con 'Listo para entrega' a 'Entregado' HU-42
+    
+    // Cambiar Estatus servicio de los vehiculos con 'Listo para entrega' a 'Entregado' (HU-42)
     public boolean marcarEntregado(Integer idReparacion){
-
         Optional<Reparacion> reparacionOpt = reparacionRepository.findById(idReparacion);
 
         if(reparacionOpt.isPresent()) {
             Reparacion reparacion = reparacionOpt.get();
             
+            // Verificamos que ya haya pasado por el control de calidad
             if(reparacion.getEstatusServicio().equalsIgnoreCase("Listo para entrega")){
                reparacion.setEstatusServicio("Entregado");
                reparacionRepository.save(reparacion);
                return true;
             }
-
         }
-
         return false;
-
     }
-
 }
