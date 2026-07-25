@@ -1,7 +1,7 @@
 package mx.uam.ayd.proyecto.presentacion.pedidos;
 
 import java.util.List;
-import java.util.stream.Collectors; // Importación para el manejo de listas (Streams)
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -52,6 +54,10 @@ public class ControladorPedidos {
     @FXML private CheckBox chkInventario;
     @FXML private Button btnRegistrar;
 
+    // Filtros de búsqueda
+    @FXML private TextField txtBuscar;
+    @FXML private ComboBox<String> cbFiltroEstado;
+
     @FXML private TableView<Pedido> tablaPedidos;
     @FXML private TableColumn<Pedido, Integer> colIdPedido;
     @FXML private TableColumn<Pedido, String> colDistribuidor; 
@@ -62,6 +68,10 @@ public class ControladorPedidos {
 
     @FXML private Button btnCancelarPedido;
     @FXML private Button btnMarcarEntregado;
+
+    // Listas para el manejo de filtros en tiempo real
+    private ObservableList<Pedido> listaMaestraPedidos = FXCollections.observableArrayList();
+    private FilteredList<Pedido> pedidosFiltrados;
 
     // Inicialización
     public void inicia() {
@@ -94,7 +104,8 @@ public class ControladorPedidos {
         cargarDistribuidores();
         configurarFormatoDistribuidor();
 
-        // 3. Llenar la tabla con los pedidos existentes
+        // 3. Configurar la lógica de filtros y llenado de tabla
+        configurarFiltros();
         actualizarTabla();
 
         // 4. Lógica del CheckBox
@@ -128,6 +139,60 @@ public class ControladorPedidos {
 
     // Métodos de Acción y Lógica Visual
 
+    /**
+     * Configura el ComboBox de estados, la barra de búsqueda y los listeners
+     * para filtrar la tabla en tiempo real.
+     */
+    private void configurarFiltros() {
+        // Llenar el ComboBox con los estados posibles
+        cbFiltroEstado.setItems(FXCollections.observableArrayList("Todos", "Pendiente", "Entregado", "Cancelado"));
+        cbFiltroEstado.setValue("Todos");
+
+        // Inicializar la FilteredList
+        pedidosFiltrados = new FilteredList<>(listaMaestraPedidos, pedido -> true);
+
+        // Listeners para reaccionar a cambios en los filtros
+        cbFiltroEstado.valueProperty().addListener((observable, oldValue, newValue) -> actualizarPredicadoFiltro());
+        txtBuscar.textProperty().addListener((observable, oldValue, newValue) -> actualizarPredicadoFiltro());
+
+        // Envolver en SortedList para mantener el orden de las columnas
+        SortedList<Pedido> datosOrdenados = new SortedList<>(pedidosFiltrados);
+        datosOrdenados.comparatorProperty().bind(tablaPedidos.comparatorProperty());
+
+        tablaPedidos.setItems(datosOrdenados);
+    }
+
+    /**
+     * Evalúa el texto y el estado seleccionado para filtrar las filas.
+     */
+    private void actualizarPredicadoFiltro() {
+        String estadoSeleccionado = cbFiltroEstado.getValue();
+        String textoBuscado = txtBuscar.getText() != null ? txtBuscar.getText().toLowerCase() : "";
+
+        pedidosFiltrados.setPredicate(pedido -> {
+            // Regla del Estado
+            boolean coincideEstado = estadoSeleccionado == null || estadoSeleccionado.equals("Todos") || 
+                                     (pedido.getEstadoPedido() != null && pedido.getEstadoPedido().equalsIgnoreCase(estadoSeleccionado));
+            
+            if (!coincideEstado) {
+                return false;
+            }
+
+            // Regla del Texto
+            if (textoBuscado.isEmpty()) {
+                return true; 
+            }
+
+            boolean coincideDistribuidor = pedido.getDistribuidor() != null && 
+                                           pedido.getDistribuidor().getNombre().toLowerCase().contains(textoBuscado);
+                                           
+            boolean coincideRefaccion = pedido.getRefaccion() != null && 
+                                        pedido.getRefaccion().getNombre().toLowerCase().contains(textoBuscado);
+
+            return coincideDistribuidor || coincideRefaccion;
+        });
+    }
+
     private void cargarDistribuidores() {
         List<Distribuidor> distribuidores = servicioPedido.obtenerDistribuidores();
         ObservableList<Distribuidor> items = FXCollections.observableArrayList(distribuidores);
@@ -136,8 +201,9 @@ public class ControladorPedidos {
 
     private void actualizarTabla() {
         List<Pedido> pedidos = servicioPedido.recuperarPedidos();
-        ObservableList<Pedido> items = FXCollections.observableArrayList(pedidos);
-        tablaPedidos.setItems(items);
+        // Actualizamos la lista maestra en lugar de la tabla directamente
+        listaMaestraPedidos.clear();
+        listaMaestraPedidos.addAll(pedidos);
     }
 
     private void registrarPedido() {
@@ -235,21 +301,13 @@ public class ControladorPedidos {
         }
     }
 
-    /**
-     * Vincula el campo de texto (TextField) de refacciones con el catálogo de la BD,
-     * desplegando sugerencias (autocompletado) mientras el usuario escribe.
-     */
     private void configurarAutocompletado() {
-        // 1. Obtenemos todas las refacciones disponibles en la base de datos
-        // NOTA: Asegúrate de tener el método obtenerRefacciones() implementado en ServicioPedido.
         List<Refaccion> todasLasRefacciones = servicioPedido.obtenerRefacciones();
         
-        // 2. Extraemos únicamente los nombres (Strings) utilizando Streams de Java
         List<String> nombresRefacciones = todasLasRefacciones.stream()
                 .map(Refaccion::getNombre)
                 .collect(Collectors.toList());
 
-        // 3. Vinculamos la lista de nombres al componente visual con ControlsFX
         TextFields.bindAutoCompletion(txtRefaccion, nombresRefacciones);
     }
 }
