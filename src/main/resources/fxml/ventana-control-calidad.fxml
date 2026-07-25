@@ -8,9 +8,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!-- VBox Principal: Contenedor raíz con el controlador asignado -->
-<VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="650.0" spacing="15.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="mx.uam.ayd.proyecto.presentacion.controlCalidad.VentanaControlCalidad">
+<!-- VBox Principal: Contenedor raíz. Se removió el fx:controller porque se asigna desde la clase Java -->
+<VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="650.0" spacing="15.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
    </padding>
@@ -31,7 +30,7 @@
          </VBox.margin>
       </Label>
       
-      <!-- Contenedor dinámico para el Checklist de Reparaciones (Aquí entran los CheckBoxes desde Java) -->
+      <!-- Contenedor dinámico para el Checklist de Reparaciones -->
       <VBox fx:id="vboxChecklist" alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #f4f4f4; -fx-padding: 15; -fx-border-color: #cccccc; -fx-border-radius: 5;">
          <VBox.margin>
             <Insets bottom="15.0" left="50.0" right="50.0" top="15.0" />

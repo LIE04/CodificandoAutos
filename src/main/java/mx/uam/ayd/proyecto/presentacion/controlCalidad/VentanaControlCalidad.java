@@ -14,8 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
-import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -116,11 +114,15 @@ public class VentanaControlCalidad {
 
     private void reiniciarVista() {
         esEscaneoLimpio = false;
-        txtCodigosPersistentes.setText("");
-        lblInstruccionCodigos.setVisible(false);
-        txtCodigosPersistentes.setVisible(false);
-        btnEscaneoLimpio.setStyle("-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;");
-        btnPresentaFallas.setStyle("-fx-background-color: #DC143C; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;");
+        
+        // Validación de seguridad para evitar NullPointerException si la vista apenas se está construyendo
+        if (txtCodigosPersistentes != null) {
+            txtCodigosPersistentes.setText("");
+            txtCodigosPersistentes.setVisible(false);
+            lblInstruccionCodigos.setVisible(false);
+            btnEscaneoLimpio.setStyle("-fx-background-color: #228B22; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;");
+            btnPresentaFallas.setStyle("-fx-background-color: #DC143C; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;");
+        }
     }
 
     /**
