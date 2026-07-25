@@ -145,7 +145,7 @@ public class ControladorPedidos {
      */
     private void configurarFiltros() {
         // Llenar el ComboBox con los estados posibles
-        cbFiltroEstado.setItems(FXCollections.observableArrayList("Todos", "Pendiente", "Entregado", "Cancelado"));
+        cbFiltroEstado.setItems(FXCollections.observableArrayList("Todos", "En espera", "Entregado", "Cancelado"));
         cbFiltroEstado.setValue("Todos");
 
         // Inicializar la FilteredList
