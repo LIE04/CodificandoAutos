@@ -40,9 +40,8 @@ public class VentanaRegistrarCita {
         try {
             stage = new Stage();
             stage.setTitle("Registrar Nueva Cita");
-            // Asegúrate de que el FXML esté en la carpeta resources/fxml/
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventana-agendar-cita-clientes.fxml"));
-            loader.setController(this); // Nosotros somos el controlador
+            loader.setController(this);
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             
@@ -57,14 +56,14 @@ public class VentanaRegistrarCita {
     private void inicializarComponentes() {
         btnGuardarCita.setDisable(true); // Deshabilitado por defecto
         
-        // Llenar años (ej. del 2000 al año actual + 1)
+        // Llenar años
         int anioActual = LocalDate.now().getYear();
         for (int i = anioActual + 1; i >= 1990; i--) {
             cbAnio.getItems().add(i);
         }
 
-        // Llenar horas disponibles (ej. 9 AM a 5 PM cada hora)
-        for (int i = 9; i <= 17; i++) {
+        // Llenar horas disponibles
+        for (int i = 9; i <= 16; i++) {
             cbHora.getItems().add(LocalTime.of(i, 0));
             cbHora.getItems().add(LocalTime.of(i, 30));
         }
