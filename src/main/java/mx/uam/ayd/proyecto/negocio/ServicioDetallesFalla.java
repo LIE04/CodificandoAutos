@@ -5,32 +5,33 @@ import org.springframework.stereotype.Service;
 
 import mx.uam.ayd.proyecto.datos.DetallesFallaRepository;
 import mx.uam.ayd.proyecto.negocio.modelo.DetallesFalla;
-
+import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 
 @Service
 public class ServicioDetallesFalla {
+
     @Autowired
     private DetallesFallaRepository detallesFallaRepository;
 
-    /**
-     * Agrega un nuevo detalle de falla a una reparación existente
-     */
-    public DetallesFalla agregarDetallesFalla(String descripcionFalla, String estatus) {
-        // Validaciones básicas de nulidad
-        if (descripcionFalla == null || descripcionFalla.isEmpty()) {
-            throw new IllegalArgumentException("La descripción de la falla no puede ser nula o vacía");
+    public DetallesFalla agregarDetallesFalla(String descripcionFalla, String estatus, Vehiculo vehiculo) {
+        
+        // Validaciones de seguridad
+        if (descripcionFalla == null || descripcionFalla.trim().isEmpty()) {
+            throw new IllegalArgumentException("La descripción de la falla no puede estar vacía.");
         }
-        if (estatus == null || estatus.isEmpty()) {
-            throw new IllegalArgumentException("El estatus de la falla no puede ser nulo o vacío");
+        if (estatus == null || estatus.trim().isEmpty()) {
+            throw new IllegalArgumentException("El estatus de la falla no puede estar vacío.");
+        }
+        if (vehiculo == null) {
+            throw new IllegalArgumentException("El vehículo no puede ser nulo.");
         }
 
-        // Crear y guardar la entidad DetallesFalla
+        // Creación y guardado
         DetallesFalla detallesFalla = new DetallesFalla();
         detallesFalla.setDescripcionFalla(descripcionFalla);
         detallesFalla.setEstatus(estatus);
-        DetallesFalla detallesFallaGuardado = detallesFallaRepository.save(detallesFalla);
+        detallesFalla.setVehiculo(vehiculo); // Aquí ocurre el enlace
 
-        return detallesFallaGuardado;
-
+        return detallesFallaRepository.save(detallesFalla);
     }
 }

@@ -1,43 +1,45 @@
 package mx.uam.ayd.proyecto.presentacion.registrarDetallesFalla;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import mx.uam.ayd.proyecto.negocio.ServicioDetallesFalla;
+import mx.uam.ayd.proyecto.negocio.ServicioVehiculo;
+import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 
 @Component
 public class ControlRegistrarDetallesFalla {
 
     private final ServicioDetallesFalla servicioDetallesFalla;
+    private final ServicioVehiculo servicioVehiculo;
     private final VentanaRegistrarDetallesFalla ventana;
 
     @Autowired
-    public ControlRegistrarDetallesFalla(ServicioDetallesFalla servicioDetallesFalla, VentanaRegistrarDetallesFalla ventana) {
+    public ControlRegistrarDetallesFalla(ServicioDetallesFalla servicioDetallesFalla, 
+                                         ServicioVehiculo servicioVehiculo, 
+                                         VentanaRegistrarDetallesFalla ventana) {
         this.servicioDetallesFalla = servicioDetallesFalla;
+        this.servicioVehiculo = servicioVehiculo;
         this.ventana = ventana;
     }
 
-    /**
-     * Inicia la historia de usuario
-     */
     public void inicia() {
-        // Aquí podrías recibir un Vehículo si lo necesitas para la vista, 
-        // por ahora iniciamos la ventana y le pasamos este controlador.
-        ventana.muestra(this);
+        // Pedimos la lista al servicio y abrimos la ventana
+        List<Vehiculo> vehiculos = servicioVehiculo.recuperaTodos();
+        ventana.muestra(this, vehiculos);
     }
 
-    /**
-     * Método que la ventana invoca al dar clic en "Agregar falla"
-     */
-    public void agregarFalla(String descripcion, String estado) {
+    public void agregarFalla(String descripcion, String estado, Vehiculo vehiculoSeleccionado) {
         try {
-            servicioDetallesFalla.agregarDetallesFalla(descripcion, estado);
+            servicioDetallesFalla.agregarDetallesFalla(descripcion, estado, vehiculoSeleccionado);
             ventana.muestraMensaje("Éxito", "Los detalles de la falla se registraron correctamente.");
             ventana.cierra();
         } catch (IllegalArgumentException e) {
             ventana.muestraMensaje("Error de Validación", e.getMessage());
         } catch (Exception e) {
-            ventana.muestraMensaje("Error", "Ocurrió un error al registrar los detalles de la falla.");
+            ventana.muestraMensaje("Error", "Ocurrió un error inesperado al guardar en la base de datos.");
         }
     }
 }
