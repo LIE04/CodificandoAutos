@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+// Importación agregada para manejar el texto de las celdas de la tabla
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,7 +24,6 @@ import javafx.util.StringConverter;
 import mx.uam.ayd.proyecto.negocio.ServicioPedido;
 import mx.uam.ayd.proyecto.negocio.modelo.Distribuidor;
 import mx.uam.ayd.proyecto.negocio.modelo.Pedido;
-// Importamos Refaccion y Reparacion si las llegas a instanciar aqui
 import mx.uam.ayd.proyecto.negocio.modelo.Refaccion; 
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
 
@@ -50,8 +51,8 @@ public class ControladorPedidos {
 
     @FXML private TableView<Pedido> tablaPedidos;
     @FXML private TableColumn<Pedido, Integer> colIdPedido;
-    @FXML private TableColumn<Pedido, Distribuidor> colDistribuidor;
-    @FXML private TableColumn<Pedido, Refaccion> colRefaccion;
+    @FXML private TableColumn<Pedido, String> colDistribuidor; // Cambiado a String genérico para la vista
+    @FXML private TableColumn<Pedido, String> colRefaccion;    // Cambiado a String genérico para la vista
     @FXML private TableColumn<Pedido, Integer> colCantidad;
     @FXML private TableColumn<Pedido, Reparacion> colIdReparacion;
     @FXML private TableColumn<Pedido, String> colEstado;
@@ -63,15 +64,30 @@ public class ControladorPedidos {
     public void inicia() {
         ventana.muestra(this);
     }
+    
     /**
      * Este método se ejecuta automáticamente cuando JavaFX carga la ventana
      */
     @FXML
     public void initialize() {
-        // 1. Configurar la tabla (La talacha de enlazar columnas con los atributos de la entidad)
+        // 1. Configurar la tabla
         colIdPedido.setCellValueFactory(new PropertyValueFactory<>("idPedido"));
-        colDistribuidor.setCellValueFactory(new PropertyValueFactory<>("distribuidor"));
-        colRefaccion.setCellValueFactory(new PropertyValueFactory<>("refaccion"));
+        
+        /* 
+         * Se reemplaza PropertyValueFactory por expresiones lambda.
+         * Justificación: Permite extraer únicamente el atributo 'nombre' del objeto anidado, 
+         * evitando que JavaFX renderice el volcado completo del método toString().
+         */
+        colDistribuidor.setCellValueFactory(cellData -> {
+            Distribuidor distribuidor = cellData.getValue().getDistribuidor();
+            return new SimpleStringProperty(distribuidor != null ? distribuidor.getNombre() : "");
+        });
+
+        colRefaccion.setCellValueFactory(cellData -> {
+            Refaccion refaccion = cellData.getValue().getRefaccion();
+            return new SimpleStringProperty(refaccion != null ? refaccion.getNombre() : "");
+        });
+
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colIdReparacion.setCellValueFactory(new PropertyValueFactory<>("reparacion"));
         colEstado.setCellValueFactory(new PropertyValueFactory<>("estadoPedido"));
@@ -181,21 +197,23 @@ public class ControladorPedidos {
     }
 
     /**
-     * Este método le enseña al ComboBox cómo mostrar los objetos Distribuidor en texto
+     * Define el formato visual de los objetos Distribuidor dentro del ComboBox.
      */
     private void configurarFormatoDistribuidor() {
         cbDistribuidor.setConverter(new StringConverter<Distribuidor>() {
             @Override
             public String toString(Distribuidor d) {
-                // Asumiendo que Distribuidor tiene un método getNombre()
-                return (d == null) ? "" : d.toString(); // Cámbialo a d.getNombre() si lo tienen
+                // Se utiliza getNombre() en lugar de toString() para limpiar la interfaz de usuario
+                return (d == null) ? "" : d.getNombre();
             }
+            
             @Override
             public Distribuidor fromString(String string) {
                 return null;
             }
         });
     }
+
     /**
      * Método genérico para actualizar el estado del pedido seleccionado en la tabla.
      */
