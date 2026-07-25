@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="219.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane layoutX="31.0" layoutY="56.0">
@@ -40,8 +39,8 @@
       <Label layoutX="31.0" layoutY="20.0" text="Datos del vehiculo:" />
       <TextField fx:id="txtDescripcionFalla" layoutX="342.0" layoutY="56.0" prefHeight="71.0" prefWidth="244.0" />
       <Label layoutX="342.0" layoutY="28.0" text="Descripcion de la falla:" />
-      <ComboBox fx:id="cbEstadoReparacion" layoutX="342.0" layoutY="155.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbEstadoReparacion" layoutX="342.0" layoutY="155.0" onAction="#handleAgregarFalla" prefWidth="150.0" />
       <Label layoutX="342.0" layoutY="132.0" text="Estado de la reparación:" />
-      <Button layoutX="501.0" layoutY="187.0" mnemonicParsing="false" text="Agregar falla" />
+      <Button layoutX="501.0" layoutY="187.0" mnemonicParsing="false" onAction="#handleAgregarFalla" text="Agregar falla" />
    </children>
 </Pane>
