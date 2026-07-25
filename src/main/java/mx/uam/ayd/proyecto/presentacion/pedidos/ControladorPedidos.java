@@ -63,7 +63,7 @@ public class ControladorPedidos {
     @FXML private TableColumn<Pedido, String> colDistribuidor; 
     @FXML private TableColumn<Pedido, String> colRefaccion;    
     @FXML private TableColumn<Pedido, Integer> colCantidad;
-    @FXML private TableColumn<Pedido, Reparacion> colIdReparacion;
+    @FXML private TableColumn<Pedido, String> colIdReparacion; // Se ajustó el tipo genérico para el String resultante
     @FXML private TableColumn<Pedido, String> colEstado;
 
     @FXML private Button btnCancelarPedido;
@@ -97,7 +97,13 @@ public class ControladorPedidos {
         });
 
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
-        colIdReparacion.setCellValueFactory(new PropertyValueFactory<>("reparacion"));
+        
+        // CORRECCIÓN: Mostrar solo el ID de la reparación usando getIdReparacion()
+        colIdReparacion.setCellValueFactory(cellData -> {
+            Reparacion reparacion = cellData.getValue().getReparacion();
+            return new SimpleStringProperty(reparacion != null ? String.valueOf(reparacion.getIdReparacion()) : "");
+        });
+        
         colEstado.setCellValueFactory(new PropertyValueFactory<>("estadoPedido"));
 
         // 2. Llenar el ComboBox de distribuidores
@@ -115,6 +121,19 @@ public class ControladorPedidos {
                 txtIdReparacion.clear();
             } else { 
                 txtIdReparacion.setDisable(false);
+            }
+        });
+
+        // NUEVA SECCIÓN: Validadores de campos numéricos
+        txtCantidad.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtCantidad.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        txtIdReparacion.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtIdReparacion.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
 
