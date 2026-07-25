@@ -47,6 +47,14 @@ public class ServicioPedido {
     }
 
     /**
+     * Recupera todas las refacciones del catálogo para el autocompletado de la vista
+     * @return Lista de todas las refacciones disponibles
+     */
+    public List<Refaccion> obtenerRefacciones() {
+        return (List<Refaccion>) refaccionRepository.findAll();
+    }
+
+    /**
      * Crea un nuevo pedido con sus validaciones correspondientes
      * @param distribuidor El proveedor de la pieza (entidad)
      * @param refaccion La pieza del catalogo solicitada
@@ -107,6 +115,7 @@ public class ServicioPedido {
         
         throw new IllegalArgumentException("No se encontro el pedido con ID: " + idPedido);
     }
+    
     /**
      * Actualiza el estado de un pedido existente en la base de datos.
      * 
@@ -125,6 +134,7 @@ public class ServicioPedido {
         // Spring Data JPA hace un UPDATE en lugar de un INSERT.
         pedidoRepository.save(pedido);
     }
+    
     /**
      * Busca una refacción en la base de datos por su nombre.
      */
