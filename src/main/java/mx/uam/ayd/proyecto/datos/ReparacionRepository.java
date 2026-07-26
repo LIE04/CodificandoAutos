@@ -28,7 +28,7 @@ public interface ReparacionRepository extends CrudRepository<Reparacion, Integer
     /*
     Metodo para hacer JOIN de las tres entidades
     */
-@Query("SELECT r.idReparacion AS id, " +
+    @Query("SELECT r.idReparacion AS id, " +
            "coti.idCotizacion AS idCotizacion, " + 
            "cli.nombre AS nombre, " +
            "v.marca AS marca, " +
@@ -46,6 +46,9 @@ public interface ReparacionRepository extends CrudRepository<Reparacion, Integer
     */
     List<VehiculosPendientesDTO> findVehiculosActivos();
     
-
-
+    // INICIO Modificación realizada por Erik para la HU-34 (Notificación de Atraso)
+    // Regla de negocio: Consultar los vehículos que son susceptibles a un atraso (que no estén entregados ni listos)
+    @Query("SELECT r FROM Reparacion r WHERE r.estatusServicio IN ('En espera', 'En reparación', 'En revisión')")
+    List<Reparacion> findReparacionesParaAtraso();
+    // FIN Modificación Erik HU-34
 }

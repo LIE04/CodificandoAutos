@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!-- VBox Principal: Contenedor raíz. Se removió el fx:controller porque se asigna desde la clase Java -->
+<VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="550.0" spacing="15.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
+   </padding>
+   <children>
+      
+      <!-- Título de la ventana -->
+      <Label text="Notificación de Atraso al Cliente" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      
+      <Label text="Seleccione el motivo para informar al cliente sobre el estado de su vehículo:" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="System" size="14.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </Label>
+      
+      <!-- Contenedor para mostrar los datos de la reparación (Vehículo y Cliente) -->
+      <VBox alignment="CENTER_LEFT" spacing="5.0" style="-fx-background-color: #f4f4f4; -fx-padding: 15; -fx-border-color: #cccccc; -fx-border-radius: 5;">
+         <VBox.margin>
+            <Insets bottom="15.0" left="50.0" right="50.0" top="15.0" />
+         </VBox.margin>
+         <children>
+            <Label text="Detalles de la Reparación:">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Label>
+            <!-- Estas etiquetas se llenarán desde el Controlador en Java -->
+            <Label fx:id="lblVehiculo" text="Vehículo: [Cargando datos...]" textFill="#333333">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblFolio" text="Folio de Reparación: [Cargando datos...]" textFill="#333333">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      
+      <!-- Contenedor para el Menú Desplegable (ComboBox) -->
+      <VBox alignment="CENTER" spacing="10.0">
+         <children>
+            <Label text="Motivo del Atraso:">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <!-- ComboBox donde se cargarán las plantillas del ServicioNotificacion -->
+            <ComboBox fx:id="cmbMotivosAtraso" prefHeight="35.0" prefWidth="400.0" promptText="Seleccione una opción de la lista..." style="-fx-font-size: 13px;" />
+         </children>
+      </VBox>
+      
+      <!-- Contenedor horizontal (HBox) para los botones de acción -->
+      <HBox alignment="CENTER" spacing="40.0">
+         <children>
+            <!-- Botón de Cancelar -->
+            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #808080; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;" text="Cancelar" textAlignment="CENTER" />
+            
+            <!-- Botón de Enviar Aviso -->
+            <Button fx:id="btnEnviarAviso" mnemonicParsing="false" onAction="#handleEnviarAviso" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: #0066cc; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px;" text="Enviar Aviso" textAlignment="CENTER" />
+         </children>
+         <VBox.margin>
+            <Insets top="25.0" />
+         </VBox.margin>
+      </HBox>
+      
+   </children>
+</VBox>
