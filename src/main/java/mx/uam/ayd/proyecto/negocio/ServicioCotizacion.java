@@ -74,7 +74,7 @@ public class ServicioCotizacion {
 
     
     public boolean capturarDatosServicio(String fallas, String manoObra, float costoManoObra) {
-        // 1. Verificamos que el borrador exista
+        
         if (this.cotizacion == null) {
             return false;
         }
@@ -83,7 +83,6 @@ public class ServicioCotizacion {
     this.cotizacion.setDescripcionFallas(fallas);
     this.cotizacion.setManoObra(manoObra);
     
-    // Validamos que el costo no sea negativo por error
     if (costoManoObra >= 0) {
         this.cotizacion.setManoObraCosto(costoManoObra);
     } else {
@@ -95,29 +94,29 @@ public class ServicioCotizacion {
 
 
     public boolean finalizarCotizacion() {
-    // 1. Verificamos que el borrador exista
+    // Verificamos que el borrador exista
     if (this.cotizacion == null) {
         return false;
     }
 
-    // 2. Calcular el total de las refacciones
+    // Calcular el total de las refacciones
     float totalRefacciones = 0.0f;
     for (CotizacionConcepto concepto : this.cotizacion.getConceptos()) {
         totalRefacciones += (concepto.getRefaccion().getPrecio() * concepto.getCantidad());
     }
 
-    // 3. Calcular subtotal, IVA y Total
+    // Calcular subtotal, IVA y Total
     float subtotal = totalRefacciones + this.cotizacion.getManoObraCosto();
     float iva = subtotal * 0.16f; // Asumiendo un IVA estándar del 16%
     float totalFinal = subtotal + iva;
 
-    // 4. Asignamos el total final a la entidad
+    // Asignamos el total final a la entidad
     this.cotizacion.setCostoTotal(totalFinal);
 
     //Guardae cotizacion
     cotizacionRepository.save(this.cotizacion); 
 
-    // 6. Limpiar el borrador en memoria (Destrucción del estado)
+    // Limpiar el borrador en memoria (Destrucción del estado)
     this.cotizacion = null;
     
     return true;
