@@ -25,7 +25,6 @@ public class VentanaRegistrarDetallesFalla {
     private Stage stage;
 
     @FXML private ComboBox<Vehiculo> cbVehiculos;
-    // ELIMINADO: @FXML private ComboBox<String> cbEstadoReparacion;
     @FXML private TextField txtDescripcionFalla;
     
     @FXML private Label lbMarca;
@@ -58,8 +57,6 @@ public class VentanaRegistrarDetallesFalla {
                 @Override
                 public Vehiculo fromString(String string) { return null; }
             });
-
-            // ELIMINADO: La configuración de cbEstadoReparacion
 
             stage = new Stage();
             stage.setTitle("Registrar Detalles de Falla");
@@ -96,8 +93,6 @@ public class VentanaRegistrarDetallesFalla {
             return;
         }
 
-        // ELIMINADO: Validación del estado
-        // Ahora solo enviamos 2 parámetros al control
         control.agregarFalla(descripcion, vehiculoSeleccionado);
     }
 
