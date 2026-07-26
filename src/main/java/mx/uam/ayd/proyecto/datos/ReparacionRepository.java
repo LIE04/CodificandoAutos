@@ -25,6 +25,7 @@ public interface ReparacionRepository extends CrudRepository<Reparacion, Integer
         String getPlacas();
         String getEstatusServicio();
     }
+    
     /*
     Metodo para hacer JOIN de las tres entidades
     */
@@ -47,8 +48,10 @@ public interface ReparacionRepository extends CrudRepository<Reparacion, Integer
     List<VehiculosPendientesDTO> findVehiculosActivos();
     
     // INICIO Modificación realizada por Erik para la HU-34 (Notificación de Atraso)
-    // Regla de negocio: Consultar los vehículos que son susceptibles a un atraso (que no estén entregados ni listos)
-    @Query("SELECT r FROM Reparacion r WHERE r.estatusServicio IN ('En espera', 'En reparación', 'En revisión')")
+    // Regla de negocio: Consultar los vehículos susceptibles a un atraso
+    // CORRECCIÓN: Se agrega "JOIN FETCH r.vehiculo" para traer el objeto Vehículo inmediatamente
+    // y evitar el error "LazyInitializationException - no Session" en la capa de vista.
+    @Query("SELECT r FROM Reparacion r JOIN FETCH r.vehiculo WHERE r.estatusServicio IN ('En espera', 'En reparación', 'En revisión')")
     List<Reparacion> findReparacionesParaAtraso();
     // FIN Modificación Erik HU-34
 }
