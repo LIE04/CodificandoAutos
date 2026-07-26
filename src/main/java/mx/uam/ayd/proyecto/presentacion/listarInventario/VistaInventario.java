@@ -68,7 +68,7 @@ public class VistaInventario {
             stage = new Stage();
             stage.setTitle("Inventario de Refacciones");
 
-            // Asegúrate de crear este archivo en tu carpeta de resources/fxml
+           
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventana-consultar-inventario.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load(), 600, 450);
@@ -90,9 +90,7 @@ public class VistaInventario {
         this.control = control;
     }
 
-    /**
-     * Equivalente a mostrarInventario(refaccion) del diagrama.
-     */
+
     public void mostrarInventario(List<Refaccion> refacciones) {
         if (!Platform.isFxApplicationThread()) {
            Platform.runLater(() -> this.mostrarInventario(refacciones)); 
@@ -108,9 +106,7 @@ public class VistaInventario {
         stage.show();
     }
 
-    /**
-     * Equivalente a retornarCoincidencias(coincidencias) del diagrama.
-     */
+
     public void retornarCoincidencias(List<Refaccion> coincidencias) {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(() -> this.retornarCoincidencias(coincidencias));
@@ -122,9 +118,7 @@ public class VistaInventario {
     }
 
 
-    /**
-     * Equivalente a actualizarLista() del diagrama.
-     */
+
     public void actualizarLista() {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(this::actualizarLista);
@@ -136,19 +130,15 @@ public class VistaInventario {
         control.SolicitarInventario(); 
     }
 
-    // =====================================================================
-    // MANEJADORES DE EVENTOS FXML (Llamados desde la interfaz gráfica)
-    // =====================================================================
 
     @FXML
     private void handleBuscar() {
-        // Le pasamos el texto al control para que haga el filtrado interno
         control.buscarRefaccion(textFieldBusqueda.getText());
     }
 
 @FXML
     private void handlePresionaEditar() {
-        // 1. Obtener la refacción seleccionada de la tabla
+        // Obtener la refacción seleccionada de la tabla
         Refaccion seleccionada = tableRefacciones.getSelectionModel().getSelectedItem();
 
         if (seleccionada == null) {

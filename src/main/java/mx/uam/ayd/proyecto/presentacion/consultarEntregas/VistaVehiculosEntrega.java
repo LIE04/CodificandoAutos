@@ -142,7 +142,7 @@ public class VistaVehiculosEntrega {
         if (seleccionado != null) {
             boolean exito = control.terminarEntrega(seleccionado.getId());
             if (exito) {
-                // Aquí ya se actualiza la tabla desde el controlador
+                
             }
         } else {
             muestraDialogoConMensaje("Seleccione un vehiculo primero");

@@ -34,7 +34,6 @@ public class VistaEditarRefaccion {
             this.stage = new Stage();
             this.stage.setTitle("Modificar Refacción");
 
-            // Carga el archivo FXML que acabamos de crear
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventana-editar-refaccion.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load());

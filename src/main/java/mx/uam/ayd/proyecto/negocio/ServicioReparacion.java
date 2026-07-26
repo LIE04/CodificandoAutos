@@ -103,7 +103,10 @@ public class ServicioReparacion {
         return reparacionRepository.save(reparacion);
     }
 
-    // Obtener vehiculos pendientes para la lista (HU-42)
+    /*  
+    Obtener vehiculos pendientes para la lista (HU-42)
+     * 
+    */
     public List<VehiculosPendientesDTO> obtenerVehiculosParaEntrega() {
         return reparacionRepository.findVehiculosActivos();
     }
