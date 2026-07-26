@@ -32,7 +32,7 @@ class ServicioDetallesFallaTest {
         when(detallesFallaRepository.save(any(DetallesFalla.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Se agrega el vehículo como tercer parámetro
-        DetallesFalla resultado = servicioDetallesFalla.agregarDetallesFalla(descripcion, estatus, vehiculoMock);
+        DetallesFalla resultado = servicioDetallesFalla.agregarDetallesFalla(descripcion, vehiculoMock);
 
         assertNotNull(resultado, "El objeto devuelto no debe ser nulo");
         assertEquals(descripcion, resultado.getDescripcionFalla(), "La descripción debe coincidir");
@@ -45,11 +45,10 @@ class ServicioDetallesFallaTest {
     @Test
     void testAgregarDetallesFallaDescripcionNula() {
         String descripcion = null;
-        String estatus = "En espera";
         Vehiculo vehiculoMock = new Vehiculo();
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            servicioDetallesFalla.agregarDetallesFalla(descripcion, estatus, vehiculoMock);
+            servicioDetallesFalla.agregarDetallesFalla(descripcion, vehiculoMock);
         });
 
         assertEquals("La descripción de la falla no puede estar vacía.", exception.getMessage());
@@ -59,54 +58,24 @@ class ServicioDetallesFallaTest {
     @Test
     void testAgregarDetallesFallaDescripcionVacia() {
         String descripcion = "";
-        String estatus = "En espera";
         Vehiculo vehiculoMock = new Vehiculo();
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            servicioDetallesFalla.agregarDetallesFalla(descripcion, estatus, vehiculoMock);
+            servicioDetallesFalla.agregarDetallesFalla(descripcion, vehiculoMock);
         });
 
         assertEquals("La descripción de la falla no puede estar vacía.", exception.getMessage());
         verify(detallesFallaRepository, never()).save(any(DetallesFalla.class));
     }
 
-    @Test
-    void testAgregarDetallesFallaEstatusNulo() {
-        String descripcion = "Batería inflada";
-        String estatus = null;
-        Vehiculo vehiculoMock = new Vehiculo();
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            servicioDetallesFalla.agregarDetallesFalla(descripcion, estatus, vehiculoMock);
-        });
-
-        assertEquals("El estatus de la falla no puede estar vacío.", exception.getMessage());
-        verify(detallesFallaRepository, never()).save(any(DetallesFalla.class));
-    }
-
-    @Test
-    void testAgregarDetallesFallaEstatusVacio() {
-        String descripcion = "Batería inflada";
-        String estatus = "";
-        Vehiculo vehiculoMock = new Vehiculo();
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            servicioDetallesFalla.agregarDetallesFalla(descripcion, estatus, vehiculoMock);
-        });
-
-        assertEquals("El estatus de la falla no puede estar vacío.", exception.getMessage());
-        verify(detallesFallaRepository, never()).save(any(DetallesFalla.class));
-    }
-
-    // --- NUEVO TEST: Validación de Vehículo Nulo ---
+    //Validar vehiculo nulo
     @Test
     void testAgregarDetallesFallaVehiculoNulo() {
         String descripcion = "Bujías desgastadas";
-        String estatus = "En espera";
         Vehiculo vehiculoNulo = null; // Simulamos que se olvidó mandar el auto
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            servicioDetallesFalla.agregarDetallesFalla(descripcion, estatus, vehiculoNulo);
+            servicioDetallesFalla.agregarDetallesFalla(descripcion, vehiculoNulo);
         });
 
         assertEquals("El vehículo no puede ser nulo.", exception.getMessage());

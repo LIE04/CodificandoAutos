@@ -13,14 +13,11 @@ public class ServicioDetallesFalla {
     @Autowired
     private DetallesFallaRepository detallesFallaRepository;
 
-    public DetallesFalla agregarDetallesFalla(String descripcionFalla, String estatus, Vehiculo vehiculo) {
+    public DetallesFalla agregarDetallesFalla(String descripcionFalla, Vehiculo vehiculo) {
         
         // Validaciones de seguridad
         if (descripcionFalla == null || descripcionFalla.trim().isEmpty()) {
             throw new IllegalArgumentException("La descripción de la falla no puede estar vacía.");
-        }
-        if (estatus == null || estatus.trim().isEmpty()) {
-            throw new IllegalArgumentException("El estatus de la falla no puede estar vacío.");
         }
         if (vehiculo == null) {
             throw new IllegalArgumentException("El vehículo no puede ser nulo.");
@@ -29,7 +26,6 @@ public class ServicioDetallesFalla {
         // Creación y guardado
         DetallesFalla detallesFalla = new DetallesFalla();
         detallesFalla.setDescripcionFalla(descripcionFalla);
-        detallesFalla.setEstatus(estatus);
         detallesFalla.setVehiculo(vehiculo); // Aquí ocurre el enlace
 
         return detallesFallaRepository.save(detallesFalla);
