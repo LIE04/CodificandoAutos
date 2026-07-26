@@ -34,5 +34,6 @@
     <Button fx:id="btnPedidos" onAction="#abrirVentanaPedidos" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Gestión de Pedidos" />
 
     <Button fx:id="RnCita" mnemonicParsing="false" onAction="#handleRegistrarCita" prefHeight="30.0" prefWidth="198.0" text="Registrar nueva cita" />
+   <Button fx:id="RdFalla" mnemonicParsing="false" onAction="#handleRegistrarDetallesFalla" prefHeight="30.0" prefWidth="198.0" text="Registrar Detalles de Falla" />
     
 </VBox>

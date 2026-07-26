@@ -77,5 +77,11 @@ public class ServicioVehiculo {
     public List<Vehiculo> getVehiculosCliente(long idCliente) {
         return vehiculoRepository.findByClienteIdCliente(idCliente);
     }
+    /**
+     * Recupera todos los vehículos registrados en la base de datos
+     */
+    public List<Vehiculo> recuperaTodos() {
+        return (List<Vehiculo>) vehiculoRepository.findAll();
+    }
 
 }

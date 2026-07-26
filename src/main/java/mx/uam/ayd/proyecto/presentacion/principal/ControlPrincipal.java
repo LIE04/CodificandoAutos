@@ -17,6 +17,7 @@ import mx.uam.ayd.proyecto.presentacion.registrarServicio.ControlRegistrarServic
 import mx.uam.ayd.proyecto.presentacion.pedidos.ControladorPedidos;
 import mx.uam.ayd.proyecto.presentacion.registrarCotizacion.ControlCotizacion;
 import mx.uam.ayd.proyecto.presentacion.registrarCita.ControlRegistrarCita;
+import mx.uam.ayd.proyecto.presentacion.registrarDetallesFalla.ControlRegistrarDetallesFalla;
 
 /**
  * Esta clase lleva el flujo de control de la ventana principal
@@ -39,6 +40,7 @@ public class ControlPrincipal {
 	private final ControlVehiculosEntrega controlVehiculoEntrega;
 	private final ControlCotizacion controlCotizacion;
 	private final ControlRegistrarCita controlRegistrarCita;
+	private final ControlRegistrarDetallesFalla controlRegistrarDetallesFalla;
 
 
 	@Autowired
@@ -54,6 +56,7 @@ public class ControlPrincipal {
 			ControlVehiculosEntrega controlVehiculosEntrega,
 			ControlCotizacion controlCotizacion,
 			ControlRegistrarCita controlRegistrarCita,
+			ControlRegistrarDetallesFalla controlRegistrarDetallesFalla,
             VentanaPrincipal ventana) {
 		this.controlAgregarUsuario = controlAgregarUsuario;
 		this.controlListarUsuarios = controlListarUsuarios;
@@ -67,6 +70,7 @@ public class ControlPrincipal {
 		this.controlVehiculoEntrega = controlVehiculosEntrega;
 		this.controlCotizacion = controlCotizacion;
 		this.controlRegistrarCita = controlRegistrarCita;
+		this.controlRegistrarDetallesFalla = controlRegistrarDetallesFalla;
 	}
 	
 	/**
@@ -165,4 +169,10 @@ public class ControlPrincipal {
         controlRegistrarCita.inicia();
     }
 
+	/**
+ 	* Método que arranca la historia de usuario "Registrar Detalles de Falla"
+ 	*/
+	public void registrarDetallesFalla() {
+    	controlRegistrarDetallesFalla.inicia();
+	}
 }

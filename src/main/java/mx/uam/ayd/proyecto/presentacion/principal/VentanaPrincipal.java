@@ -154,4 +154,10 @@ public class VentanaPrincipal {
             control.registrarCita();
         }
     }
+	@FXML
+	private void handleRegistrarDetallesFalla() {
+    	if (control != null) {
+        control.registrarDetallesFalla();
+    	}
+	}
 }
