@@ -71,11 +71,16 @@ public class ControlVehiculosEntrega {
     // Método puente para conectar el botón de la tabla con la ventana del escáner
     public void solicitarEscaner(int idReparacion) {
         // Arrancamos el flujo de control de calidad pasándole el ID de la reparación
-        controlControlCalidad.inicia(idReparacion);
+        //controlControlCalidad.inicia(idReparacion);
 
-        // Actualizamos la lista de inventario. Ojo: si la ventana del escáner no es modal (showAndWait),
-        // tal vez haya que poner un botón de "Refrescar" en la vista.
-        SolicitarInventario();
+        // Iniciamos el módulo de Control de Calidad.
+        controlControlCalidad.inicia(idReparacion, new Runnable() {
+           @Override
+           public void run() {
+           SolicitarInventario();
+           }
+        });
+
     }
 
     public boolean terminarEntrega(Integer idReparacion) {
