@@ -95,7 +95,7 @@ class ServicioCotizacionTest {
     @Test
     @DisplayName("No debería capturar datos si no hay borrador activo")
     void testCapturarDatosSinBorrador() {
-        boolean resultado = servicioCotizacion.capturarDatosServicio("Falla frenos", "Cambio balatas", 500.0f);
+        boolean resultado = servicioCotizacion.capturarDatosServicio("Cambio balatas", 500.0f);
         assertFalse(resultado, "Debe retornar false porque this.cotizacion es nulo");
     }
 
@@ -106,7 +106,7 @@ class ServicioCotizacionTest {
         servicioCotizacion.crearCotizacionBorrador(citaPrueba);
         
         // When: Enviamos un costo negativo para forzar el ELSE de tu método
-        boolean resultado = servicioCotizacion.capturarDatosServicio("Falla motor", "Revisión general", -150.0f);
+        boolean resultado = servicioCotizacion.capturarDatosServicio("Revisión general", -150.0f);
         
         // Then
         assertTrue(resultado, "Debería retornar true tras guardar los datos");
@@ -128,7 +128,7 @@ class ServicioCotizacionTest {
         // Given: Preparamos un escenario completo
         servicioCotizacion.crearCotizacionBorrador(citaPrueba);
         servicioCotizacion.agregarRefaccionACotizacionBorrador(refaccionPrueba, 2); // 2 piezas de $100 = $200
-        servicioCotizacion.capturarDatosServicio("Frenos", "Cambio", 500.0f); // Mano de obra = $500
+        servicioCotizacion.capturarDatosServicio("Cambio", 500.0f); // Mano de obra = $500
         
         // When: Finalizamos
         boolean resultado = servicioCotizacion.finalizarCotizacion();
@@ -146,6 +146,6 @@ class ServicioCotizacionTest {
         assertEquals(812.0f, cotizacionGuardada.getCostoTotal(), 0.01, "El cálculo del IVA y total no es correcto");
         
         // Verificamos la limpieza en memoria: Si intentamos capturar datos ahora, debe dar false porque es nulo
-        assertFalse(servicioCotizacion.capturarDatosServicio("Prueba", "Prueba", 100f), "El borrador debió ser destruido (null)");
+        assertFalse(servicioCotizacion.capturarDatosServicio( "Prueba", 100f), "El borrador debió ser destruido (null)");
     }
 }

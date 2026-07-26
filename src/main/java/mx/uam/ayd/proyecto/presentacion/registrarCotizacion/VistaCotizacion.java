@@ -249,11 +249,11 @@ public class VistaCotizacion {
 
     @FXML
     public void accionActualizarServicio() {
-        String fallas = txtFallas.getText();
+        //String fallas = txtFallas.getText();
         String manoObra = txtManoObra.getText();
         try {
             float costo = Float.parseFloat(txtCostoManoObra.getText());
-            control.onActualizarServicio(fallas, manoObra, costo);
+            control.onActualizarServicio(manoObra, costo);
         } catch (NumberFormatException e) {
             mostrarMensajeError("Ingrese un costo válido para la mano de obra.");
         }
@@ -261,6 +261,7 @@ public class VistaCotizacion {
 
     @FXML
     public void accionGuardarCotizacion() {
+        Vehiculo vehiculoSeleccionado = comboVehiculos.getValue();
         String fallas = txtFallas.getText();
         String manoObra = txtManoObra.getText();
         String costoTxt = txtCostoManoObra.getText();
@@ -272,7 +273,7 @@ public class VistaCotizacion {
         mostrarMensajeError("¡Atención! Debes llenar las fallas, la mano de obra y el costo antes de guardar.");
         return; 
         }
-
+        control.agregarFalla(fallas, vehiculoSeleccionado); 
         control.onGuardarClick();
     }
 }

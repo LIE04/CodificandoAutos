@@ -10,6 +10,7 @@ import mx.uam.ayd.proyecto.negocio.ServicioVehiculo;
 import mx.uam.ayd.proyecto.negocio.ServicioCita;
 import mx.uam.ayd.proyecto.negocio.ServicioRefaccion;
 import mx.uam.ayd.proyecto.negocio.ServicioCotizacion;
+import mx.uam.ayd.proyecto.negocio.ServicioDetallesFalla;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -23,6 +24,7 @@ public class ControlCotizacion {
     @Autowired private ServicioCita servicioCita;
     @Autowired private ServicioRefaccion servicioRefaccion;
     @Autowired private ServicioCotizacion servicioCotizacion;
+    @Autowired private ServicioDetallesFalla servicioDetallesFalla;
     private float totalRefacciones = 0.0f;
     private float costoManoObra = 0.0f;
     
@@ -90,8 +92,8 @@ public class ControlCotizacion {
         }
     }
 
-    public void onActualizarServicio(String fallas, String manoObra, float costoManoObra) {
-        boolean exito = servicioCotizacion.capturarDatosServicio(fallas, manoObra, costoManoObra);
+    public void onActualizarServicio(String manoObra, float costoManoObra) {
+        boolean exito = servicioCotizacion.capturarDatosServicio(manoObra, costoManoObra);
         if (exito) {
 
             this.costoManoObra = costoManoObra;
@@ -99,9 +101,20 @@ public class ControlCotizacion {
         }
     }
 
+        public void agregarFalla(String descripcion, Vehiculo vehiculoSeleccionado) {
+        try {
+            // Le pasamos solo la descripción y el vehículo
+            servicioDetallesFalla.agregarDetallesFalla(descripcion, vehiculoSeleccionado);
+ 
+        } catch (IllegalArgumentException e) {
+            vista.mostrarMensajeError("Error de Validación");
+        } catch (Exception e) {
+            vista.mostrarMensajeError("Ocurrió un error inesperado al guardar en la base de datos.");
+        }
+    } 
+
     public void onGuardarClick() {
         boolean exito = servicioCotizacion.finalizarCotizacion();
-        //servicioDetallesFalla.agregarDetallesFalla(descripcion, vehiculoSeleccionado);
         if (exito) {
             vista.mostrarMensajeExito();
         } else {

@@ -29,7 +29,6 @@ class CotizacionTest {
     void testSetAndGetValoresBasicos() {
         // When: Asignamos valores
         cotizacionPrueba.setIdCotizacion(5L);
-        cotizacionPrueba.setDescripcionFallas("Falla en el motor");
         cotizacionPrueba.setManoObra("Revisión general");
         cotizacionPrueba.setManoObraCosto(500.50f);
         cotizacionPrueba.setRefaccionesCosto(1200.0f);
@@ -37,7 +36,6 @@ class CotizacionTest {
 
         // Then: Validamos que los getters devuelvan lo correcto
         assertEquals(5L, cotizacionPrueba.getIdCotizacion(), "El ID debería ser 5");
-        assertEquals("Falla en el motor", cotizacionPrueba.getDescripcionFallas(), "La descripción de falla debería coincidir");
         assertEquals("Revisión general", cotizacionPrueba.getManoObra(), "La mano de obra debería coincidir");
         assertEquals(500.50f, cotizacionPrueba.getManoObraCosto(), "El costo de mano de obra debería coincidir");
         assertEquals(1200.0f, cotizacionPrueba.getRefaccionesCosto(), "El costo de refacciones debería coincidir");
@@ -70,14 +68,13 @@ class CotizacionTest {
     void testToString() {
         // Given: Configuramos los datos (recuerda que el estado ya es "Pendiente")
         cotizacionPrueba.setIdCotizacion(1L);
-        cotizacionPrueba.setDescripcionFallas("Frenos gastados");
         cotizacionPrueba.setManoObraCosto(200.0f);
         cotizacionPrueba.setRefaccionesCosto(300.0f);
         cotizacionPrueba.setCostoTotal(500.0f);
 
         // When: Ejecutamos el método
         String resultado = cotizacionPrueba.toString();
-        String esperado = "Cotizacion [idCotizacion=1, descripcion fallas=Frenos gastados, costo de mano de obra=200.0, costo de refacciones=300.0, costo total=500.0, estado de aprobacion=Pendiente]";
+        String esperado = "Cotizacion [idCotizacion=1, costo de mano de obra=200.0, costo de refacciones=300.0, costo total=500.0, estado de aprobacion=Pendiente]";
 
         // Then: Comprobamos el formato exacto
         assertEquals(esperado, resultado, "El formato del toString no es el esperado");
