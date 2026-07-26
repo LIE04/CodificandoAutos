@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import mx.uam.ayd.proyecto.negocio.ServicioReparacion;
+// Edite esto en tu codigo: Puse mi servicio detalles falla
+import mx.uam.ayd.proyecto.negocio.ServicioDetallesFalla; 
 import mx.uam.ayd.proyecto.negocio.modelo.DetallesFalla;
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
+import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 
 /**
  * Controlador para el flujo de Verificación de Escáner (HU-40)
@@ -22,6 +25,10 @@ public class ControlControlCalidad {
     @Autowired
     private ServicioReparacion servicioReparacion;
 
+    // Edite esto en tu codigo: Inyecte mi servicio
+    @Autowired
+    private ServicioDetallesFalla servicioDetallesFalla; 
+
     @Autowired
     private VentanaControlCalidad ventana;
 
@@ -31,21 +38,21 @@ public class ControlControlCalidad {
      */
     public void inicia(int idReparacion) {
         try {
-            // 1. Recuperamos la reparación real a través del servicio
             Reparacion reparacion = servicioReparacion.recuperarReparacion(idReparacion);
             
-            // 2. Obtenemos la lista real de entidades DetallesFalla asociadas a la reparación
-            // Nota: Asegúrate de que la entidad Reparacion ya tenga el método getFallas()
-            List<DetallesFalla> fallasReales = reparacion.getFallas(); 
+            // Edite esto en tu codigo: Extraemos el vehículo vinculado a esa reparación
+            Vehiculo vehiculo = reparacion.getVehiculo();
             
-            // 3. Extraemos solo las descripciones (Strings) para mantener la compatibilidad con tu vista
+            // Edite esto en tu codigo: Uso el servicio con el que estaba vinculado el vehiculo
+            List<DetallesFalla> fallasReales = servicioDetallesFalla.recuperarFallasPorVehiculo(vehiculo);
+            
+            // Extraemos solo las descripciones (Strings) para mantener la compatibilidad con la vista
             List<String> descripcionesFallas = new ArrayList<>();
             for (DetallesFalla falla : fallasReales) {
                 descripcionesFallas.add(falla.getDescripcionFalla());
             }
 
-            // 4. Mandamos los datos a la ventana 
-            // (El método de la ventana sigue llamándose muestraConMock, puedes renombrarlo a 'muestra' después si lo deseas)
+            // Mandamos los datos a la ventana 
             ventana.muestraConMock(this, idReparacion, descripcionesFallas);
             
         } catch (Exception e) {
