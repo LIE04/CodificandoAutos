@@ -21,6 +21,8 @@ import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
  */
 @Component
 public class ControlControlCalidad {
+    //Callbakc que se ejecuta al terminar el proceso(Para refrescar la ventana en HU-42)
+    private Runnable alTerminarActualizar;
 
     @Autowired
     private ServicioReparacion servicioReparacion;
@@ -36,7 +38,10 @@ public class ControlControlCalidad {
      * Inicia el módulo de control de calidad para una reparación específica,
      * obteniendo los datos reales de la base de datos.
      */
-    public void inicia(int idReparacion) {
+    public void inicia(int idReparacion, Runnable alTerminarActualizar) {
+        //Guardamos la referncia del callback para ejecutarla despues (HU-42)
+        this.alTerminarActualizar = alTerminarActualizar;
+
         try {
             Reparacion reparacion = servicioReparacion.recuperarReparacion(idReparacion);
             
@@ -70,6 +75,11 @@ public class ControlControlCalidad {
             servicioReparacion.procesarEscaneoLimpio(idReparacion);
             ventana.muestraMensajeExito("El vehículo está listo para entrega.");
             ventana.cerrar();
+
+            // Si la vista solicitante definió una acción de refresco, la notificamos (HU-42)
+            if (alTerminarActualizar != null) {
+                alTerminarActualizar.run();
+            }
         } catch (Exception e) {
             ventana.muestraError(e.getMessage());
         }
@@ -83,6 +93,11 @@ public class ControlControlCalidad {
             servicioReparacion.procesarFallasPersistentes(idReparacion, fallasExtra);
             ventana.muestraMensajeAdvertencia("El vehículo regresó a estado de revisión con las fallas adicionales registradas.");
             ventana.cerrar();
+
+            // Si la vista solicitante definió una acción de refresco, la notificamos (HU-42)
+            if (alTerminarActualizar != null) {
+                alTerminarActualizar.run();
+            }
         } catch (IllegalArgumentException e) {
             ventana.muestraError("Error: " + e.getMessage()); 
         }
