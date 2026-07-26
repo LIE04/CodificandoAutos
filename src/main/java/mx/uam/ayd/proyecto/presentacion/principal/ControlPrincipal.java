@@ -18,6 +18,9 @@ import mx.uam.ayd.proyecto.presentacion.pedidos.ControladorPedidos;
 import mx.uam.ayd.proyecto.presentacion.registrarCotizacion.ControlCotizacion;
 import mx.uam.ayd.proyecto.presentacion.registrarCita.ControlRegistrarCita;
 import mx.uam.ayd.proyecto.presentacion.registrarDetallesFalla.ControlRegistrarDetallesFalla;
+// INICIO Modificación realizada por Erik para la HU-34 (Notificación de Atraso)
+import mx.uam.ayd.proyecto.presentacion.informeAtrasos.ControlInformeAtrasos;
+// FIN Modificación Erik HU-34
 
 /**
  * Esta clase lleva el flujo de control de la ventana principal
@@ -28,151 +31,169 @@ import mx.uam.ayd.proyecto.presentacion.registrarDetallesFalla.ControlRegistrarD
 @Component
 public class ControlPrincipal {
 
-	private final ControlAgregarUsuario controlAgregarUsuario;
-	private final ControlListarUsuarios controlListarUsuarios;
-	private final ControlListarGrupos controlListarGrupos;
-	private final ControlRegistrarPieza controlRegistrarPieza;
-	private final ControlConsultarDistribuidores controlConsultarDistribuidores;
-	private final ControlRegistrarServicio controlRegistrarServicio;
-	private final VentanaPrincipal ventana;
-	private final ControladorPedidos controladorPedidos;
-	private final ControlInventario controlInventario;
-	private final ControlVehiculosEntrega controlVehiculoEntrega;
-	private final ControlCotizacion controlCotizacion;
-	private final ControlRegistrarCita controlRegistrarCita;
-	private final ControlRegistrarDetallesFalla controlRegistrarDetallesFalla;
+    private final ControlAgregarUsuario controlAgregarUsuario;
+    private final ControlListarUsuarios controlListarUsuarios;
+    private final ControlListarGrupos controlListarGrupos;
+    private final ControlRegistrarPieza controlRegistrarPieza;
+    private final ControlConsultarDistribuidores controlConsultarDistribuidores;
+    private final ControlRegistrarServicio controlRegistrarServicio;
+    private final VentanaPrincipal ventana;
+    private final ControladorPedidos controladorPedidos;
+    private final ControlInventario controlInventario;
+    private final ControlVehiculosEntrega controlVehiculoEntrega;
+    private final ControlCotizacion controlCotizacion;
+    private final ControlRegistrarCita controlRegistrarCita;
+    private final ControlRegistrarDetallesFalla controlRegistrarDetallesFalla;
+    // INICIO Modificación realizada por Erik para la HU-34
+    private final ControlInformeAtrasos controlInformeAtrasos;
+    // FIN Modificación Erik HU-34
 
 
-	@Autowired
-	public ControlPrincipal(
-			ControlAgregarUsuario controlAgregarUsuario,
-			ControlListarUsuarios controlListarUsuarios,
-			ControlListarGrupos controlListarGrupos,
-			ControlRegistrarPieza controlRegistrarPieza,
-			ControlConsultarDistribuidores controlConsultarDistribuidores,
-			ControlRegistrarServicio controlRegistrarServicio,
-			ControladorPedidos controladorPedidos,
-			ControlInventario controlInventario,
-			ControlVehiculosEntrega controlVehiculosEntrega,
-			ControlCotizacion controlCotizacion,
-			ControlRegistrarCita controlRegistrarCita,
-			ControlRegistrarDetallesFalla controlRegistrarDetallesFalla,
+    @Autowired
+    public ControlPrincipal(
+            ControlAgregarUsuario controlAgregarUsuario,
+            ControlListarUsuarios controlListarUsuarios,
+            ControlListarGrupos controlListarGrupos,
+            ControlRegistrarPieza controlRegistrarPieza,
+            ControlConsultarDistribuidores controlConsultarDistribuidores,
+            ControlRegistrarServicio controlRegistrarServicio,
+            ControladorPedidos controladorPedidos,
+            ControlInventario controlInventario,
+            ControlVehiculosEntrega controlVehiculosEntrega,
+            ControlCotizacion controlCotizacion,
+            ControlRegistrarCita controlRegistrarCita,
+            ControlRegistrarDetallesFalla controlRegistrarDetallesFalla,
+            // INICIO Modificación realizada por Erik para la HU-34
+            ControlInformeAtrasos controlInformeAtrasos,
+            // FIN Modificación Erik HU-34
             VentanaPrincipal ventana) {
-		this.controlAgregarUsuario = controlAgregarUsuario;
-		this.controlListarUsuarios = controlListarUsuarios;
-		this.controlListarGrupos = controlListarGrupos;
-		this.controlRegistrarPieza = controlRegistrarPieza;
-		this.controlConsultarDistribuidores = controlConsultarDistribuidores;
-		this.controlRegistrarServicio = controlRegistrarServicio;
-		this.ventana = ventana;
-		this.controladorPedidos = controladorPedidos;
-		this.controlInventario = controlInventario;
-		this.controlVehiculoEntrega = controlVehiculosEntrega;
-		this.controlCotizacion = controlCotizacion;
-		this.controlRegistrarCita = controlRegistrarCita;
-		this.controlRegistrarDetallesFalla = controlRegistrarDetallesFalla;
-	}
-	
-	/**
-	 * Método que se ejecuta después de la construcción del bean
-	 * y realiza la conexión bidireccional entre el control principal y la ventana principal
-	 */
-	@PostConstruct
-	public void init() {
-		ventana.setControlPrincipal(this);
-	}
-	
-	/**
-	 * Inicia el flujo de control de la ventana principal
-	 * 
-	 */
-	public void inicia() {
-		ventana.muestra();
-	}
+        this.controlAgregarUsuario = controlAgregarUsuario;
+        this.controlListarUsuarios = controlListarUsuarios;
+        this.controlListarGrupos = controlListarGrupos;
+        this.controlRegistrarPieza = controlRegistrarPieza;
+        this.controlConsultarDistribuidores = controlConsultarDistribuidores;
+        this.controlRegistrarServicio = controlRegistrarServicio;
+        this.ventana = ventana;
+        this.controladorPedidos = controladorPedidos;
+        this.controlInventario = controlInventario;
+        this.controlVehiculoEntrega = controlVehiculosEntrega;
+        this.controlCotizacion = controlCotizacion;
+        this.controlRegistrarCita = controlRegistrarCita;
+        this.controlRegistrarDetallesFalla = controlRegistrarDetallesFalla;
+        // INICIO Modificación realizada por Erik para la HU-34
+        this.controlInformeAtrasos = controlInformeAtrasos;
+        // FIN Modificación Erik HU-34
+    }
+    
+    /**
+     * Método que se ejecuta después de la construcción del bean
+     * y realiza la conexión bidireccional entre el control principal y la ventana principal
+     */
+    @PostConstruct
+    public void init() {
+        ventana.setControlPrincipal(this);
+    }
+    
+    /**
+     * Inicia el flujo de control de la ventana principal
+     * 
+     */
+    public void inicia() {
+        ventana.muestra();
+    }
 
-	/**
-	 * Método que arranca la historia de usuario "agregar usuario"
-	 * 
-	 */
-	public void agregarUsuario() {
-		controlAgregarUsuario.inicia();
-	}
-	
-	/**
-	 * Método que arranca la historia de usuario "listar usuarios"
-	 * 
-	 */
-	public void listarUsuarios() {
-		controlListarUsuarios.inicia();
-	}
+    /**
+     * Método que arranca la historia de usuario "agregar usuario"
+     * 
+     */
+    public void agregarUsuario() {
+        controlAgregarUsuario.inicia();
+    }
+    
+    /**
+     * Método que arranca la historia de usuario "listar usuarios"
+     * 
+     */
+    public void listarUsuarios() {
+        controlListarUsuarios.inicia();
+    }
 
-	/**
-	 * Método que arranca la historia de usuario "listar grupos"
-	 * 
-	 */
-	public void listarGrupos() {
-		controlListarGrupos.inicia();
-	}
+    /**
+     * Método que arranca la historia de usuario "listar grupos"
+     * 
+     */
+    public void listarGrupos() {
+        controlListarGrupos.inicia();
+    }
 
-	/**
-	 * Método que arranca la historia de usuario "registrar pieza" (HU-31)
-	 *
-	 */
-	public void registrarPieza() {
-		controlRegistrarPieza.inicia();
-	}
+    /**
+     * Método que arranca la historia de usuario "registrar pieza" (HU-31)
+     *
+     */
+    public void registrarPieza() {
+        controlRegistrarPieza.inicia();
+    }
 
-	/**
-	 * Método que arranca la historia de usuario "consultar distribuidores" (HU-25)
-	 *
-	 */
-	public void consultarDistribuidores() {
-		controlConsultarDistribuidores.inicia();
-	}
+    /**
+     * Método que arranca la historia de usuario "consultar distribuidores" (HU-25)
+     *
+     */
+    public void consultarDistribuidores() {
+        controlConsultarDistribuidores.inicia();
+    }
 
-		/**
-	 * Método que arranca la historia de usuario "inventario de piezas (HU-12)
-	 *
-	 */
-	public void consultarInventario() {
-		controlInventario.inicia();
-	}
+        /**
+     * Método que arranca la historia de usuario "inventario de piezas (HU-12)
+     *
+     */
+    public void consultarInventario() {
+        controlInventario.inicia();
+    }
 
-	/**
-	 * Método que arranca la historia de usuario "regitrar cotizacion" (HU-14)
-	 *
-	 */
-	public void registrarCotizacion() {
-		controlCotizacion.iniciar();
-	}
+    /**
+     * Método que arranca la historia de usuario "regitrar cotizacion" (HU-14)
+     *
+     */
+    public void registrarCotizacion() {
+        controlCotizacion.iniciar();
+    }
 
-	/**
-	 * Método que arranca la historia de usuario "historial de servicio" (HU-29)
-	 *
-	 */
-	public void registrarServicio() {
-		controlRegistrarServicio.inicia();
-	}
-	public void iniciaVentanaPedidos() { 
+    /**
+     * Método que arranca la historia de usuario "historial de servicio" (HU-29)
+     *
+     */
+    public void registrarServicio() {
+        controlRegistrarServicio.inicia();
+    }
+    public void iniciaVentanaPedidos() { 
         controladorPedidos.inicia(); 
     }
     
-	/**
-	 * Método que arranca la historia de usuario "lista de vehiculos por entregar" (HU-42)
-	 *
-	 */
-	public void consultarEntregas() {
-		controlVehiculoEntrega.inicia();
-	}
-	
-	public void registrarCita() {
+    /**
+     * Método que arranca la historia de usuario "lista de vehiculos por entregar" (HU-42)
+     *
+     */
+    public void consultarEntregas() {
+        controlVehiculoEntrega.inicia();
+    }
+    
+    public void registrarCita() {
         controlRegistrarCita.inicia();
     }
 
-	/**
- 	* Método que arranca la historia de usuario "Registrar Detalles de Falla"
- 	*/
-	public void registrarDetallesFalla() {
-    	controlRegistrarDetallesFalla.inicia();
-	}
+    /**
+    * Método que arranca la historia de usuario "Registrar Detalles de Falla"
+    */
+    public void registrarDetallesFalla() {
+        controlRegistrarDetallesFalla.inicia();
+    }
+    
+    // INICIO Modificación realizada por Erik para la HU-34
+    /**
+     * Método que arranca la historia de usuario "Notificación de Atrasos" (HU-34)
+     */
+    public void informeAtrasos() {
+        controlInformeAtrasos.inicia();
+    }
+    // FIN Modificación Erik HU-34
 }

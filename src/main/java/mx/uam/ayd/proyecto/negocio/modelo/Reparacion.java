@@ -68,6 +68,12 @@ public class Reparacion {
     @JoinColumn(name = "id_cotizacion")
     private Cotizacion cotizacion;
 
+    /** 
+     * Bitácora de notificaciones de atraso enviadas al cliente.
+     */
+    @OneToMany(mappedBy = "reparacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<HistorialNotificacion> historialNotificaciones = new ArrayList<>();
+
     /** CONSTRUCTORES
      * Constructor vacio que nos pide Spring para armar el objeto
      */
@@ -224,5 +230,31 @@ public class Reparacion {
      */
     public void setVehiculo(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
+    }
+
+    /**
+     * Obtiene el historial de notificaciones de atraso
+     * @return historialNotificaciones
+     */
+    public List<HistorialNotificacion> getHistorialNotificaciones() {
+        return historialNotificaciones;
+    }
+
+    /**
+     * Asigna el historial de notificaciones
+     * @param historialNotificaciones lista de notificaciones enviadas
+     */
+    public void setHistorialNotificaciones(List<HistorialNotificacion> historialNotificaciones) {
+        this.historialNotificaciones = historialNotificaciones;
+    }
+
+    /**
+     * Metodo de ayuda para agregar un registro al historial de notificaciones
+     * y mantener la consistencia bidireccional en memoria.
+     * @param notificacion el registro a agregar
+     */
+    public void addHistorialNotificacion(HistorialNotificacion notificacion) {
+        this.historialNotificaciones.add(notificacion);
+        notificacion.setReparacion(this);
     }
 }
