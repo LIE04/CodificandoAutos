@@ -77,6 +77,4 @@ public class HistorialNotificacion {
     public void setReparacion(Reparacion reparacion) {
         this.reparacion = reparacion;
     }
-} {
-    
-}
+} 
