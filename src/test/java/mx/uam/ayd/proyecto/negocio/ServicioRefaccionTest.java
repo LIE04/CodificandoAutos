@@ -35,13 +35,13 @@ class ServicioRefaccionTest {
         
         // Preparamos nuestro objeto de prueba base
         refaccionPrueba = new Refaccion();
-        // Asumiendo que tu modelo Refaccion tiene sus respectivos Setters
+        
         refaccionPrueba.setNombre("Bujía");
         refaccionPrueba.setPrecio(150.0f);
         refaccionPrueba.setExistencia(10);
     }
 
-    // -- Pruebas para getRefaccion() --
+    
 
     @Test
     @DisplayName("Debería recuperar la lista completa de refacciones (HU-12)")

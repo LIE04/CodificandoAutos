@@ -22,7 +22,7 @@ import java.util.List;
 @Component
 public class VistaCotizacion {
 
-    // --- Elementos de JavaFX (Vinculados a tu FXML) ---
+    
     @FXML private ComboBox<Cliente> comboClientes;
     @FXML private ComboBox<Vehiculo> comboVehiculos;
     

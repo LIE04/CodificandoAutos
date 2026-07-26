@@ -35,7 +35,7 @@ class ServicioCotizacionTest {
         citaPrueba = new Cita();
         
         refaccionPrueba = new Refaccion();
-        refaccionPrueba.setPrecio(100.0f); // Precio fácil para calcular matemáticas
+        refaccionPrueba.setPrecio(100.0f); 
     }
 
     // --- Pruebas para crearCotizacionBorrador ---
