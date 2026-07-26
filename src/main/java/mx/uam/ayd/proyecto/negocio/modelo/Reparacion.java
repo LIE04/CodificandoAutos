@@ -1,6 +1,7 @@
 package mx.uam.ayd.proyecto.negocio.modelo;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +38,11 @@ public class Reparacion {
     private String estatusServicio;
     
     /** Notas que deja el mecanico sobre lo que le hizo al auto */
+    // INICIO Modificación realizada por Erik para la HU-40 (Control de Calidad)
+    // Se aumenta el límite de caracteres a 1000 para evitar el error "Value too long" al guardar múltiples fallas.
+    @Column(length = 1000)
     private String observacionesTecnicas;
+    // FIN Modificación Erik HU-40
     
     /** Cuantos meses de garantia tiene el cliente por este trabajo */
     private int garantiaMeses;

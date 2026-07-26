@@ -45,11 +45,9 @@ public class ControlControlCalidad {
         try {
             Reparacion reparacion = servicioReparacion.recuperarReparacion(idReparacion);
             
-            // Edite esto en tu codigo: Extraemos el vehículo vinculado a esa reparación
-            Vehiculo vehiculo = reparacion.getVehiculo();
-            
-            // Edite esto en tu codigo: Uso el servicio con el que estaba vinculado el vehiculo
-            List<DetallesFalla> fallasReales = servicioDetallesFalla.recuperarFallasPorVehiculo(vehiculo);
+            // Recuperamos las fallas asociadas DIRECTAMENTE a esta reparación.
+            // Como usamos FetchType.EAGER en la entidad, la lista ya viene cargada.
+            List<DetallesFalla> fallasReales = reparacion.getFallas();
             
             // Extraemos solo las descripciones (Strings) para mantener la compatibilidad con la vista
             List<String> descripcionesFallas = new ArrayList<>();
