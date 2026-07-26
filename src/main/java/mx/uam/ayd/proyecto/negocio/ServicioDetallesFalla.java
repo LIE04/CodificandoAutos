@@ -1,5 +1,7 @@
 package mx.uam.ayd.proyecto.negocio;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +31,11 @@ public class ServicioDetallesFalla {
         detallesFalla.setVehiculo(vehiculo); // Aquí ocurre el enlace
 
         return detallesFallaRepository.save(detallesFalla);
+    }
+    public List<DetallesFalla> recuperarFallasPorVehiculo(Vehiculo vehiculo) {
+        if (vehiculo == null) {
+            throw new IllegalArgumentException("El vehículo no puede ser nulo.");
+        }
+        return detallesFallaRepository.findByVehiculo(vehiculo);
     }
 }
