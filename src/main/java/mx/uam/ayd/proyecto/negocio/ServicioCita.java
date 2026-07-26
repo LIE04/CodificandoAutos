@@ -40,10 +40,26 @@ public class ServicioCita {
         if (cliente == null) {
             throw new IllegalArgumentException("La cita debe estar asociada a un cliente");
         }
+        if (vehiculo == null) {
+            throw new IllegalArgumentException("La cita debe estar asociada a un vehículo");
+        }
+
+        // Verificar que la cita esté dentro del horario de atención (9:00 a 18:00)
+        LocalTime horaApertura = LocalTime.of(9, 0);
+        LocalTime horaCierre = LocalTime.of(17, 30);
+
+        if (hora.isBefore(horaApertura) || hora.isAfter(horaCierre)) {
+            throw new IllegalArgumentException("Las citas solo pueden agendarse en horario de 9:00 a 18:00 hrs");
+        }
 
         // Verificar que la cita no sea registrada en una fecha pasada
         if (fecha.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("No se pueden agendar citas en fechas pasadas");
+        }
+        
+        // Verificar que si la cita es HOY, la hora no haya pasado ya
+        if (fecha.isEqual(LocalDate.now()) && hora.isBefore(LocalTime.now())) {
+            throw new IllegalArgumentException("No se pueden agendar citas en horas pasadas para el día de hoy");
         }
 
         // Verificar que no exista una cita agendada en el mismo dia y hora
@@ -58,9 +74,16 @@ public class ServicioCita {
         cita.setCliente(cliente);
         cita.setVehiculo(vehiculo);
 
-        Cita citaGuardada = citaRepository.save(cita);
+        return citaRepository.save(cita); // Simplificamos un poco el guardado y retorno
+    }
 
-        return citaGuardada;
+    public Cita obtenerCitaPendientePorVehiculo(Vehiculo vehiculoSeleccionado) {
+        if (vehiculoSeleccionado == null) {
+            throw new IllegalArgumentException("El vehículo no puede ser nulo al buscar una cita");
+        }
+        
+        // Buscamos la cita que le pertenece a ese vehículo y que su estado sea "PENDIENTE"
+        return citaRepository.findByVehiculoAndEstado(vehiculoSeleccionado, "PENDIENTE");
     }
     /**
     * Recupera las citas asociadas al nombre de un cliente
@@ -70,14 +93,6 @@ public class ServicioCita {
             throw new IllegalArgumentException("El nombre del cliente no puede estar vacío");
         }
         return citaRepository.findByClienteNombre(nombreCliente.trim());
-    }
-
-    public Cita obtenerCitaPendientePorVehiculo(Vehiculo vehiculoSeleccionado) {
-        
-        // Buscamos la cita que le pertenece a ese vehículo y que su estado sea "PENDIENTE"
-        Cita citaActiva = citaRepository.findByVehiculoAndEstado(vehiculoSeleccionado, "PENDIENTE");
-        
-        return citaActiva;
     }
 
     @Transactional

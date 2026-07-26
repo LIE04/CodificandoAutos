@@ -2,6 +2,10 @@ package mx.uam.ayd.proyecto.negocio;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
@@ -30,6 +34,12 @@ class ServicioCitaTest {
 
     @InjectMocks
     private ServicioCita servicioCita;
+
+    @Mock
+    private ServicioCliente servicioCliente;
+
+    @Mock
+    private ServicioVehiculo servicioVehiculo;
 
     private Cliente clientePrueba;
     private Vehiculo vehiculoPrueba;
@@ -157,5 +167,126 @@ class ServicioCitaTest {
         assertNotNull(resultado);
         assertEquals("PENDIENTE", resultado.getEstado());
         verify(citaRepository, times(1)).findByVehiculoAndEstado(vehiculoPrueba, "PENDIENTE");
+    }
+    @Test
+    void agendarCitaCompleta_Exito() {
+        // 1. Preparar el escenario (Mocks)
+        when(servicioCliente.agregaCliente("Ana", "5551234567")).thenReturn(clientePrueba);
+        when(servicioVehiculo.agregaVehiculo("Toyota", "Corolla", "ABC-123", 2020, 15000.0, clientePrueba))
+        .thenReturn(vehiculoPrueba);
+        when(citaRepository.existsByFechaAndHora(fechaValida, horaValida)).thenReturn(false);
+    
+        Cita citaGuardada = new Cita();
+        citaGuardada.setFecha(fechaValida);
+        citaGuardada.setHora(horaValida);
+        when(citaRepository.save(any(Cita.class))).thenReturn(citaGuardada);
+
+        // 2. Ejecutar
+        Cita resultado = servicioCita.agendarCitaCompleta("Ana", "5551234567", "Toyota", "Corolla", 
+                                                      2020, "ABC-123", 15000.0, fechaValida, horaValida);
+
+        // 3. Validar
+        assertNotNull(resultado);
+        verify(servicioCliente, times(1)).agregaCliente("Ana", "5551234567");
+        verify(servicioVehiculo, times(1)).agregaVehiculo(eq("Toyota"), eq("Corolla"), eq("ABC-123"), 
+                                                      eq(2020), eq(15000.0), eq(clientePrueba));
+    }
+    // --- NUEVAS PRUEBAS PARA agendarCita ---
+
+    @Test
+    void agendarCita_LanzaExcepcion_SiVehiculoEsNulo() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioCita.agendarCita(fechaValida, horaValida, clientePrueba, null);
+        }, "Debe lanzar excepción si el vehículo es nulo");
+    }
+
+    @Test
+    void agendarCita_LanzaExcepcion_SiEsHoyYHoraPasada() {
+        LocalDate hoy = LocalDate.now();
+        // Le restamos unos minutos a la hora actual para simular que ya pasó
+        LocalTime horaPasada = LocalTime.now().minusMinutes(5); 
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioCita.agendarCita(hoy, horaPasada, clientePrueba, vehiculoPrueba);
+        }, "Debe lanzar excepción si la cita es para hoy pero en una hora que ya pasó");
+        
+        verifyNoInteractions(citaRepository);
+    }
+
+    // --- NUEVAS PRUEBAS PARA obtenerCitaPendientePorVehiculo ---
+
+    @Test
+    void obtenerCitaPendientePorVehiculo_LanzaExcepcion_SiVehiculoEsNulo() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioCita.obtenerCitaPendientePorVehiculo(null);
+        }, "Debe lanzar excepción si el vehículo es nulo");
+        
+        verifyNoInteractions(citaRepository);
+    }
+
+    @Test
+    void obtenerCitaPendientePorVehiculo_RetornaNull_SiNoHayCitasPendientes() {
+        // Simulamos el escenario donde el repositorio busca pero no encuentra nada y devuelve null
+        when(citaRepository.findByVehiculoAndEstado(vehiculoPrueba, "PENDIENTE")).thenReturn(null);
+
+        Cita resultado = servicioCita.obtenerCitaPendientePorVehiculo(vehiculoPrueba);
+
+        assertNull(resultado, "Debe retornar null si no encuentra ninguna cita pendiente");
+        verify(citaRepository, times(1)).findByVehiculoAndEstado(vehiculoPrueba, "PENDIENTE");
+    }
+    @Test
+    void agendarCita_LanzaExcepcion_SiHoraEsAntesDeApertura() {
+        LocalTime horaTemprano = LocalTime.of(8, 30); // 8:30 AM
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioCita.agendarCita(fechaValida, horaTemprano, clientePrueba, vehiculoPrueba);
+        }, "Debe lanzar excepción si la cita es antes de las 9:00 hrs");
+        
+        verifyNoInteractions(citaRepository);
+    }
+
+    @Test
+    void agendarCita_LanzaExcepcion_SiHoraEsDespuesDeCierre() {
+        LocalTime horaTarde = LocalTime.of(18, 30); // 18:30 hrs
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioCita.agendarCita(fechaValida, horaTarde, clientePrueba, vehiculoPrueba);
+        }, "Debe lanzar excepción si la cita es después de las 18:00 hrs");
+        
+        verifyNoInteractions(citaRepository);
+    }
+    @Test
+    void agendarCitaCompleta_LanzaExcepcion_SiFallaAlCrearCliente() {
+        // Simulamos que el ServicioCliente falla (ej. teléfono inválido o cliente duplicado)
+        when(servicioCliente.agregaCliente(anyString(), anyString()))
+            .thenThrow(new IllegalArgumentException("Error al crear cliente"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioCita.agendarCitaCompleta("Ana", "5551234567", "Toyota", "Corolla", 
+                                              2020, "ABC-123", 15000.0, fechaValida, horaValida);
+        }, "Debe abortar si el cliente falla");
+
+        //Si falló el cliente, NO debe intentar crear el vehículo ni la cita
+        verifyNoInteractions(servicioVehiculo);
+        verifyNoInteractions(citaRepository);
+    }
+
+    @Test
+    void agendarCitaCompleta_LanzaExcepcion_SiFallaAlCrearVehiculo() {
+        // Simulamos que el cliente sí se crea bien...
+        when(servicioCliente.agregaCliente(anyString(), anyString())).thenReturn(clientePrueba);
+        
+        //pero el vehículo falla (ej. placas duplicadas)
+        when(servicioVehiculo.agregaVehiculo(anyString(), anyString(), anyString(), anyInt(), anyDouble(), any(Cliente.class)))
+            .thenThrow(new IllegalArgumentException("Error al crear vehículo"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioCita.agendarCitaCompleta("Ana", "5551234567", "Toyota", "Corolla", 
+                                              2020, "ABC-123", 15000.0, fechaValida, horaValida);
+        }, "Debe abortar si el vehículo falla");
+
+        //El cliente sí se intentó crear, pero la cita NO debe guardarse
+        verify(servicioCliente, times(1)).agregaCliente(anyString(), anyString());
+        verifyNoInteractions(citaRepository);
     }
 }
