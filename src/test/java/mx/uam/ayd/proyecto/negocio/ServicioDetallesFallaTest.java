@@ -81,4 +81,42 @@ class ServicioDetallesFallaTest {
         assertEquals("El vehículo no puede ser nulo.", exception.getMessage());
         verify(detallesFallaRepository, never()).save(any(DetallesFalla.class));
     }
+
+    @Test
+    void testAgregarDetallesFallaDescripcionSoloEspacios() {
+        // Confirmamos que el .trim() haga su trabajo
+        String descripcion = "   "; 
+        Vehiculo vehiculoMock = new Vehiculo();
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            servicioDetallesFalla.agregarDetallesFalla(descripcion, vehiculoMock);
+        });
+
+        assertEquals("La descripción de la falla no puede estar vacía.", exception.getMessage());
+        verify(detallesFallaRepository, never()).save(any(DetallesFalla.class));
+    }
+
+    @Test
+    void testRecuperarFallasPorVehiculoExito() {
+        Vehiculo vehiculoMock = new Vehiculo();
+        java.util.List<DetallesFalla> listaSimulada = java.util.Arrays.asList(new DetallesFalla(), new DetallesFalla());
+        
+        when(detallesFallaRepository.findByVehiculo(vehiculoMock)).thenReturn(listaSimulada);
+
+        java.util.List<DetallesFalla> resultado = servicioDetallesFalla.recuperarFallasPorVehiculo(vehiculoMock);
+
+        assertNotNull(resultado);
+        assertEquals(2, resultado.size(), "Debe retornar la lista de fallas del vehículo");
+        verify(detallesFallaRepository, times(1)).findByVehiculo(vehiculoMock);
+    }
+
+    @Test
+    void testRecuperarFallasPorVehiculoNulo() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            servicioDetallesFalla.recuperarFallasPorVehiculo(null);
+        });
+
+        assertEquals("El vehículo no puede ser nulo.", exception.getMessage());
+        verify(detallesFallaRepository, never()).findByVehiculo(any());
+    }
 }

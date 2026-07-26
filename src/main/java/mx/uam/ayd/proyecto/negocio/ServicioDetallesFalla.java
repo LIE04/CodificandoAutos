@@ -29,6 +29,7 @@ public class ServicioDetallesFalla {
         DetallesFalla detallesFalla = new DetallesFalla();
         detallesFalla.setDescripcionFalla(descripcionFalla);
         detallesFalla.setVehiculo(vehiculo); // Aquí ocurre el enlace
+        detallesFalla.setEstatus("En espera");
 
         return detallesFallaRepository.save(detallesFalla);
     }

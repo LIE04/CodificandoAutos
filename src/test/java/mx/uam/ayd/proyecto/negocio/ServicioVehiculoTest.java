@@ -65,21 +65,28 @@ class ServicioVehiculoTest {
             servicioVehiculo.agregaVehiculo("   ", "Corolla", "ABC-123", 2022, 15000.5, clientePrueba);
         }, "Debe lanzar excepción si la marca está vacía");
     }
-
+    
     @Test
     void agregaVehiculo_LanzaExcepcion_SiModeloEsNuloOVacio() {
         assertThrows(IllegalArgumentException.class, () -> {
             servicioVehiculo.agregaVehiculo("Toyota", null, "ABC-123", 2022, 15000.5, clientePrueba);
-        });
+        }, "Debe lanzar excepción si el modelo es nulo");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioVehiculo.agregaVehiculo("Toyota", "   ", "ABC-123", 2022, 15000.5, clientePrueba);
+        }, "Debe lanzar excepción si el modelo está vacío");
     }
 
-    @Test
+@Test
     void agregaVehiculo_LanzaExcepcion_SiPlacasSonNulasOVacias() {
         assertThrows(IllegalArgumentException.class, () -> {
-            servicioVehiculo.agregaVehiculo("Toyota", "Corolla", "", 2022, 15000.5, clientePrueba);
-        });
-    }
+            servicioVehiculo.agregaVehiculo("Toyota", "Corolla", null, 2022, 15000.5, clientePrueba);
+        }, "Debe lanzar excepción si las placas son nulas");
 
+        assertThrows(IllegalArgumentException.class, () -> {
+            servicioVehiculo.agregaVehiculo("Toyota", "Corolla", "   ", 2022, 15000.5, clientePrueba);
+        }, "Debe lanzar excepción si las placas están vacías");
+    }
     @Test
     void agregaVehiculo_LanzaExcepcion_SiAnioInvalido() {
         assertThrows(IllegalArgumentException.class, () -> {
@@ -101,15 +108,40 @@ class ServicioVehiculoTest {
         });
     }
     
-    // Verificar que se lance excepción si ya existe un vehículo con las mismas placas
     @Test
     void agregaVehiculo_LanzaExcepcion_SiPlacasYaExisten() {
-        // Configuración (Mocking): Simulamos que el repositorio encuentra un vehículo con esas placas
         when(vehiculoRepository.findByPlacas("ABC-123")).thenReturn(new Vehiculo());
 
         assertThrows(IllegalArgumentException.class, () -> {
             servicioVehiculo.agregaVehiculo("Toyota", "Corolla", "ABC-123", 2022, 15000.5, clientePrueba);
         }, "Debe lanzar excepción si las placas ya existen en el sistema");
+    }
+
+    @Test
+    void getVehiculosCliente_Exito() {
+        long idCliente = 1L;
+        java.util.List<Vehiculo> listaSimulada = java.util.Arrays.asList(new Vehiculo(), new Vehiculo());
+        
+        when(vehiculoRepository.findByClienteIdCliente(idCliente)).thenReturn(listaSimulada);
+
+        java.util.List<Vehiculo> resultado = servicioVehiculo.getVehiculosCliente(idCliente);
+
+        assertNotNull(resultado);
+        assertEquals(2, resultado.size(), "Debe retornar los 2 vehículos del cliente");
+        verify(vehiculoRepository, times(1)).findByClienteIdCliente(idCliente);
+    }
+
+    @Test
+    void recuperaTodos_Exito() {
+        java.util.List<Vehiculo> listaSimulada = java.util.Arrays.asList(new Vehiculo(), new Vehiculo(), new Vehiculo());
+        
+        when(vehiculoRepository.findAll()).thenReturn(listaSimulada);
+
+        java.util.List<Vehiculo> resultado = servicioVehiculo.recuperaTodos();
+
+        assertNotNull(resultado);
+        assertEquals(3, resultado.size(), "Debe retornar todos los vehículos registrados");
+        verify(vehiculoRepository, times(1)).findAll();
     }
 
 }
