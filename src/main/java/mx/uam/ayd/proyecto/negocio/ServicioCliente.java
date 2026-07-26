@@ -41,6 +41,11 @@ public class ServicioCliente {
 		if(telefono == null || telefono.trim().isEmpty()) {
 			throw new IllegalArgumentException("El teléfono no puede ser nulo o vacío");
 		}
+
+		//Verificar que el campo de telefono solo tenga numeros
+		if(!telefono.matches("[0-9]+")) {
+    	throw new IllegalArgumentException("El teléfono debe contener únicamente números");
+		}
 		
 		// Regla de negocio: No se permite agregar dos usuarios con el mismo nombre y apellido
 		
@@ -60,7 +65,7 @@ public class ServicioCliente {
 		clienteRepository.save(cliente); //Actualizacion del Cliente en la base de datos
 		return cliente;
 	}
-
+		//Obtener la lista de todos los clientes
         public List<Cliente> getClientes() {
         return (List<Cliente>) clienteRepository.findAll();
     }
