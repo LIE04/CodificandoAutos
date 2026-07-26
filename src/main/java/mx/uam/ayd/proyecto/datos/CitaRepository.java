@@ -19,5 +19,5 @@ public interface CitaRepository extends CrudRepository<Cita, Long> {
 
     public boolean existsByFechaAndHora(LocalDate fecha, LocalTime hora);
 
-    Cita findByVehiculoAndEstado(Vehiculo vehiculo, String estado);
+    Cita findByVehiculo(Vehiculo vehiculo);
 }

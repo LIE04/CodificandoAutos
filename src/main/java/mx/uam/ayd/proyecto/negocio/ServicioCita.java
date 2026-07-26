@@ -83,7 +83,7 @@ public class ServicioCita {
         }
         
         // Buscamos la cita que le pertenece a ese vehículo y que su estado sea "PENDIENTE"
-        return citaRepository.findByVehiculoAndEstado(vehiculoSeleccionado, "PENDIENTE");
+        return citaRepository.findByVehiculo(vehiculoSeleccionado);
     }
     /**
     * Recupera las citas asociadas al nombre de un cliente

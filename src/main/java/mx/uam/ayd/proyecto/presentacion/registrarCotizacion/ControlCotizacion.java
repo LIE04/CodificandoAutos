@@ -101,6 +101,7 @@ public class ControlCotizacion {
 
     public void onGuardarClick() {
         boolean exito = servicioCotizacion.finalizarCotizacion();
+        //servicioDetallesFalla.agregarDetallesFalla(descripcion, vehiculoSeleccionado);
         if (exito) {
             vista.mostrarMensajeExito();
         } else {
