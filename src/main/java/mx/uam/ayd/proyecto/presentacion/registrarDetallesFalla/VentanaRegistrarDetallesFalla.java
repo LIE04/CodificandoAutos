@@ -2,9 +2,7 @@ package mx.uam.ayd.proyecto.presentacion.registrarDetallesFalla;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.springframework.stereotype.Component;
-
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -27,7 +25,6 @@ public class VentanaRegistrarDetallesFalla {
     private Stage stage;
 
     @FXML private ComboBox<Vehiculo> cbVehiculos;
-    @FXML private ComboBox<String> cbEstadoReparacion;
     @FXML private TextField txtDescripcionFalla;
     
     @FXML private Label lbMarca;
@@ -49,24 +46,17 @@ public class VentanaRegistrarDetallesFalla {
             loader.setController(this);
             Parent root = loader.load();
 
-            // Configurar el ComboBox de Vehículos
             cbVehiculos.setItems(FXCollections.observableArrayList(vehiculos));
             cbVehiculos.setConverter(new StringConverter<Vehiculo>() {
                 @Override
                 public String toString(Vehiculo v) {
                     if (v == null) return "";
-                    // Ajusta "getCliente().getNombre()" según tu modelo real
                     String nombreCliente = v.getCliente() != null ? v.getCliente().getNombre() : "Sin cliente";
                     return nombreCliente + " - " + v.getMarca() + " " + v.getModelo() + " (" + v.getPlacas() + ")";
                 }
                 @Override
                 public Vehiculo fromString(String string) { return null; }
             });
-
-            // Configurar el ComboBox de Estatus
-            cbEstadoReparacion.setItems(FXCollections.observableArrayList(
-                "En espera", "Listo para entregar", "Entregado"
-            ));
 
             stage = new Stage();
             stage.setTitle("Registrar Detalles de Falla");
@@ -80,7 +70,6 @@ public class VentanaRegistrarDetallesFalla {
     @FXML
     private void handleVehiculoSeleccionado() {
         Vehiculo vehiculoSeleccionado = cbVehiculos.getValue();
-        
         if (vehiculoSeleccionado != null) {
             lbMarca.setText(vehiculoSeleccionado.getMarca());
             lbModelo.setText(vehiculoSeleccionado.getModelo());
@@ -94,9 +83,7 @@ public class VentanaRegistrarDetallesFalla {
     private void handleAgregarFalla() {
         Vehiculo vehiculoSeleccionado = cbVehiculos.getValue();
         String descripcion = txtDescripcionFalla.getText();
-        String estado = cbEstadoReparacion.getValue();
 
-        // Validaciones visuales antes de mandar al control
         if (vehiculoSeleccionado == null) {
             muestraMensaje("Error", "Por favor, selecciona un vehículo de la lista.");
             return;
@@ -105,13 +92,8 @@ public class VentanaRegistrarDetallesFalla {
             muestraMensaje("Error", "La descripción de la falla no puede estar vacía.");
             return;
         }
-        if (estado == null || estado.isEmpty()) {
-            muestraMensaje("Error", "Por favor, selecciona el estado de la reparación.");
-            return;
-        }
 
-        // Enviamos todo al control
-        control.agregarFalla(descripcion, estado, vehiculoSeleccionado);
+        control.agregarFalla(descripcion, vehiculoSeleccionado);
     }
 
     public void cierra() {

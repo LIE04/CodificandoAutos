@@ -4,29 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import mx.uam.ayd.proyecto.negocio.ServicioCita;
-import mx.uam.ayd.proyecto.negocio.ServicioCliente;
-import mx.uam.ayd.proyecto.negocio.ServicioVehiculo;
-import mx.uam.ayd.proyecto.negocio.modelo.Cliente;
-import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Component
 public class ControlRegistrarCita {
 
-    private final ServicioCliente servicioCliente;
-    private final ServicioVehiculo servicioVehiculo;
     private final ServicioCita servicioCita;
     private final VentanaRegistrarCita ventana;
 
     @Autowired
-    public ControlRegistrarCita(ServicioCliente servicioCliente, 
-                                ServicioVehiculo servicioVehiculo, 
-                                ServicioCita servicioCita, 
-                                VentanaRegistrarCita ventana) {
-        this.servicioCliente = servicioCliente;
-        this.servicioVehiculo = servicioVehiculo;
+    public ControlRegistrarCita(ServicioCita servicioCita, VentanaRegistrarCita ventana) {
         this.servicioCita = servicioCita;
         this.ventana = ventana;
     }
@@ -39,19 +27,14 @@ public class ControlRegistrarCita {
                                       String modelo, int anio, String placas, 
                                       double kilometraje, LocalDate fecha, LocalTime hora) {
         try {
-            // 1. Registrar o recuperar cliente
-            Cliente cliente = servicioCliente.agregaCliente(nombre, telefono);
-            
-            // 2. Registrar o recuperar vehículo
-            Vehiculo vehiculo = servicioVehiculo.agregaVehiculo(marca, modelo, placas, anio, kilometraje, cliente);
-            
-            // 3. Agendar la cita
-            servicioCita.agendarCita(fecha, hora, cliente, vehiculo);
+            //Validar que todos los datos sean los que se necesiten
+            servicioCita.agendarCitaCompleta(nombre, telefono, marca, modelo, anio, placas, kilometraje, fecha, hora);
             
             ventana.mostrarMensajeExito("Cita registrada exitosamente");
             ventana.cerrar();
             
         } catch (IllegalArgumentException e) {
+            //Si algun dato falla, no se guarda y manda un error
             ventana.mostrarMensajeError(e.getMessage());
         } catch (Exception e) {
             ventana.mostrarMensajeError("Ocurrió un error inesperado: " + e.getMessage());

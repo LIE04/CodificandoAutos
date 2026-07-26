@@ -31,9 +31,10 @@ public class ControlRegistrarDetallesFalla {
         ventana.muestra(this, vehiculos);
     }
 
-    public void agregarFalla(String descripcion, String estado, Vehiculo vehiculoSeleccionado) {
+    public void agregarFalla(String descripcion, Vehiculo vehiculoSeleccionado) {
         try {
-            servicioDetallesFalla.agregarDetallesFalla(descripcion, estado, vehiculoSeleccionado);
+            // Le pasamos solo la descripción y el vehículo
+            servicioDetallesFalla.agregarDetallesFalla(descripcion, vehiculoSeleccionado);
             ventana.muestraMensaje("Éxito", "Los detalles de la falla se registraron correctamente.");
             ventana.cierra();
         } catch (IllegalArgumentException e) {

@@ -2,6 +2,7 @@ package mx.uam.ayd.proyecto.negocio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import mx.uam.ayd.proyecto.datos.CitaRepository;
 import mx.uam.ayd.proyecto.negocio.modelo.Cita;
@@ -17,6 +18,12 @@ public class ServicioCita {
 
     @Autowired
     private CitaRepository citaRepository;
+    
+    @Autowired
+    private ServicioCliente servicioCliente;
+
+    @Autowired
+    private ServicioVehiculo servicioVehiculo;
 
     /**
      * Agendar cita para el cliente en la fecha y hora seleccionada
@@ -44,7 +51,7 @@ public class ServicioCita {
             throw new IllegalArgumentException("Ya existe una cita agendada para la fecha y hora seleccionadas");
         }
 
-        // Creacion de la cita y guardarla en la base de datos
+        // Creacion de la cita y guardado en la base de datos
         Cita cita = new Cita();
         cita.setFecha(fecha);
         cita.setHora(hora);
@@ -56,8 +63,8 @@ public class ServicioCita {
         return citaGuardada;
     }
     /**
-     * Recupera las citas asociadas al nombre de un cliente
-     */
+    * Recupera las citas asociadas al nombre de un cliente
+    */
     public List<Cita> consultarCitasPorNombreCliente(String nombreCliente) {
         if (nombreCliente == null || nombreCliente.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del cliente no puede estar vacío");
@@ -71,6 +78,20 @@ public class ServicioCita {
         Cita citaActiva = citaRepository.findByVehiculoAndEstado(vehiculoSeleccionado, "PENDIENTE");
         
         return citaActiva;
+    }
+
+    @Transactional
+    public Cita agendarCitaCompleta(String nombre, String telefono, String marca, 
+                                    String modelo, int anio, String placas, 
+                                    double kilometraje, LocalDate fecha, LocalTime hora) {
+        
+        //Validaciones para guardar el cliente y vehiculo
+        Cliente cliente = servicioCliente.agregaCliente(nombre, telefono);
+
+        Vehiculo vehiculo = servicioVehiculo.agregaVehiculo(marca, modelo, placas, anio, kilometraje, cliente);
+        
+        //Agendar la cita
+        return agendarCita(fecha, hora, cliente, vehiculo); 
     }
 
 }

@@ -54,15 +54,38 @@ public class VentanaRegistrarCita {
     }
 
     private void inicializarComponentes() {
-        btnGuardarCita.setDisable(true); // Deshabilitado por defecto
+        btnGuardarCita.setDisable(true);
+
+        //Evita que el usuario no pueda escribir letras en telefono 
+        TextFormatter<String> validadorNumeros = new TextFormatter<>(cambio -> {
+            if (cambio.getText().matches("[0-9]*")) {
+                return cambio; //Permite el cambio
+            }
+            return null; //rechaza el cambio si se quiere poner una letra
+        });
         
-        // Llenar años
+        txtTelefono.setTextFormatter(validadorNumeros);
+
+        //Evitar que el usuario no pueda escribir letras en el kilometraje
+        TextFormatter<String> validadorKilometraje = new TextFormatter<>(cambio -> {
+            String nuevoTexto = cambio.getControlNewText();
+            
+            //Aqui le pedimos que solo acepte numeros, y si al caso, un punto para los decimales
+            if (nuevoTexto.matches("\\d*(\\.\\d*)?")) {
+                return cambio; // Permite el cambio
+            }
+            return null; //Rechaza el cambio si se quiere poner una letra o mas de un punto
+        });
+        
+        txtKilometraje.setTextFormatter(validadorKilometraje);
+
+        //Llenar los años a partir de una fecha en especifico hasta la actualidad
         int anioActual = LocalDate.now().getYear();
         for (int i = anioActual + 1; i >= 1990; i--) {
             cbAnio.getItems().add(i);
         }
 
-        // Llenar horas disponibles
+        //Colocar/llenar el horario del mecanico
         for (int i = 9; i <= 16; i++) {
             cbHora.getItems().add(LocalTime.of(i, 0));
             cbHora.getItems().add(LocalTime.of(i, 30));
@@ -71,7 +94,7 @@ public class VentanaRegistrarCita {
 
     @FXML
     private void verificarProgreso() {
-        // Valida que los campos no estén vacíos
+        //Validar que los campos no estén vacíos
         boolean camposLlenos = txtNombre.getText() != null && !txtNombre.getText().trim().isEmpty() &&
                 txtTelefono.getText() != null && !txtTelefono.getText().trim().isEmpty() &&
                 txtMarca.getText() != null && !txtMarca.getText().trim().isEmpty() &&
