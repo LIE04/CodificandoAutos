@@ -46,14 +46,17 @@ public class ServicioCliente {
 		if(!telefono.matches("[0-9]+")) {
     	throw new IllegalArgumentException("El teléfono debe contener únicamente números");
 		}
+		//Verificar que el teléfono tenga exactamente 10 dígitos
+        if(telefono.length() != 10) {
+            throw new IllegalArgumentException("El teléfono debe tener exactamente 10 dígitos");
+        }
 		
-		// Regla de negocio: No se permite agregar dos usuarios con el mismo nombre y apellido
-		
-		Cliente cliente = clienteRepository.findByNombre(nombre);
-		
-		if(cliente != null) {
-			throw new IllegalArgumentException("Ese cliente ya existe");
-		}
+		// Regla de negocio: No se permite agregar dos usuarios con el mismo nombre y teléfono
+        Cliente cliente = clienteRepository.findByNombreAndTelefono(nombre, telefono);
+        
+        if(cliente != null) {
+            throw new IllegalArgumentException("Ese cliente ya existe");
+        }
 		
 		log.info("Agregando cliente "+nombre+" con telefono:"+telefono);
 
