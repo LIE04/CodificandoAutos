@@ -185,6 +185,10 @@ public class VistaCotizacion {
         alert.showAndWait();
     }
 
+    /*
+    FXML
+     */
+
 
     @FXML
     public void accionBuscarRefaccion() {

@@ -160,13 +160,13 @@ class ServicioCitaTest {
         Cita citaActivaSimulada = new Cita();
         citaActivaSimulada.setEstado("PENDIENTE");
         
-        when(citaRepository.findByVehiculoAndEstado(vehiculoPrueba, "PENDIENTE")).thenReturn(citaActivaSimulada);
+        when(citaRepository.findByVehiculo(vehiculoPrueba)).thenReturn(citaActivaSimulada);
 
         Cita resultado = servicioCita.obtenerCitaPendientePorVehiculo(vehiculoPrueba);
 
         assertNotNull(resultado);
         assertEquals("PENDIENTE", resultado.getEstado());
-        verify(citaRepository, times(1)).findByVehiculoAndEstado(vehiculoPrueba, "PENDIENTE");
+        verify(citaRepository, times(1)).findByVehiculo(vehiculoPrueba);
     }
     @Test
     void agendarCitaCompleta_Exito() {
@@ -227,12 +227,12 @@ class ServicioCitaTest {
     @Test
     void obtenerCitaPendientePorVehiculo_RetornaNull_SiNoHayCitasPendientes() {
         // Simulamos el escenario donde el repositorio busca pero no encuentra nada y devuelve null
-        when(citaRepository.findByVehiculoAndEstado(vehiculoPrueba, "PENDIENTE")).thenReturn(null);
+        when(citaRepository.findByVehiculo(vehiculoPrueba)).thenReturn(null);
 
         Cita resultado = servicioCita.obtenerCitaPendientePorVehiculo(vehiculoPrueba);
 
         assertNull(resultado, "Debe retornar null si no encuentra ninguna cita pendiente");
-        verify(citaRepository, times(1)).findByVehiculoAndEstado(vehiculoPrueba, "PENDIENTE");
+        verify(citaRepository, times(1)).findByVehiculo(vehiculoPrueba);
     }
     @Test
     void agendarCita_LanzaExcepcion_SiHoraEsAntesDeApertura() {
