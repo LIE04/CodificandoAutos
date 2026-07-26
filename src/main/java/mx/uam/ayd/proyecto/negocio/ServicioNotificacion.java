@@ -1,6 +1,7 @@
 package mx.uam.ayd.proyecto.negocio;
 
 import org.slf4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,9 @@ public class ServicioNotificacion {
      * @param motivo El motivo seleccionado en la ventana modal.
      * @return true si se procesó correctamente, false en caso contrario.
      */
+    // Regla de Negocio: @Transactional mantiene la sesión de la BD abierta para poder inicializar
+    // la colección perezosa de 'historialNotificaciones' sin que arroje LazyInitializationException.
+    @Transactional
     public boolean enviarAvisoRetraso(int idReparacion, String motivo) {
         if (motivo == null || motivo.trim().isEmpty()) {
             throw new IllegalArgumentException("Debe seleccionar un motivo para el atraso.");
