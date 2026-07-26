@@ -70,22 +70,22 @@ public class VistaCotizacion {
         this.control = control;
 
         try {
-            // 1. Cargar el archivo FXML (Asegúrate de que la ruta sea correcta según tu proyecto)
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventana-cotizacion.fxml")); 
             
-            // 2. ¡EL PASO CLAVE! Le decimos a JavaFX: "Usa ESTA instancia de Spring como controlador"
+            
             loader.setController(this);
             
-            // 3. Crear la ventana
+            // Crear la ventana
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Registrar Cotización");
             
-            // 4. Mostrar la ventana
+            // Mostrar la ventana
             stage.show();
             
-            // 5. AHORA SÍ, los elementos ya no son null, podemos bloquear y configurar
+            
             bloquearEdicion();
             configurarEventos();
             
@@ -104,7 +104,7 @@ public class VistaCotizacion {
             control.onClienteSeleccionado(seleccionado);
         });
 
-        // Evento cuando el usuario elige un vehículo en el ComboBox
+        
         comboVehiculos.setOnAction(event -> {
             Vehiculo seleccionado = comboVehiculos.getSelectionModel().getSelectedItem();
 
@@ -114,7 +114,7 @@ public class VistaCotizacion {
         });
     }
 
-    // --- Métodos llamados por el Controlador (Flujo hacia la UI) ---
+    
     public void mostrarClientes(List<Cliente> clientesDisponibles) {
         comboClientes.setItems(FXCollections.observableArrayList(clientesDisponibles));
     }
@@ -159,7 +159,7 @@ public class VistaCotizacion {
         float subtotal = control.calcularSubtotal();
         float iva = control.calcularIva();
         float total = control.calcularTotal();
-        actualizarEtiquetasTotales(subtotal, iva, total); // Valores de ejemplo
+        actualizarEtiquetasTotales(subtotal, iva, total); 
     }
 
     private void actualizarEtiquetasTotales(float subtotal, float iva, float total) {
@@ -174,7 +174,7 @@ public class VistaCotizacion {
         alert.setHeaderText(null);
         alert.setContentText("Cotización guardada exitosamente.");
         alert.showAndWait();
-        // Aquí podrías limpiar la ventana o cerrarla
+        
     }
 
     public void mostrarMensajeError(String mensaje) {
@@ -185,7 +185,6 @@ public class VistaCotizacion {
         alert.showAndWait();
     }
 
-    // --- Métodos FXML (Disparados desde botones en la UI) ---
 
     @FXML
     public void accionBuscarRefaccion() {

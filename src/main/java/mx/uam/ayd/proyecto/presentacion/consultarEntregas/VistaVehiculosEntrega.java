@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.List;
 
-
 import mx.uam.ayd.proyecto.datos.ReparacionRepository.VehiculosPendientesDTO;
 
 /**
@@ -58,7 +57,6 @@ public class VistaVehiculosEntrega {
     private boolean initialized = false;
 
     public VistaVehiculosEntrega() {
-        
     }
 
     private void initializeUI() {
@@ -80,7 +78,6 @@ public class VistaVehiculosEntrega {
             Scene scene = new Scene(loader.load(), 600, 450);
             stage.setScene(scene);
 
-  
             idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
             nombreColumn.setCellValueFactory(new PropertyValueFactory<>("nombre"));
             marcaColumn.setCellValueFactory(new PropertyValueFactory<>("marca"));
@@ -91,7 +88,6 @@ public class VistaVehiculosEntrega {
             initialized = true;
         } catch (IOException e) {
             e.printStackTrace();
-
             throw new RuntimeException("Error al cargar el archivo FXML: " + e.getMessage(), e);
         }
     }
@@ -100,26 +96,19 @@ public class VistaVehiculosEntrega {
         this.control = control;
     }
 
-
-public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
+    public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
         if (!Platform.isFxApplicationThread()) {
            Platform.runLater(() -> this.mostrarListaVehiculos(vehiculos)); 
            return;
         }
 
-
         initializeUI();
         textFieldBusqueda.setText("");
         
- 
         ObservableList<VehiculosPendientesDTO> data = (vehiculos != null) ? FXCollections.observableArrayList(vehiculos) : FXCollections.observableArrayList();
         
-
         tableVehiculos.setItems(data);
-
-
         stage.show();
-
 
         if (data.isEmpty()) {
             Alert alerta = new Alert(AlertType.INFORMATION);
@@ -127,24 +116,17 @@ public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
             alerta.setHeaderText(null);
             alerta.setContentText("Por el momento no hay vehículos con estatus 'Listo para entrega'.");
             alerta.showAndWait();
-            
-
         }
     }
-
 
     public void retornarCoincidencias(List<VehiculosPendientesDTO> coincidencias) {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(() -> this.retornarCoincidencias(coincidencias));
             return;
         }
-
         ObservableList<VehiculosPendientesDTO> data = FXCollections.observableArrayList(coincidencias);
         tableVehiculos.setItems(data);
     }
-
-
-
 
     @FXML
     public void handleBuscar() {
@@ -154,20 +136,15 @@ public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
         }
     }
 
-
     @FXML
     public void handlefinalizarEntrega() {
-    VehiculosPendientesDTO seleccionado = tableVehiculos.getSelectionModel().getSelectedItem();
-
+        VehiculosPendientesDTO seleccionado = tableVehiculos.getSelectionModel().getSelectedItem();
         if (seleccionado != null) {
-  
             boolean exito = control.terminarEntrega(seleccionado.getId());
-            
             if (exito) {
-
+                // Aquí ya se actualiza la tabla desde el controlador
             }
         } else {
-            
             muestraDialogoConMensaje("Seleccione un vehiculo primero");
         }
     }
@@ -175,17 +152,17 @@ public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
     @FXML 
     public void solicitarEscaner() {
         VehiculosPendientesDTO seleccionado = tableVehiculos.getSelectionModel().getSelectedItem();
-              if (seleccionado != null) {
-
-                String estatus = seleccionado.getEstatusServicio();
-                if (estatus != null && estatus.equalsIgnoreCase("En espera")){
-
-                    control.solicitarEscaner(seleccionado.getId());
-
-                } else {
-                    muestraDialogoConMensaje("Solo se puede seleccionar el escaner para vehiculos con estatus 'En espera'");
-                }
-                  
+        
+        if (seleccionado != null) {
+            String estatus = seleccionado.getEstatusServicio();
+            
+            // Modificación realizada por Erik para la HU-40 (Control de Calidad)
+            // Validamos que la reparación esté "En espera" antes de mandar a abrir el escáner
+            if (estatus != null && estatus.equalsIgnoreCase("En espera")){
+                control.solicitarEscaner(seleccionado.getId());
+            } else {
+                muestraDialogoConMensaje("Solo se puede seleccionar el escaner para vehiculos con estatus 'En espera'");
+            }
         } else {
             muestraDialogoConMensaje("Seleccione un vehiculo primero");
         }
@@ -198,7 +175,7 @@ public void mostrarListaVehiculos(List<VehiculosPendientesDTO> vehiculos) {
         }
     }
 
-        public void muestraDialogoConMensaje(String mensaje) {
+    public void muestraDialogoConMensaje(String mensaje) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Información");
         alert.setHeaderText(null);
