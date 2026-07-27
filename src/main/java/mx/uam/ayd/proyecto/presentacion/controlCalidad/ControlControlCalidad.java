@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import mx.uam.ayd.proyecto.negocio.ServicioReparacion;
 // Edite esto en tu codigo: Puse mi servicio detalles falla
-import mx.uam.ayd.proyecto.negocio.modelo.DetallesFalla;
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 
@@ -42,12 +41,14 @@ public class ControlControlCalidad {
             
             // Recuperamos las fallas asociadas DIRECTAMENTE a esta reparación.
             // Como usamos FetchType.EAGER en la entidad, la lista ya viene cargada.
-            List<DetallesFalla> fallasReales = reparacion.getFallas();
-            
-            // Extraemos solo las descripciones (Strings) para mantener la compatibilidad con la vista
+            // Recuperamos las fallas desde las observaciones técnicas
             List<String> descripcionesFallas = new ArrayList<>();
-            for (DetallesFalla falla : fallasReales) {
-                descripcionesFallas.add(falla.getDescripcionFalla());
+            String observaciones = reparacion.getObservacionesTecnicas();
+            if (observaciones != null && !observaciones.trim().isEmpty()) {
+                String[] fallasArray = observaciones.split(",");
+                for (String falla : fallasArray) {
+                    descripcionesFallas.add(falla.trim());
+                }
             }
 
             // Mandamos los datos a la ventana 

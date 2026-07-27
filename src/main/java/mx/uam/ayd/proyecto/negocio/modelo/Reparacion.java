@@ -15,7 +15,6 @@ import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Entidad que representa la reparacion de un vehiculo en el taller
  * 
@@ -49,15 +48,6 @@ public class Reparacion {
     
     /** Las letras chiquitas de lo que cubre la garantia */
     private String condicionesGarantia;
-
-    /** 
-     * Lista de fallas detectadas asociadas a esta reparacion.
-     * mappedBy indica que la entidad DetallesFalla es la dueña de la relación.
-     */
-    // Modificación realizada por Erik para la HU-40 (Control de Calidad)
-    // Cambiamos el fetch a EAGER para evitar el LazyInitializationException al abrir la vista de JavaFX
-    @OneToMany(mappedBy = "reparacion", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<DetallesFalla> fallas = new ArrayList<>();
 
     /** 
      * Relación con el vehículo que se está reparando.
@@ -197,31 +187,7 @@ public class Reparacion {
         this.condicionesGarantia = condicionesGarantia;
     }
 
-    /**
-     * Obtiene la lista de fallas de la reparacion
-     * @return fallas
-     */
-    public List<DetallesFalla> getFallas() {
-        return fallas;
-    }
 
-    /**
-     * Asigna la lista de fallas a la reparacion
-     * @param fallas lista de DetallesFalla
-     */
-    public void setFallas(List<DetallesFalla> fallas) {
-        this.fallas = fallas;
-    }
-
-    /**
-     * Metodo de ayuda para agregar una falla individual y mantener
-     * la consistencia bidireccional de los objetos en memoria.
-     * @param falla el detalle de la falla a agregar
-     */
-    public void addFalla(DetallesFalla falla) {
-        this.fallas.add(falla);
-        falla.setReparacion(this);
-    }
 
     /**
      * @return el vehiculo asociado a esta reparacion
