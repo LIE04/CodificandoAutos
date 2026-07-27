@@ -73,16 +73,14 @@ public class ServicioCotizacion {
     }
 
     
-    public boolean capturarDatosServicio(String manoObra, float costoManoObra) {
+    public boolean capturarDatosServicio(float costoManoObra) {
         
         if (this.cotizacion == null) {
             return false;
         }
 
     // Usamos setters
-    
-    this.cotizacion.setManoObra(manoObra);
-    
+        
     if (costoManoObra >= 0) {
         this.cotizacion.setManoObraCosto(costoManoObra);
     } else {

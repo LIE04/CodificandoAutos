@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="650.0" prefWidth="600.0" spacing="15.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="700.0" prefWidth="600.0" spacing="15.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -89,8 +89,6 @@
         <Label text="Fallas detectadas:" />
         <TextArea fx:id="txtFallas" prefHeight="60.0" wrapText="true" />
         
-        <Label text="Descripción de Mano de Obra:" />
-        <TextArea fx:id="txtManoObra" prefHeight="60.0" wrapText="true" />
         
         <HBox spacing="10.0" alignment="CENTER_LEFT">
             <Label text="Costo Mano de Obra: $" />

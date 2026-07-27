@@ -41,7 +41,6 @@ public class VistaCotizacion {
     
     // Panel de Servicios
     @FXML private TextArea txtFallas;
-    @FXML private TextArea txtManoObra;
     @FXML private TextField txtCostoManoObra;
     @FXML private Button btnActualizarServicio;
     
@@ -131,7 +130,6 @@ public class VistaCotizacion {
         tablaRefacciones.setDisable(false);
         btnAgregarRefaccion.setDisable(false);
         txtFallas.setDisable(false);
-        txtManoObra.setDisable(false);
         txtCostoManoObra.setDisable(false);
         btnActualizarServicio.setDisable(false);
         btnGuardarCotizacion.setDisable(false);
@@ -144,7 +142,6 @@ public class VistaCotizacion {
         tablaRefacciones.setDisable(true);
         btnAgregarRefaccion.setDisable(true);
         txtFallas.setDisable(true);
-        txtManoObra.setDisable(true);
         txtCostoManoObra.setDisable(true);
         btnActualizarServicio.setDisable(true);
         btnGuardarCotizacion.setDisable(true);
@@ -249,11 +246,10 @@ public class VistaCotizacion {
 
     @FXML
     public void accionActualizarServicio() {
-        //String fallas = txtFallas.getText();
-        String manoObra = txtManoObra.getText();
+
         try {
             float costo = Float.parseFloat(txtCostoManoObra.getText());
-            control.onActualizarServicio(manoObra, costo);
+            control.onActualizarServicio(costo);
         } catch (NumberFormatException e) {
             mostrarMensajeError("Ingrese un costo válido para la mano de obra.");
         }
@@ -263,11 +259,9 @@ public class VistaCotizacion {
     public void accionGuardarCotizacion() {
         Vehiculo vehiculoSeleccionado = comboVehiculos.getValue();
         String fallas = txtFallas.getText();
-        String manoObra = txtManoObra.getText();
         String costoTxt = txtCostoManoObra.getText();
 
         if (fallas == null || fallas.trim().isEmpty() ||
-        manoObra == null || manoObra.trim().isEmpty() ||
         costoTxt == null || costoTxt.trim().isEmpty()) {
         
         mostrarMensajeError("¡Atención! Debes llenar las fallas, la mano de obra y el costo antes de guardar.");

@@ -8,8 +8,12 @@ import mx.uam.ayd.proyecto.datos.ReparacionRepository;
 import mx.uam.ayd.proyecto.datos.ReparacionRepository.VehiculosPendientesDTO;
 import mx.uam.ayd.proyecto.negocio.modelo.DetallesFalla;
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
+import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.Optional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -33,6 +37,7 @@ public class ServicioReparacion {
 
     /**
      * Recupera una reparación por su ID.
+     * 
      */
     public Reparacion recuperarReparacion(int idReparacion) {
         Optional<Reparacion> opcional = reparacionRepository.findById(idReparacion);
@@ -40,6 +45,49 @@ public class ServicioReparacion {
             return opcional.get();
         }
         throw new IllegalArgumentException("No se encontró la reparación con ID: " + idReparacion);
+    }
+
+
+    /*
+    HU-14 Crear Reparacion con su fallas O
+    @author Oscar Hinojosa
+    */
+    @Transactional
+    public Reparacion crearNuevaReparacionConFallas(String codigosFalla, Vehiculo vehiculo) {
+        
+        if (codigosFalla == null || codigosFalla.trim().isEmpty()) {
+            throw new IllegalArgumentException("Debe ingresar los códigos de falla detectados.");
+        }
+        if (vehiculo == null) {
+            throw new IllegalArgumentException("Debe seleccionar un vehículo.");
+        }
+
+        // Crear la nueva entidad Reparacion
+        Reparacion nuevaReparacion = new Reparacion();
+        nuevaReparacion.setEstatusServicio("En espera");
+        nuevaReparacion.setVehiculo(vehiculo);
+        nuevaReparacion.setFechaInicio(LocalDateTime.now());
+        //nuevaReparacion.setObservacionesTecnicas("Ingreso inicial - Fallas reportadas: " + codigosFalla);
+
+        // Procesar las múltiples fallas separadas por coma
+        String[] listaFallas = codigosFalla.split(",");
+        for (String descripcion : listaFallas) {
+            String fallaLimpia = descripcion.trim();
+            
+            if (!fallaLimpia.isEmpty()) {
+                DetallesFalla nuevaFalla = new DetallesFalla();
+                nuevaFalla.setDescripcionFalla(fallaLimpia);
+                nuevaFalla.setEstatus("En espera");
+                nuevaFalla.setVehiculo(vehiculo); // Relación directa
+                
+                // Vincular bidireccionalmente agregando a la lista
+                nuevaReparacion.addFalla(nuevaFalla);
+            }
+        }
+
+        // 4. Guardar en la base de datos
+        // Hibernate automáticamente hace el INSERT de la Reparacion y luego los INSERT de cada DetallesFalla
+        return reparacionRepository.save(nuevaReparacion);
     }
 
     /**
@@ -94,6 +142,7 @@ public class ServicioReparacion {
         
         return reparacionRepository.save(reparacion);
     }
+
 
     /*  
     Obtener vehiculos pendientes para la lista (HU-42)

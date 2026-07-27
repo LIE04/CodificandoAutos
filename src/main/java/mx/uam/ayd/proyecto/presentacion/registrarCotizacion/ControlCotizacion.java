@@ -1,5 +1,6 @@
 package mx.uam.ayd.proyecto.presentacion.registrarCotizacion;
 
+import mx.uam.ayd.proyecto.negocio.ServicioReparacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Cliente;
 import mx.uam.ayd.proyecto.negocio.modelo.CotizacionConcepto;
 import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
@@ -19,6 +20,7 @@ import java.util.List;
 @Controller
 public class ControlCotizacion {
 
+    private final ServicioReparacion servicioReparacion;
     @Autowired private ServicioCliente servicioCliente;
     @Autowired private ServicioVehiculo servicioVehiculo;
     @Autowired private ServicioCita servicioCita;
@@ -29,6 +31,10 @@ public class ControlCotizacion {
     private float costoManoObra = 0.0f;
     
     @Autowired private VistaCotizacion vista;
+
+    ControlCotizacion(ServicioReparacion servicioReparacion) {
+        this.servicioReparacion = servicioReparacion;
+    }
 
     public void iniciar() {
         vista.iniciar(this);
@@ -92,8 +98,8 @@ public class ControlCotizacion {
         }
     }
 
-    public void onActualizarServicio(String manoObra, float costoManoObra) {
-        boolean exito = servicioCotizacion.capturarDatosServicio(manoObra, costoManoObra);
+    public void onActualizarServicio(float costoManoObra) {
+        boolean exito = servicioCotizacion.capturarDatosServicio(costoManoObra);
         if (exito) {
 
             this.costoManoObra = costoManoObra;
@@ -104,7 +110,7 @@ public class ControlCotizacion {
         public void agregarFalla(String descripcion, Vehiculo vehiculoSeleccionado) {
         try {
             // Le pasamos solo la descripción y el vehículo
-            servicioDetallesFalla.agregarDetallesFalla(descripcion, vehiculoSeleccionado);
+            servicioReparacion.crearNuevaReparacionConFallas(descripcion, vehiculoSeleccionado);
  
         } catch (IllegalArgumentException e) {
             vista.mostrarMensajeError("Error de Validación");
