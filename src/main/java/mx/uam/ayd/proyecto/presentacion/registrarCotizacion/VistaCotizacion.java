@@ -180,15 +180,7 @@ public class VistaCotizacion {
         tablaRefacciones.setItems(FXCollections.observableArrayList(encontrada));
     }
 
-
-    public void recalcularTotales() {
-        float subtotal = control.calcularSubtotal();
-        float iva = control.calcularIva();
-        float total = control.calcularTotal();
-        actualizarEtiquetasTotales(subtotal, iva, total); 
-    }
-
-    private void actualizarEtiquetasTotales(float subtotal, float iva, float total) {
+    public void actualizarEtiquetasTotales(float subtotal, float iva, float total) {
         lblSubtotal.setText("$ " + String.format("%.2f", subtotal));
         lblIva.setText("$ " + String.format("%.2f", iva));
         lblTotal.setText("$ " + String.format("%.2f", total));
