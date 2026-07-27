@@ -43,7 +43,7 @@ public class VistaCotizacion {
     // Panel de Servicios
     @FXML private TextArea txtFallas;
     @FXML private TextField txtCostoManoObra;
-    @FXML private Button btnActualizarServicio;
+    //@FXML private Button btnActualizarServicio;
     
     // Totales y Guardar
     @FXML private Label lblSubtotal;
@@ -113,6 +113,32 @@ public class VistaCotizacion {
             control.onVehiculoSeleccionado(seleccionado);
             }
         });
+
+        // --- NUEVO EVENTO: Cálculo automático de Mano de Obra ---
+        txtCostoManoObra.textProperty().addListener((observable, oldValue, newValue) -> {
+            
+            // 1. Si el campo se queda vacío, el costo es 0
+            if (newValue == null || newValue.trim().isEmpty()) {
+                control.onActualizarServicio(0.0f);
+                return;
+            }
+
+            // 2. Bloquear letras: Solo permitimos números y opcionalmente un punto decimal
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                txtCostoManoObra.setText(oldValue); // Deshace la tecla presionada si es inválida
+                return;
+            }
+
+            // 3. Procesar el costo
+            try {
+                float costo = Float.parseFloat(newValue);
+                control.onActualizarServicio(costo);
+            } catch (NumberFormatException e) {
+                // Atrapa casos temporales mientras el usuario escribe, por ejemplo, si solo teclea "."
+                control.onActualizarServicio(0.0f);
+            }
+        });
+
     }
 
     
@@ -133,7 +159,6 @@ public class VistaCotizacion {
         btnAgregarRefaccion.setDisable(false);
         txtFallas.setDisable(false);
         txtCostoManoObra.setDisable(false);
-        btnActualizarServicio.setDisable(false);
         btnGuardarCotizacion.setDisable(false);
     }
 
@@ -145,7 +170,6 @@ public class VistaCotizacion {
         btnAgregarRefaccion.setDisable(true);
         txtFallas.setDisable(true);
         txtCostoManoObra.setDisable(true);
-        btnActualizarServicio.setDisable(true);
         btnGuardarCotizacion.setDisable(true);
     }
 
@@ -249,7 +273,7 @@ public class VistaCotizacion {
 
     }
 
-    @FXML
+  /* @FXML
     public void accionActualizarServicio() {
 
         try {
@@ -258,7 +282,7 @@ public class VistaCotizacion {
         } catch (NumberFormatException e) {
             mostrarMensajeError("Ingrese un costo válido para la mano de obra.");
         }
-    }
+    } */
 
     @FXML
     public void accionGuardarCotizacion() {

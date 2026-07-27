@@ -93,7 +93,6 @@
         <HBox spacing="10.0" alignment="CENTER_LEFT">
             <Label text="Costo Mano de Obra: $" />
             <TextField fx:id="txtCostoManoObra" prefWidth="100.0" promptText="0.00" />
-            <Button fx:id="btnActualizarServicio" onAction="#accionActualizarServicio" text="Actualizar Datos de Servicio" />
         </HBox>
     </VBox>
 
