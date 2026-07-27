@@ -67,6 +67,28 @@ public class VistaCotizacion {
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
         colExistencia.setCellValueFactory(new PropertyValueFactory<>("existencia"));
 
+        // 2. Formato limpio para el ComboBox de Clientes
+        comboClientes.setConverter(new javafx.util.StringConverter<Cliente>() {
+            @Override
+            public String toString(Cliente cliente) {
+                return (cliente == null) ? "" : cliente.getNombre() + " " + cliente.getTelefono();
+            }
+
+            @Override
+            public Cliente fromString(String string) { return null; }
+        });
+
+        // Formato limpio para el ComboBox de Vehículos
+        comboVehiculos.setConverter(new javafx.util.StringConverter<Vehiculo>() {
+            @Override
+            public String toString(Vehiculo vehiculo) {
+                return (vehiculo == null) ? "" : vehiculo.getMarca() + " " + vehiculo.getModelo()+ " " + vehiculo.getAnio();
+            }
+
+            @Override
+            public Vehiculo fromString(String string) { return null; }
+        });
+
     }
 
     // --- Métodos de configuración inicial ---

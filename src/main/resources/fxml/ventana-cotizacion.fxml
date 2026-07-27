@@ -51,7 +51,7 @@
         </Label>
         
         <HBox spacing="10.0" alignment="CENTER_LEFT">
-            <TextField fx:id="txtBuscarPieza" prefWidth="250.0" promptText="Nombre de la pieza (exacto)" />
+            <TextField fx:id="txtBuscarPieza" prefWidth="250.0" promptText="ID de la pieza" />
             <Button fx:id="btnBuscarPieza" onAction="#accionBuscarRefaccion" text="Buscar" />
         </HBox>
         <TableView fx:id="tablaRefacciones" prefHeight="200.0" prefWidth="400.0">
