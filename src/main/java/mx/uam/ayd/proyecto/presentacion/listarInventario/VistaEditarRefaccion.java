@@ -11,17 +11,36 @@ import javafx.stage.Stage;
 import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 import org.springframework.stereotype.Component;
 
+/**
+ * Vista para la edición de una refacción
+ */
 @Component
 public class VistaEditarRefaccion {
 
+    /** Campo de texto para el identificador de la refacción */
     @FXML private TextField txtId;
+    
+    /** Campo de texto para el nombre de la refacción */
     @FXML private TextField txtNombre;
+    
+    /** Campo de texto para el precio de la refacción */
     @FXML private TextField txtPrecio;
+    
+    /** Campo de texto para las existencias de la refacción */
     @FXML private TextField txtExistencia;
 
+    /** Control asociado a la vista */
     private ControlInventario control;
+    
+    /** Escenario o ventana de la interfaz gráfica */
     private Stage stage;
 
+    /**
+     * Inicializa y muestra la ventana de edición cargando los datos de la refacción
+     * 
+     * @param control Control de inventario asociado
+     * @param refaccion Refacción seleccionada para modificar
+     */
     public void inicia(ControlInventario control, Refaccion refaccion) {
 
         this.control = control;
@@ -51,6 +70,9 @@ public class VistaEditarRefaccion {
         }
     }
 
+    /**
+     * Maneja el evento del botón guardar recolectando y enviando los datos modificados al control
+     */
     @FXML
     private void handleGuardar() {
         try {
@@ -69,12 +91,20 @@ public class VistaEditarRefaccion {
         }
     }
 
+    /**
+     * Maneja el evento del botón cancelar cerrando la ventana
+     */
     @FXML
     private void handleCancelar() {
         stage.close();
     }
 
-        public void muestraDialogoConMensaje(String mensaje) {
+    /**
+     * Muestra una ventana de diálogo informativa con el mensaje proporcionado
+     * 
+     * @param mensaje Texto del mensaje a desplegar en pantalla
+     */
+    public void muestraDialogoConMensaje(String mensaje) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Información");
         alert.setHeaderText(null);

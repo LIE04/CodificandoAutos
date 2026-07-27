@@ -13,20 +13,33 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Servicio de negocio para la gestión de citas
+ */
 @Service
 public class ServicioCita {
 
+    /** Repositorio para el acceso a datos de Cita */
     @Autowired
     private CitaRepository citaRepository;
     
+    /** Servicio para la gestión de clientes */
     @Autowired
     private ServicioCliente servicioCliente;
 
+    /** Servicio para la gestión de vehículos */
     @Autowired
     private ServicioVehiculo servicioVehiculo;
 
     /**
-     * Agendar cita para el cliente en la fecha y hora seleccionada
+     * Agenda una nueva cita para un cliente y vehículo en la fecha y hora seleccionadas
+     * 
+     * @param fecha Fecha solicitada para la cita
+     * @param hora Hora solicitada para la cita
+     * @param cliente Cliente que solicita la cita
+     * @param vehiculo Vehículo asociado a la cita
+     * @return La entidad Cita guardada en la base de datos
+     * @throws IllegalArgumentException Si algún parámetro es nulo, fuera de horario, fecha/hora pasada o cita duplicada
      */
     public Cita agendarCita(LocalDate fecha, LocalTime hora, Cliente cliente, Vehiculo vehiculo) {
 
@@ -67,27 +80,39 @@ public class ServicioCita {
             throw new IllegalArgumentException("Ya existe una cita agendada para la fecha y hora seleccionadas");
         }
 
-        // Creacion de la cita y guardado en la base de datos
+        // Creación de la cita y guardado en la base de datos
         Cita cita = new Cita();
         cita.setFecha(fecha);
         cita.setHora(hora);
         cita.setCliente(cliente);
         cita.setVehiculo(vehiculo);
 
-        return citaRepository.save(cita); // Simplificamos un poco el guardado y retorno
+        return citaRepository.save(cita);
     }
 
+    /**
+     * Obtiene la cita pendiente asociada a un vehículo
+     * 
+     * @param vehiculoSeleccionado Vehículo del cual se buscará la cita
+     * @return La cita correspondiente al vehículo
+     * @throws IllegalArgumentException Si el vehículo es nulo
+     */
     public Cita obtenerCitaPendientePorVehiculo(Vehiculo vehiculoSeleccionado) {
         if (vehiculoSeleccionado == null) {
             throw new IllegalArgumentException("El vehículo no puede ser nulo al buscar una cita");
         }
         
-        // Buscamos la cita que le pertenece a ese vehículo y que su estado sea "PENDIENTE"
+        // Buscamos la cita que le pertenece a ese vehículo
         return citaRepository.findByVehiculo(vehiculoSeleccionado);
     }
+
     /**
-    * Recupera las citas asociadas al nombre de un cliente
-    */
+     * Recupera las citas asociadas al nombre de un cliente
+     * 
+     * @param nombreCliente Nombre o texto a buscar del cliente
+     * @return Lista de citas encontradas para ese cliente
+     * @throws IllegalArgumentException Si el nombre del cliente es nulo o está vacío
+     */
     public List<Cita> consultarCitasPorNombreCliente(String nombreCliente) {
         if (nombreCliente == null || nombreCliente.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del cliente no puede estar vacío");
@@ -95,18 +120,31 @@ public class ServicioCita {
         return citaRepository.findByClienteNombre(nombreCliente.trim());
     }
 
+    /**
+     * Registra un nuevo cliente, su vehículo y agenda la cita de forma transaccional
+     * 
+     * @param nombre Nombre del cliente
+     * @param telefono Teléfono del cliente
+     * @param marca Marca del vehículo
+     * @param modelo Modelo del vehículo
+     * @param anio Año de fabricación del vehículo
+     * @param placas Placas del vehículo
+     * @param kilometraje Kilometraje actual del vehículo
+     * @param fecha Fecha solicitada para la cita
+     * @param hora Hora solicitada para la cita
+     * @return La entidad Cita agendada
+     */
     @Transactional
     public Cita agendarCitaCompleta(String nombre, String telefono, String marca, 
                                     String modelo, int anio, String placas, 
                                     double kilometraje, LocalDate fecha, LocalTime hora) {
         
-        //Validaciones para guardar el cliente y vehiculo
+        // Validaciones para guardar el cliente y vehiculo
         Cliente cliente = servicioCliente.agregaCliente(nombre, telefono);
 
         Vehiculo vehiculo = servicioVehiculo.agregaVehiculo(marca, modelo, placas, anio, kilometraje, cliente);
         
-        //Agendar la cita
+        // Agendar la cita
         return agendarCita(fecha, hora, cliente, vehiculo); 
     }
-
 }

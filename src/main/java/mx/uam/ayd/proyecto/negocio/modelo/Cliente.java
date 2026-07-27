@@ -11,6 +11,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 //@author AngelYael
 
+/**
+ * Entidad de negocio Cliente
+ *
+ * @author Angel Yael
+ *
+ */
 @Entity
 public class Cliente {
 
@@ -50,43 +56,43 @@ public class Cliente {
     }
 
     /**
-     * @return Texto con el nombre actual.
+     * @return Texto con el nombre actual
      */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     * @param nombre El nombre que le queremos poner al cliente.
+     * @param nombre El nombre que le queremos poner al cliente
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     /**
-     * @return Texto con el número de teléfono.
+     * @return Texto con el número de teléfono
      */
     public String getTelefono() {
         return telefono;
     }
 
     /**
-     * @param telefono El nuevo número de teléfono.
+     * @param telefono El nuevo número de teléfono
      */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
     /**
-     * @return Una lista (List) con objetos de tipo Vehiculo.
+     * @return Una lista (List) con objetos de tipo Vehiculo
      */
     public List<Vehiculo> getVehiculos() {
         return vehiculos;
     }
 
     /**
-     * @param obj El otro objeto con el que queremos comparar a nuestro cliente.
-     * @return true si son el mismo cliente, false si son diferentes o si el otro es nulo.
+     * @param obj El otro objeto con el que queremos comparar a nuestro cliente
+     * @return true si son el mismo cliente, false si son diferentes o si el otro es nulo
      */
     @Override
     public boolean equals(Object obj) {
@@ -101,7 +107,7 @@ public class Cliente {
     }
 
     /**
-     * @return Un número entero único para identificar el objeto en memoria.
+     * @return Un número entero único para identificar el objeto en memoria
      */
     @Override
     public int hashCode() {
@@ -109,7 +115,7 @@ public class Cliente {
     }
 
     /**
-     * @return Una cadena de texto con los datos legibles del cliente.
+     * @return Una cadena de texto con los datos legibles del cliente
      */
     @Override
     public String toString() {

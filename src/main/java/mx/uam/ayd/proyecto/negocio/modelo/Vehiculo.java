@@ -8,127 +8,178 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 /**
- * Entidad de negocio Vehiculo
+ * Entidad de negocio que representa un Vehículo
  *
  * @author AngelYael
- *
  */
-@Entity // Esto le dice a Spring que esta es una entidad persistente
+@Entity
 public class Vehiculo {
-	@Id // Esto le dice a Spring que este es el identificador
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // Le dice a Spring que genere el id
-	private long idVehiculo;
+    
+    /** 
+     * Identificador único del vehículo 
+     * Autogenerado por la base de datos
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long idVehiculo;
 
-	private String marca, modelo, placas;
+    /** Marca del vehículo */
+    private String marca;
+    
+    /** Modelo del vehículo */
+    private String modelo;
+    
+    /** Placas registradas del vehículo */
+    private String placas;
 
-	private int anio;
+    /** Año de fabricación del vehículo */
+    private int anio;
 
+    /** Kilometraje actual del vehículo */
     private double kilometraje;
 
-    // Cliente dueño del vehículo (un vehículo pertenece a un solo cliente)
+    /** 
+     * Cliente dueño del vehículo 
+     * Relación muchos a uno
+     */
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-	/**
-	 * @return el idVehiculo
-	 */
-	public long getIdVehiculo() {
-		return idVehiculo;
-	}
-
-	/**
-	 * @param idVehiculo the idVehiculo to set
-	 */
-	public void setIdVehiculo(long idVehiculo) {
-		this.idVehiculo = idVehiculo;
-	}
+    /**
+     * Obtiene el identificador del vehículo
+     * 
+     * @return El ID del vehículo
+     */
+    public long getIdVehiculo() {
+        return idVehiculo;
+    }
 
     /**
-     * @return la marca
+     * Asigna el identificador del vehículo
+     * 
+     * @param idVehiculo El nuevo ID para el vehículo
+     */
+    public void setIdVehiculo(long idVehiculo) {
+        this.idVehiculo = idVehiculo;
+    }
+
+    /**
+     * Obtiene la marca del vehículo
+     * 
+     * @return La marca del vehículo
      */
     public String getMarca() {
         return marca;
     }
 
     /**
-     * @param marca the marca to set
+     * Asigna la marca del vehículo
+     * 
+     * @param marca La nueva marca para el vehículo
      */
     public void setMarca(String marca) {
         this.marca = marca;
     }
 
     /**
-     * @return el modelo
+     * Obtiene el modelo del vehículo
+     * 
+     * @return El modelo del vehículo
      */
     public String getModelo() {
         return modelo;
     }
 
     /**
-     * @param modelo the modelo to set
+     * Asigna el modelo del vehículo
+     * 
+     * @param modelo El nuevo modelo para el vehículo
      */
     public void setModelo(String modelo) {
         this.modelo = modelo;
     }
 
     /**
-     * @return las placas
+     * Obtiene las placas del vehículo
+     * 
+     * @return Las placas del vehículo
      */
     public String getPlacas() {
         return placas;
     }
 
     /**
-     * @param placas the placas to set
+     * Asigna las placas del vehículo
+     * 
+     * @param placas Las nuevas placas para el vehículo
      */
     public void setPlacas(String placas) {
         this.placas = placas;
     }
 
     /**
-     * @return el año del vehículo
+     * Obtiene el año de fabricación del vehículo
+     * 
+     * @return El año del vehículo
      */
     public int getAnio() {
         return anio;
     }
 
     /**
-     * @param anio the anio to set
+     * Asigna el año de fabricación del vehículo
+     * 
+     * @param anio El nuevo año para el vehículo
      */
     public void setAnio(int anio) {
         this.anio = anio;
     }
 
     /**
-     * @return el kilometraje
+     * Obtiene el kilometraje del vehículo
+     * 
+     * @return El kilometraje actual del vehículo
      */
     public double getKilometraje() {
         return kilometraje;
     }
 
     /**
-     * @param kilometraje the kilometraje to set
+     * Asigna el kilometraje del vehículo
+     * 
+     * @param kilometraje El nuevo kilometraje para el vehículo
      */
     public void setKilometraje(double kilometraje) {
         this.kilometraje = kilometraje;
     }
 
     /**
-     * @return el cliente dueño del vehículo
+     * Obtiene el cliente dueño del vehículo
+     * 
+     * @return El objeto Cliente asociado
      */
     public Cliente getCliente() {
         return cliente;
     }
 
     /**
-     * @param cliente the cliente to set
+     * Asigna un cliente como dueño del vehículo
+     * 
+     * @param cliente El cliente a asociar
      */
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
-	@Override
+    /**
+     * Compara este vehículo con otro objeto para determinar si son iguales
+     * La igualdad se basa exclusivamente en el identificador (idVehiculo)
+     * 
+     * @param obj El objeto con el cual comparar
+     * @return true si los objetos tienen el mismo ID, false en caso contrario
+     */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -140,11 +191,23 @@ public class Vehiculo {
         return idVehiculo == other.idVehiculo;
     }
 
+    /**
+     * Genera un código hash para la entidad Vehiculo
+     * Utilizado para estructuras de datos que requieren hash (como HashMap o HashSet)
+     * 
+     * @return El código hash generado basado en el idVehiculo
+     */
     @Override
     public int hashCode() {
         return (int) (31 * idVehiculo);
     }
 
+    /**
+     * Devuelve una representación en formato de texto del vehículo
+     * Útil para depuración y registros (logs)
+     * 
+     * @return Cadena de texto con los detalles principales del vehículo
+     */
     @Override
     public String toString() {
         return "Vehiculo [idVehiculo=" + idVehiculo + ", marca=" + marca + ", modelo=" + modelo

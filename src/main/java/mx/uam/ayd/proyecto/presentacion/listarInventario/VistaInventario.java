@@ -21,39 +21,54 @@ import java.util.List;
 import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 
 /**
- * Ventana para consultar y editar el inventario de refacciones (HU-12) usando JavaFX con FXML.
+ * Vista para consultar y editar el inventario de refacciones
  */
 @Component
 public class VistaInventario {
 
+    /** Escenario o ventana principal de la interfaz */
     private Stage stage;
+    
+    /** Control del módulo de inventario */
     private ControlInventario control;
 
+    /** Campo de texto para ingresar el término de búsqueda */
     @FXML
     private TextField textFieldBusqueda;
 
+    /** Tabla para desplegar la lista de refacciones */
     @FXML
     private TableView<Refaccion> tableRefacciones;
 
-    // Columnas adaptadas al modelo Refaccion
+    /** Columna para mostrar el identificador de la refacción */
     @FXML
     private TableColumn<Refaccion, Integer> idColumn;
 
+    /** Columna para mostrar el nombre de la refacción */
     @FXML
     private TableColumn<Refaccion, String> nombreColumn;
 
+    /** Columna para mostrar el precio de la refacción */
     @FXML
     private TableColumn<Refaccion, Float> precioColumn;
 
+    /** Columna para mostrar las existencias de la refacción */
     @FXML
     private TableColumn<Refaccion, Integer> existenciasColumn;
 
+    /** Bandera que indica si la interfaz gráfica ya fue inicializada */
     private boolean initialized = false;
 
+    /**
+     * Constructor por defecto de la vista
+     */
     public VistaInventario() {
         
     }
 
+    /**
+     * Carga la interfaz FXML e inicializa las columnas de la tabla de refacciones
+     */
     private void initializeUI() {
         if (initialized) {
             return;
@@ -68,7 +83,6 @@ public class VistaInventario {
             stage = new Stage();
             stage.setTitle("Inventario de Refacciones");
 
-           
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ventana-consultar-inventario.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load(), 600, 450);
@@ -86,11 +100,20 @@ public class VistaInventario {
         }
     }
 
+    /**
+     * Establece la referencia del control asociado a esta vista
+     * 
+     * @param control Control del inventario
+     */
     public void setControlInventario(ControlInventario control) {
         this.control = control;
     }
 
-
+    /**
+     * Muestra la ventana y carga las refacciones recibidas en la tabla
+     * 
+     * @param refacciones Lista de refacciones a desplegar
+     */
     public void mostrarInventario(List<Refaccion> refacciones) {
         if (!Platform.isFxApplicationThread()) {
            Platform.runLater(() -> this.mostrarInventario(refacciones)); 
@@ -106,7 +129,11 @@ public class VistaInventario {
         stage.show();
     }
 
-
+    /**
+     * Actualiza la tabla con los resultados filtrados de la búsqueda
+     * 
+     * @param coincidencias Lista de refacciones que coinciden con la búsqueda
+     */
     public void retornarCoincidencias(List<Refaccion> coincidencias) {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(() -> this.retornarCoincidencias(coincidencias));
@@ -117,8 +144,9 @@ public class VistaInventario {
         tableRefacciones.setItems(data);
     }
 
-
-
+    /**
+     * Despliega un mensaje de éxito y solicita al control refrescar el inventario
+     */
     public void actualizarLista() {
         if (!Platform.isFxApplicationThread()) {
             Platform.runLater(this::actualizarLista);
@@ -130,13 +158,18 @@ public class VistaInventario {
         control.SolicitarInventario(); 
     }
 
-
+    /**
+     * Maneja el evento de búsqueda tomando el texto ingresado y enviándolo al control
+     */
     @FXML
     private void handleBuscar() {
         control.buscarRefaccion(textFieldBusqueda.getText());
     }
 
-@FXML
+    /**
+     * Maneja el evento para solicitar la edición de la refacción seleccionada en la tabla
+     */
+    @FXML
     private void handlePresionaEditar() {
         // Obtener la refacción seleccionada de la tabla
         Refaccion seleccionada = tableRefacciones.getSelectionModel().getSelectedItem();
@@ -149,11 +182,19 @@ public class VistaInventario {
         control.solicitarEdicion(seleccionada);
     }
 
+    /**
+     * Maneja el evento del botón cerrar ocultando la ventana
+     */
     @FXML
     private void handleCerrar() {
         stage.hide();
     }
 
+    /**
+     * Muestra un diálogo de alerta informativa con un mensaje especificado
+     * 
+     * @param mensaje Texto a desplegar en el diálogo
+     */
     private void muestraDialogoConMensaje(String mensaje) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Información");
