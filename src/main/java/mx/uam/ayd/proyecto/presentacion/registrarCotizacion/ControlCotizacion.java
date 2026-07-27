@@ -36,6 +36,10 @@ public class ControlCotizacion {
 
     public void iniciar() {
         vista.iniciarVisualizacion(this);
+        buscarClientes();
+    }
+
+    public void buscarClientes() {
         List<Cliente> clientesDisponibles = servicioCliente.getClientes();
         vista.mostrarClientes(clientesDisponibles);
     }
