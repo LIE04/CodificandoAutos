@@ -107,28 +107,17 @@ public class ControlCotizacion {
         }
     }
 
-        public void agregarFalla(String descripcion, Vehiculo vehiculoSeleccionado) {
-        try {
-            // Le pasamos solo la descripción y el vehículo
-            servicioReparacion.crearNuevaReparacionConFallas(descripcion, vehiculoSeleccionado);
- 
-        } catch (IllegalArgumentException e) {
-            vista.mostrarMensajeError(e.getMessage());
-        } catch (Exception e) {
-            vista.mostrarMensajeError("Ocurrió un error inesperado al guardar en la base de datos.");
-        }
-    } 
 
     public void onGuardarClick(String fallas, Vehiculo vehiculoSeleccionado) {
         try {
-            // 1. Asegurar la mano de obra en el borrador de cotización
+            // Asegurar la mano de obra en el borrador de cotización
             boolean manoObraRegistrada = servicioCotizacion.capturarDatosServicio(this.costoManoObra);
             if (!manoObraRegistrada) {
                 vista.mostrarMensajeError("Error al registrar la mano de obra en la cotización.");
                 return;
             }
 
-            // 2. Crear la Reparación con sus fallas
+            // Crear la Reparación con sus fallas
             servicioReparacion.crearNuevaReparacionConFallas(fallas, vehiculoSeleccionado);
 
             // 3. Finalizar la cotización
@@ -136,7 +125,6 @@ public class ControlCotizacion {
             
             if (exitoCotizacion) {
                 vista.mostrarMensajeExito();
-                vista.bloquearEdicion();
             } else {
                 vista.mostrarMensajeError("No se pudo finalizar la cotización.");
             }

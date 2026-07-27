@@ -69,8 +69,7 @@ public class ServicioReparacion {
         boolean tieneReparacionActiva = reparacionRepository.existsByVehiculoAndEstatusServicioIn(vehiculo, estatusFinalizados);
 
         if (tieneReparacionActiva) {
-            throw new IllegalArgumentException("El vehículo con placas " + vehiculo.getPlacas() + 
-                " ya tiene un proceso de reparación activo en el taller. Debe finalizar la reparación actual antes de abrir una nueva.");
+            throw new IllegalArgumentException("El vehículo con placas ya tiene un proceso de reparación activo en el taller");
         }
 
         // Crear la nueva entidad Reparacion
