@@ -37,7 +37,7 @@ public class ControlCotizacion {
     }
 
     public void iniciar() {
-        vista.iniciar(this);
+        vista.iniciarVisualizacion(this);
         List<Cliente> clientesDisponibles = servicioCliente.getClientes();
         vista.mostrarClientes(clientesDisponibles);
     }
@@ -113,18 +113,40 @@ public class ControlCotizacion {
             servicioReparacion.crearNuevaReparacionConFallas(descripcion, vehiculoSeleccionado);
  
         } catch (IllegalArgumentException e) {
-            vista.mostrarMensajeError("Error de Validación");
+            vista.mostrarMensajeError(e.getMessage());
         } catch (Exception e) {
             vista.mostrarMensajeError("Ocurrió un error inesperado al guardar en la base de datos.");
         }
     } 
 
-    public void onGuardarClick() {
-        boolean exito = servicioCotizacion.finalizarCotizacion();
-        if (exito) {
-            vista.mostrarMensajeExito();
-        } else {
-            vista.mostrarMensajeError("No se pudo guardar la cotización.");
+    public void onGuardarClick(String fallas, Vehiculo vehiculoSeleccionado) {
+        try {
+            // 1. Asegurar la mano de obra en el borrador de cotización
+            boolean manoObraRegistrada = servicioCotizacion.capturarDatosServicio(this.costoManoObra);
+            if (!manoObraRegistrada) {
+                vista.mostrarMensajeError("Error al registrar la mano de obra en la cotización.");
+                return;
+            }
+
+            // 2. Crear la Reparación con sus fallas
+            servicioReparacion.crearNuevaReparacionConFallas(fallas, vehiculoSeleccionado);
+
+            // 3. Finalizar la cotización
+            boolean exitoCotizacion = servicioCotizacion.finalizarCotizacion();
+            
+            if (exitoCotizacion) {
+                vista.mostrarMensajeExito();
+                vista.bloquearEdicion();
+            } else {
+                vista.mostrarMensajeError("No se pudo finalizar la cotización.");
+            }
+
+        } catch (IllegalArgumentException e) {
+            // Muestra la regla de negocio violada (ej. "El vehículo ya tiene una reparación activa")
+            vista.mostrarMensajeError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            vista.mostrarMensajeError("Ocurrió un error inesperado al guardar en la base de datos.");
         }
     }
 }
