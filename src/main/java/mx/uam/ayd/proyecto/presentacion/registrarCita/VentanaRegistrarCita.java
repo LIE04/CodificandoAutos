@@ -23,7 +23,6 @@ public class VentanaRegistrarCita {
 
     private Stage stage;
     private ControlRegistrarCita control;
-    private List<LocalTime> horasOcupadas = new ArrayList<>();
 
     @FXML private TextField txtNombre;
     @FXML private TextField txtTelefono;
@@ -59,7 +58,7 @@ public class VentanaRegistrarCita {
         }
     }
 
-private void inicializarComponentes() {
+    private void inicializarComponentes() {
         btnGuardarCita.setDisable(true); 
 
         //Bloquear las fechas festivas o domingos
