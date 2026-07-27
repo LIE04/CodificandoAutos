@@ -19,11 +19,7 @@ INSERT INTO VEHICULO (marca, modelo, placas, anio, kilometraje, id_cliente)
   INSERT INTO VEHICULO (marca, modelo, placas, anio, kilometraje, id_cliente)
 VALUES ('Toyota', 'Corolla', 'AWX-789', 2020, 50000.0, (SELECT id_cliente FROM CLIENTE WHERE nombre = 'Carlos Slim'));
 
--- Crear la cita asociando al cliente y al vehículo
-INSERT INTO CITA (fecha, hora, estado, id_cliente, vehiculo_id)
-VALUES ('2026-07-25', '10:00:00', 'PENDIENTE', 
-       (SELECT id_cliente FROM cliente WHERE nombre = 'Carlos Slim'),
-       (SELECT id_vehiculo FROM vehiculo WHERE placas = 'AWX-789'));
+
 
 -- Refacciones de prueba (HU-12), con datos de la última remesa recibida (HU-31)
 INSERT INTO REFACCION (nombre, precio, existencia, proveedor, fecha_recepcion, fecha_hora_registro)

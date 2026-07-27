@@ -3,6 +3,7 @@ package mx.uam.ayd.proyecto.datos;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
+import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 
 import java.util.List;
 
@@ -54,4 +55,10 @@ public interface ReparacionRepository extends CrudRepository<Reparacion, Integer
     @Query("SELECT r FROM Reparacion r JOIN FETCH r.vehiculo WHERE r.estatusServicio IN ('En espera', 'En reparación', 'En revisión')")
     List<Reparacion> findReparacionesParaAtraso();
     // FIN Modificación Erik HU-34
+
+    // Busca si existe alguna reparación activa para un vehículo que NO esté 'Entregado' ni 'Terminado'
+    //Oscar Hinojosa HU-14
+    boolean existsByVehiculoAndEstatusServicioIn(Vehiculo vehiculo, List<String> estatusFinalizados);
+
+
 }

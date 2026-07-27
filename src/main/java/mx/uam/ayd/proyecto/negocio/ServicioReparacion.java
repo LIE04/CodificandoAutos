@@ -62,12 +62,22 @@ public class ServicioReparacion {
             throw new IllegalArgumentException("Debe seleccionar un vehículo.");
         }
 
+        // Definimos los estatus que se consideran "Reparación Cerrada/Finalizada"
+        List<String> estatusFinalizados = List.of("Entregado", "En espera", "Listo paara entrega");
+
+        // Validamos si el carro ya tiene un proceso activo en el taller
+        boolean tieneReparacionActiva = reparacionRepository.existsByVehiculoAndEstatusServicioIn(vehiculo, estatusFinalizados);
+
+        if (tieneReparacionActiva) {
+            throw new IllegalArgumentException("El vehículo con placas ya tiene un proceso de reparación activo en el taller");
+        }
+
         // Crear la nueva entidad Reparacion
         Reparacion nuevaReparacion = new Reparacion();
         nuevaReparacion.setEstatusServicio("En espera");
         nuevaReparacion.setVehiculo(vehiculo);
         nuevaReparacion.setFechaInicio(LocalDateTime.now());
-        //nuevaReparacion.setObservacionesTecnicas("Ingreso inicial - Fallas reportadas: " + codigosFalla);
+        
 
         // Procesar las múltiples fallas separadas por coma
         String[] listaFallas = codigosFalla.split(",");

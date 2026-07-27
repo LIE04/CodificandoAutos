@@ -16,6 +16,7 @@ import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 import mx.uam.ayd.proyecto.negocio.modelo.Refaccion;
 import org.springframework.stereotype.Component;
 
+import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class VistaCotizacion {
     private int cantidadEscogida = 0;
     private Refaccion refaccionActual;
     private ControlCotizacion control;
+    private Stage stage;
 
     @FXML
     public void initialize() {
@@ -65,7 +67,7 @@ public class VistaCotizacion {
     }
 
     // --- Métodos de configuración inicial ---
-    public void iniciar(ControlCotizacion control) {
+    public void iniciarVisualizacion(ControlCotizacion control) {
         this.control = control;
 
         try {
@@ -171,6 +173,9 @@ public class VistaCotizacion {
         alert.setHeaderText(null);
         alert.setContentText("Cotización guardada exitosamente.");
         alert.showAndWait();
+
+        Stage stageActual = (Stage) btnGuardarCotizacion.getScene().getWindow();
+        stageActual.close();
         
     }
 
@@ -261,13 +266,25 @@ public class VistaCotizacion {
         String fallas = txtFallas.getText();
         String costoTxt = txtCostoManoObra.getText();
 
-        if (fallas == null || fallas.trim().isEmpty() ||
+        if (vehiculoSeleccionado == null || fallas == null || fallas.trim().isEmpty() ||
         costoTxt == null || costoTxt.trim().isEmpty()) {
         
-        mostrarMensajeError("¡Atención! Debes llenar las fallas, la mano de obra y el costo antes de guardar.");
+        mostrarMensajeError("¡Atención! Debes seleccionar el vehiculo, llenar las fallas y el costo de mano de obra antes de guardar.");
         return; 
         }
-        control.agregarFalla(fallas, vehiculoSeleccionado); 
-        control.onGuardarClick();
+
+        try {
+            float costoManoObra = Float.parseFloat(costoTxt.trim());
+            if (costoManoObra <= 0) {
+                mostrarMensajeError("El costo de la mano de obra debe ser mayor a $0.00.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            mostrarMensajeError("El costo de la mano de obra debe ser un número válido.");
+            return;
+        }
+
+        // 3. Procesar el guardado si las validaciones pasaron
+        control.onGuardarClick(fallas, vehiculoSeleccionado);
     }
 }

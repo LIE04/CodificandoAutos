@@ -35,7 +35,7 @@ public class ControlCotizacion {
     }
 
     public void iniciar() {
-        vista.iniciar(this);
+        vista.iniciarVisualizacion(this);
         List<Cliente> clientesDisponibles = servicioCliente.getClientes();
         vista.mostrarClientes(clientesDisponibles);
     }
@@ -105,24 +105,34 @@ public class ControlCotizacion {
         }
     }
 
-        public void agregarFalla(String descripcion, Vehiculo vehiculoSeleccionado) {
-        try {
-            // Le pasamos solo la descripción y el vehículo
-            servicioReparacion.crearNuevaReparacionConFallas(descripcion, vehiculoSeleccionado);
- 
-        } catch (IllegalArgumentException e) {
-            vista.mostrarMensajeError("Error de Validación");
-        } catch (Exception e) {
-            vista.mostrarMensajeError("Ocurrió un error inesperado al guardar en la base de datos.");
-        }
-    } 
 
-    public void onGuardarClick() {
-        boolean exito = servicioCotizacion.finalizarCotizacion();
-        if (exito) {
-            vista.mostrarMensajeExito();
-        } else {
-            vista.mostrarMensajeError("No se pudo guardar la cotización.");
+    public void onGuardarClick(String fallas, Vehiculo vehiculoSeleccionado) {
+        try {
+            // Asegurar la mano de obra en el borrador de cotización
+            boolean manoObraRegistrada = servicioCotizacion.capturarDatosServicio(this.costoManoObra);
+            if (!manoObraRegistrada) {
+                vista.mostrarMensajeError("Error al registrar la mano de obra en la cotización.");
+                return;
+            }
+
+            // Crear la Reparación con sus fallas
+            servicioReparacion.crearNuevaReparacionConFallas(fallas, vehiculoSeleccionado);
+
+            // 3. Finalizar la cotización
+            boolean exitoCotizacion = servicioCotizacion.finalizarCotizacion();
+            
+            if (exitoCotizacion) {
+                vista.mostrarMensajeExito();
+            } else {
+                vista.mostrarMensajeError("No se pudo finalizar la cotización.");
+            }
+
+        } catch (IllegalArgumentException e) {
+            // Muestra la regla de negocio violada (ej. "El vehículo ya tiene una reparación activa")
+            vista.mostrarMensajeError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            vista.mostrarMensajeError("Ocurrió un error inesperado al guardar en la base de datos.");
         }
     }
 }
