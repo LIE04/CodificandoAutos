@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import mx.uam.ayd.proyecto.negocio.ServicioReparacion;
 // Edite esto en tu codigo: Puse mi servicio detalles falla
-import mx.uam.ayd.proyecto.negocio.ServicioDetallesFalla; 
 import mx.uam.ayd.proyecto.negocio.modelo.DetallesFalla;
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
@@ -26,10 +25,6 @@ public class ControlControlCalidad {
 
     @Autowired
     private ServicioReparacion servicioReparacion;
-
-    // Edite esto en tu codigo: Inyecte mi servicio
-    @Autowired
-    private ServicioDetallesFalla servicioDetallesFalla; 
 
     @Autowired
     private VentanaControlCalidad ventana;
