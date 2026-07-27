@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.uam.ayd.proyecto.datos.ReparacionRepository;
 import mx.uam.ayd.proyecto.datos.ReparacionRepository.VehiculosPendientesDTO;
-import mx.uam.ayd.proyecto.negocio.modelo.DetallesFalla;
 import mx.uam.ayd.proyecto.negocio.modelo.Reparacion;
 import mx.uam.ayd.proyecto.negocio.modelo.Vehiculo;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.Optional;
 import java.time.LocalDateTime;
@@ -29,7 +27,7 @@ public class ServicioReparacion {
     
     private final ReparacionRepository reparacionRepository;
     
-    // Inyección de dependencias por constructor (Combina ambas versiones)
+    // Inyección de dependencias por constructor
     @Autowired
     public ServicioReparacion(ReparacionRepository reparacionRepository) {
         this.reparacionRepository = reparacionRepository;
@@ -79,24 +77,10 @@ public class ServicioReparacion {
         nuevaReparacion.setFechaInicio(LocalDateTime.now());
         
 
-        // Procesar las múltiples fallas separadas por coma
-        String[] listaFallas = codigosFalla.split(",");
-        for (String descripcion : listaFallas) {
-            String fallaLimpia = descripcion.trim();
-            
-            if (!fallaLimpia.isEmpty()) {
-                DetallesFalla nuevaFalla = new DetallesFalla();
-                nuevaFalla.setDescripcionFalla(fallaLimpia);
-                nuevaFalla.setEstatus("En espera");
-                nuevaFalla.setVehiculo(vehiculo); // Relación directa
-                
-                // Vincular bidireccionalmente agregando a la lista
-                nuevaReparacion.addFalla(nuevaFalla);
-            }
-        }
+        // Guardar las fallas directamente en las observaciones técnicas
+        nuevaReparacion.setObservacionesTecnicas(codigosFalla);
 
-        // 4. Guardar en la base de datos
-        // Hibernate automáticamente hace el INSERT de la Reparacion y luego los INSERT de cada DetallesFalla
+        // Guardar en la base de datos
         return reparacionRepository.save(nuevaReparacion);
     }
 
@@ -119,6 +103,7 @@ public class ServicioReparacion {
 
     /**
      * Escenario 2 y 3 (HU-40): Registra fallas persistentes y retrocede el estado.
+     * Adaptado para persistencia en String sin entidades extra.
      */
     public Reparacion procesarFallasPersistentes(int idReparacion, String codigosFalla) {
         Reparacion reparacion = recuperarReparacion(idReparacion);
@@ -127,28 +112,36 @@ public class ServicioReparacion {
             throw new IllegalArgumentException("Debe ingresar los códigos de falla detectados.");
         }
 
-        // Modificación realizada por Erik para la HU-40 (Control de Calidad)
-        // Regla de Negocio: Procesar múltiples fallas separadas por coma y agregarlas a la base de datos.
+        // 1. Separamos el texto ingresado por el mecánico usando comas
         String[] nuevasFallas = codigosFalla.split(",");
-        for (String descripcion : nuevasFallas) {
-            String fallaLimpia = descripcion.trim(); 
+        StringBuilder fallasAProcesar = new StringBuilder();
+        
+        // 2. Limpiamos y etiquetamos cada falla nueva individualmente
+        for (int i = 0; i < nuevasFallas.length; i++) {
+            String fallaLimpia = nuevasFallas[i].trim();
             
             if (!fallaLimpia.isEmpty()) {
-                DetallesFalla nuevaFalla = new DetallesFalla();
-                nuevaFalla.setDescripcionFalla(fallaLimpia);
-                nuevaFalla.setEstatus("En espera"); 
+                // Etiquetamos la falla para que destaque en el CheckBox
+                fallasAProcesar.append(fallaLimpia).append(" [Falla detectada en Escáner]");
                 
-                reparacion.addFalla(nuevaFalla);
+                // Agregamos la coma separadora, excepto en el último elemento
+                if (i < nuevasFallas.length - 1) {
+                    fallasAProcesar.append(", ");
+                }
             }
         }
 
-        // Modificación realizada por Erik para la HU-40 (Control de Calidad)
-        // Regla de Negocio: Bloqueo de entrega, regresa a revisión para que el mecánico lo atienda.
+        // 3. Concatenamos con las fallas anteriores usando una coma como puente
+        String fallasActuales = reparacion.getObservacionesTecnicas();
+        if (fallasActuales == null || fallasActuales.trim().isEmpty()) {
+            reparacion.setObservacionesTecnicas(fallasAProcesar.toString());
+        } else {
+            // La coma aquí es vital para que la UI separe las viejas de las nuevas al usar .split(",")
+            reparacion.setObservacionesTecnicas(fallasActuales + ", " + fallasAProcesar.toString());
+        }
+
+        // 4. Regla de Negocio: Bloqueo de entrega, regresa a revisión para que el mecánico lo atienda.
         reparacion.setEstatusServicio("En espera"); 
-        
-        // Guardamos un pequeño registro en las observaciones técnicas (solo como historial en texto)
-        String notasActuales = reparacion.getObservacionesTecnicas() != null ? reparacion.getObservacionesTecnicas() : "";
-        reparacion.setObservacionesTecnicas(notasActuales + " | [Control de Calidad Fallido - Nuevas fallas registradas]");
         
         return reparacionRepository.save(reparacion);
     }
