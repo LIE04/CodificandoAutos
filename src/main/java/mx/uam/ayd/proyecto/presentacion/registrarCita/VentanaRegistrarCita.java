@@ -12,6 +12,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.DayOfWeek;
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.util.Callback;
 
 @Component
 public class VentanaRegistrarCita {
@@ -54,43 +59,42 @@ public class VentanaRegistrarCita {
     }
 
     private void inicializarComponentes() {
-        btnGuardarCita.setDisable(true);
+        btnGuardarCita.setDisable(true); 
 
-        //Evita que el usuario no pueda escribir letras en telefono 
-        TextFormatter<String> validadorNumeros = new TextFormatter<>(cambio -> {
-            if (cambio.getText().matches("[0-9]*")) {
-                return cambio; //Permite el cambio
+        //Bloquear las fechas festivas o domingos
+        Callback<DatePicker, DateCell> dayCellFactory = dp -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+
+                // Si la fecha es en el pasado, es domingo, o es festivo -> deshabilitar
+                if (item.isBefore(LocalDate.now()) || 
+                    item.getDayOfWeek() == DayOfWeek.SUNDAY || 
+                    esDiaFestivo(item)) {
+                    
+                    setDisable(true); // Bloquea el clic
+                    setStyle("-fx-background-color: #ffc0cb;"); // Pone la celda rojita/rosa
+                }
             }
-            return null; //rechaza el cambio si se quiere poner una letra
-        });
-        
-        txtTelefono.setTextFormatter(validadorNumeros);
+        };
+        dpFecha.setDayCellFactory(dayCellFactory); // Le aplicamos la regla al calendario
+        // ------------------------------------------
 
-        //Evitar que el usuario no pueda escribir letras en el kilometraje
-        TextFormatter<String> validadorKilometraje = new TextFormatter<>(cambio -> {
-            String nuevoTexto = cambio.getControlNewText();
-            
-            //Aqui le pedimos que solo acepte numeros, y si al caso, un punto para los decimales
-            if (nuevoTexto.matches("\\d*(\\.\\d*)?")) {
-                return cambio; // Permite el cambio
-            }
-            return null; //Rechaza el cambio si se quiere poner una letra o mas de un punto
-        });
-        
-        txtKilometraje.setTextFormatter(validadorKilometraje);
-
-        //Llenar los años a partir de una fecha en especifico hasta la actualidad
+        // Llenar años 
         int anioActual = LocalDate.now().getYear();
         for (int i = anioActual + 1; i >= 1990; i--) {
             cbAnio.getItems().add(i);
         }
 
-        //Colocar/llenar el horario del mecanico
-        for (int i = 9; i <= 16; i++) {
-            cbHora.getItems().add(LocalTime.of(i, 0));
-            cbHora.getItems().add(LocalTime.of(i, 30));
+        // --- HORARIO DE 9:00 AM A 5:30 PM ---
+        cbHora.getItems().clear(); // Limpiar por precaución
+        for (int i = 9; i <= 17; i++) {
+            cbHora.getItems().add(LocalTime.of(i, 0));  // Agrega las horas en punto (ej. 17:00)
+            cbHora.getItems().add(LocalTime.of(i, 30)); // Agrega las medias horas (ej. 17:30)
         }
+        // Como el ciclo termina en 18, la última hora añadida será exactamente las 17:30 (5:30 PM)
     }
+    
 
     @FXML
     private void verificarProgreso() {
@@ -147,5 +151,33 @@ public class VentanaRegistrarCita {
         if (stage != null) {
             stage.close();
         }
+    }
+
+    /**
+     * Calcula si una fecha es día de asueto obligatorio en México
+     */
+    private boolean esDiaFestivo(LocalDate fecha) {
+        int mes = fecha.getMonthValue();
+        int dia = fecha.getDayOfMonth();
+        DayOfWeek diaSemana = fecha.getDayOfWeek();
+
+        // Festivos de fecha exacta
+        if (mes == 1 && dia == 1) return true; // Año Nuevo
+        if (mes == 5 && dia == 1) return true; // Día del Trabajo
+        if (mes == 9 && dia == 16) return true; // Independencia
+        if (mes == 12 && dia == 25) return true; // Navidad
+
+        // Festivos de fecha móvil (Lunes)
+        // 1er Lunes de Febrero (Constitución)
+        if (mes == 2 && diaSemana == DayOfWeek.MONDAY && dia <= 7) return true;
+        // 3er Lunes de Marzo (Natalicio Benito Juárez)
+        if (mes == 3 && diaSemana == DayOfWeek.MONDAY && dia >= 15 && dia <= 21) return true;
+        // 3er Lunes de Noviembre (Revolución)
+        if (mes == 11 && diaSemana == DayOfWeek.MONDAY && dia >= 15 && dia <= 21) return true;
+        
+        // Transición del Poder Ejecutivo (1 de Octubre, cada 6 años empezando en 2024)
+        if (mes == 10 && dia == 1 && (fecha.getYear() - 2024) % 6 == 0) return true;
+
+        return false;
     }
 }

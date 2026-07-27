@@ -63,18 +63,15 @@
                </children>
             </GridPane>
 
-            <!-- COLUMNA DERECHA: Fecha, Hora y Botón -->
             <VBox alignment="TOP_CENTER" minWidth="180.0" spacing="20.0">
                <children>
-                  <!-- Sección Fecha -->
                   <VBox spacing="5.0">
                      <children>
                         <Label style="-fx-text-fill: #34495e; -fx-font-weight: bold;" text="Fecha de la Cita:" />
                         <DatePicker fx:id="dpFecha" maxWidth="1.7976931348623157E308" onAction="#verificarProgreso" />
                      </children>
                   </VBox>
-                  
-                  <!-- Sección Hora -->
+
                   <VBox spacing="5.0">
                      <children>
                         <Label style="-fx-text-fill: #34495e; -fx-font-weight: bold;" text="Hora:" />
@@ -82,10 +79,8 @@
                      </children>
                   </VBox>
 
-                  <!-- Espaciador flexible para empujar el botón hacia abajo -->
                   <VBox VBox.vgrow="ALWAYS" />
 
-                  <!-- Botón Guardar -->
                   <Button fx:id="btnGuardarCita" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#subirDatos" style="-fx-background-color: #0078D7; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10px; -fx-background-radius: 5px;" text="Guardar cita" />
                </children>
             </VBox>
