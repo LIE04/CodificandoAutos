@@ -6,9 +6,6 @@ import javafx.fxml.FXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import mx.uam.ayd.proyecto.presentacion.agregarUsuario.ControlAgregarUsuario;
-import mx.uam.ayd.proyecto.presentacion.listarUsuarios.ControlListarUsuarios;
-import mx.uam.ayd.proyecto.presentacion.listarGrupos.ControlListarGrupos;
 import mx.uam.ayd.proyecto.presentacion.listarInventario.ControlInventario;
 import mx.uam.ayd.proyecto.presentacion.registrarPieza.ControlRegistrarPieza;
 import mx.uam.ayd.proyecto.presentacion.consultarDistribuidores.ControlConsultarDistribuidores;
@@ -30,9 +27,6 @@ import mx.uam.ayd.proyecto.presentacion.informeAtrasos.ControlInformeAtrasos;
 @Component
 public class ControlPrincipal {
 
-    private final ControlAgregarUsuario controlAgregarUsuario;
-    private final ControlListarUsuarios controlListarUsuarios;
-    private final ControlListarGrupos controlListarGrupos;
     private final ControlRegistrarPieza controlRegistrarPieza;
     private final ControlConsultarDistribuidores controlConsultarDistribuidores;
     private final ControlRegistrarServicio controlRegistrarServicio;
@@ -49,9 +43,6 @@ public class ControlPrincipal {
 
     @Autowired
     public ControlPrincipal(
-            ControlAgregarUsuario controlAgregarUsuario,
-            ControlListarUsuarios controlListarUsuarios,
-            ControlListarGrupos controlListarGrupos,
             ControlRegistrarPieza controlRegistrarPieza,
             ControlConsultarDistribuidores controlConsultarDistribuidores,
             ControlRegistrarServicio controlRegistrarServicio,
@@ -64,9 +55,6 @@ public class ControlPrincipal {
             ControlInformeAtrasos controlInformeAtrasos,
             // FIN Modificación Erik HU-34
             VentanaPrincipal ventana) {
-        this.controlAgregarUsuario = controlAgregarUsuario;
-        this.controlListarUsuarios = controlListarUsuarios;
-        this.controlListarGrupos = controlListarGrupos;
         this.controlRegistrarPieza = controlRegistrarPieza;
         this.controlConsultarDistribuidores = controlConsultarDistribuidores;
         this.controlRegistrarServicio = controlRegistrarServicio;
@@ -97,31 +85,7 @@ public class ControlPrincipal {
     public void inicia() {
         ventana.muestra();
     }
-
-    /**
-     * Método que arranca la historia de usuario "agregar usuario"
-     * 
-     */
-    public void agregarUsuario() {
-        controlAgregarUsuario.inicia();
-    }
     
-    /**
-     * Método que arranca la historia de usuario "listar usuarios"
-     * 
-     */
-    public void listarUsuarios() {
-        controlListarUsuarios.inicia();
-    }
-
-    /**
-     * Método que arranca la historia de usuario "listar grupos"
-     * 
-     */
-    public void listarGrupos() {
-        controlListarGrupos.inicia();
-    }
-
     /**
      * Método que arranca la historia de usuario "registrar pieza" (HU-31)
      *

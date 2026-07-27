@@ -8,21 +8,17 @@
     
     <!-- Título actualizado -->
     <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="OmniTaller" />
-    
-    <Button onAction="#handleAgregarUsuario" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Agregar usuario" />
-    
-    <Button onAction="#handleListarUsuarios" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Listar usuarios" />
-    
-    <Button onAction="#handleListarGrupos" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Listar grupos" />
+
+    <Button fx:id="RnCita" mnemonicParsing="false" onAction="#handleRegistrarCita" prefHeight="30.0" prefWidth="198.0" text="Registrar nueva cita" />
 
     <!-- NUEVO BOTÓN PARA EL INVENTARIO (HU-12) -->
     <Button onAction="#handleRegistarCotizacion" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Registrar Cotizacion" />
 
-    <!-- NUEVO BOTÓN PARA EL INVENTARIO (HU-14) -->
-    <Button onAction="#handleConsultarInventario" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Consultar Inventario" />
-
     <!-- NUEVO BOTÓN PARA LISTA VEHICULOS ENTREGA (HU-42) -->
     <Button onAction="#handleVehiculosEntrega" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Vehiculos por Entregar" />
+
+    <!-- NUEVO BOTÓN PARA EL INVENTARIO (HU-14) -->
+    <Button onAction="#handleConsultarInventario" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Consultar Inventario" />
 
     <Button onAction="#handleRegistrarPieza" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Registrar pieza" />
 
@@ -32,8 +28,6 @@
 
     <!-- Nuevo botón para la ventana de pedidos (HU-30) -->
     <Button fx:id="btnPedidos" onAction="#abrirVentanaPedidos" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Gestión de Pedidos" />
-
-    <Button fx:id="RnCita" mnemonicParsing="false" onAction="#handleRegistrarCita" prefHeight="30.0" prefWidth="198.0" text="Registrar nueva cita" />
     
     <!-- INICIO Modificación realizada por Erik para la HU-34 (Notificación de Atraso) -->
     <Button onAction="#handleInformeAtrasos" style="-fx-min-width: 200px; -fx-min-height: 30px;" text="Informe de Atrasos" />
