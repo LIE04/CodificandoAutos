@@ -154,12 +154,6 @@ public class VentanaPrincipal {
             control.registrarCita();
         }
     }
-    @FXML
-    private void handleRegistrarDetallesFalla() {
-        if (control != null) {
-        control.registrarDetallesFalla();
-        }
-    }
     
     // INICIO Modificación realizada por Erik para la HU-34
     @FXML

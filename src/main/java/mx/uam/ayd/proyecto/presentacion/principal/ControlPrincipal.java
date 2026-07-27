@@ -17,7 +17,6 @@ import mx.uam.ayd.proyecto.presentacion.registrarServicio.ControlRegistrarServic
 import mx.uam.ayd.proyecto.presentacion.pedidos.ControladorPedidos;
 import mx.uam.ayd.proyecto.presentacion.registrarCotizacion.ControlCotizacion;
 import mx.uam.ayd.proyecto.presentacion.registrarCita.ControlRegistrarCita;
-import mx.uam.ayd.proyecto.presentacion.registrarDetallesFalla.ControlRegistrarDetallesFalla;
 // INICIO Modificación realizada por Erik para la HU-34 (Notificación de Atraso)
 import mx.uam.ayd.proyecto.presentacion.informeAtrasos.ControlInformeAtrasos;
 // FIN Modificación Erik HU-34
@@ -43,7 +42,6 @@ public class ControlPrincipal {
     private final ControlVehiculosEntrega controlVehiculoEntrega;
     private final ControlCotizacion controlCotizacion;
     private final ControlRegistrarCita controlRegistrarCita;
-    private final ControlRegistrarDetallesFalla controlRegistrarDetallesFalla;
     // INICIO Modificación realizada por Erik para la HU-34
     private final ControlInformeAtrasos controlInformeAtrasos;
     // FIN Modificación Erik HU-34
@@ -62,7 +60,6 @@ public class ControlPrincipal {
             ControlVehiculosEntrega controlVehiculosEntrega,
             ControlCotizacion controlCotizacion,
             ControlRegistrarCita controlRegistrarCita,
-            ControlRegistrarDetallesFalla controlRegistrarDetallesFalla,
             // INICIO Modificación realizada por Erik para la HU-34
             ControlInformeAtrasos controlInformeAtrasos,
             // FIN Modificación Erik HU-34
@@ -79,7 +76,6 @@ public class ControlPrincipal {
         this.controlVehiculoEntrega = controlVehiculosEntrega;
         this.controlCotizacion = controlCotizacion;
         this.controlRegistrarCita = controlRegistrarCita;
-        this.controlRegistrarDetallesFalla = controlRegistrarDetallesFalla;
         // INICIO Modificación realizada por Erik para la HU-34
         this.controlInformeAtrasos = controlInformeAtrasos;
         // FIN Modificación Erik HU-34
@@ -181,13 +177,6 @@ public class ControlPrincipal {
         controlRegistrarCita.inicia();
     }
 
-    /**
-    * Método que arranca la historia de usuario "Registrar Detalles de Falla"
-    */
-    public void registrarDetallesFalla() {
-        controlRegistrarDetallesFalla.inicia();
-    }
-    
     // INICIO Modificación realizada por Erik para la HU-34
     /**
      * Método que arranca la historia de usuario "Notificación de Atrasos" (HU-34)

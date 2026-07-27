@@ -11,7 +11,6 @@ import mx.uam.ayd.proyecto.negocio.ServicioVehiculo;
 import mx.uam.ayd.proyecto.negocio.ServicioCita;
 import mx.uam.ayd.proyecto.negocio.ServicioRefaccion;
 import mx.uam.ayd.proyecto.negocio.ServicioCotizacion;
-import mx.uam.ayd.proyecto.negocio.ServicioDetallesFalla;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -26,7 +25,6 @@ public class ControlCotizacion {
     @Autowired private ServicioCita servicioCita;
     @Autowired private ServicioRefaccion servicioRefaccion;
     @Autowired private ServicioCotizacion servicioCotizacion;
-    @Autowired private ServicioDetallesFalla servicioDetallesFalla;
     private float totalRefacciones = 0.0f;
     private float costoManoObra = 0.0f;
     
