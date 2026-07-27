@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 @Component
@@ -43,7 +45,7 @@ public class VistaCotizacion {
     // Panel de Servicios
     @FXML private TextArea txtFallas;
     @FXML private TextField txtCostoManoObra;
-    @FXML private Button btnActualizarServicio;
+    //@FXML private Button btnActualizarServicio;
     
     // Totales y Guardar
     @FXML private Label lblSubtotal;
@@ -52,6 +54,7 @@ public class VistaCotizacion {
     @FXML private Button btnGuardarCotizacion;
 
     private int cantidadEscogida = 0;
+    private Map<Integer, Integer> piezasYaAgregadas = new HashMap<>();
     private Refaccion refaccionActual;
     private ControlCotizacion control;
     private Stage stage;
@@ -113,6 +116,32 @@ public class VistaCotizacion {
             control.onVehiculoSeleccionado(seleccionado);
             }
         });
+
+        // Cálculo automático de Mano de Obra
+        txtCostoManoObra.textProperty().addListener((observable, oldValue, newValue) -> {
+            
+            // Si el campo se queda vacío, el costo es 0
+            if (newValue == null || newValue.trim().isEmpty()) {
+                control.onActualizarServicio(0.0f);
+                return;
+            }
+
+            // Bloquear letras: Solo permitimos números y opcionalmente un punto decimal
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                txtCostoManoObra.setText(oldValue); // Deshace la tecla presionada si es inválida
+                return;
+            }
+
+            // Procesar el costo
+            try {
+                float costo = Float.parseFloat(newValue);
+                control.onActualizarServicio(costo);
+            } catch (NumberFormatException e) {
+                // Atrapa casos temporales mientras el usuario escribe, por ejemplo, si solo teclea "."
+                control.onActualizarServicio(0.0f);
+            }
+        });
+
     }
 
     
@@ -133,7 +162,6 @@ public class VistaCotizacion {
         btnAgregarRefaccion.setDisable(false);
         txtFallas.setDisable(false);
         txtCostoManoObra.setDisable(false);
-        btnActualizarServicio.setDisable(false);
         btnGuardarCotizacion.setDisable(false);
     }
 
@@ -145,7 +173,6 @@ public class VistaCotizacion {
         btnAgregarRefaccion.setDisable(true);
         txtFallas.setDisable(true);
         txtCostoManoObra.setDisable(true);
-        btnActualizarServicio.setDisable(true);
         btnGuardarCotizacion.setDisable(true);
     }
 
@@ -216,8 +243,15 @@ public class VistaCotizacion {
     public void accionBotonMas() {
         Refaccion seleccionada = tablaRefacciones.getSelectionModel().getSelectedItem();
         if (seleccionada != null && cantidadEscogida < seleccionada.getExistencia()) {
-            cantidadEscogida++;
-            lblContador.setText(String.valueOf(cantidadEscogida));
+
+            //Obtenenmos cuantas piezas de esta refacción YA agregamos a la cotización 
+            int yaAgregadas = piezasYaAgregadas.getOrDefault(seleccionada.getIdRefaccion(), 0);
+
+            if ((cantidadEscogida + yaAgregadas) < seleccionada.getExistencia()){
+                cantidadEscogida++;
+                lblContador.setText(String.valueOf(cantidadEscogida));
+            }
+       
          }
     }
 
@@ -244,20 +278,12 @@ public class VistaCotizacion {
 
         control.onAgregarRefaccion(seleccionada,cantidadEscogida);
 
+        int yaAgregadas = piezasYaAgregadas.getOrDefault(seleccionada.getIdRefaccion(), 0);
+        piezasYaAgregadas.put(seleccionada.getIdRefaccion(), yaAgregadas + cantidadEscogida);
+
         cantidadEscogida = 0;
         lblContador.setText("0");
 
-    }
-
-    @FXML
-    public void accionActualizarServicio() {
-
-        try {
-            float costo = Float.parseFloat(txtCostoManoObra.getText());
-            control.onActualizarServicio(costo);
-        } catch (NumberFormatException e) {
-            mostrarMensajeError("Ingrese un costo válido para la mano de obra.");
-        }
     }
 
     @FXML
